@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import api from '../config/api';
 import HotelCard from '../components/HotelCard';
 import Loading from '../components/Loading';
 import { useToast } from '../components/Toast';
+import { searchHotels } from '../lib/supabaseData';
 
 export default function Hotels() {
   const location = useLocation();
@@ -37,10 +37,10 @@ export default function Hotels() {
     setLoading(true);
     setSearched(true);
     try {
-      const res = await api.post('/hotels/search', form);
-      setHotels(res.data.hotels || []);
+      const results = await searchHotels(form);
+      setHotels(results || []);
     } catch (err) {
-      showError(err.response?.data?.message || 'Search failed. Please try again.');
+      showError(err.message || 'Search failed. Please try again.');
       setHotels([]);
     } finally {
       setLoading(false);

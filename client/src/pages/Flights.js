@@ -51,6 +51,19 @@ const MOCK_FLIGHTS = [
   },
 ];
 
+const POPULAR_ROUTES = [
+  { from: 'Toronto', to: 'Mumbai', price: 'CAD 1,205' },
+  { from: 'Toronto', to: 'Delhi', price: 'CAD 1,134' },
+  { from: 'Toronto', to: 'Dubai', price: 'CAD 988' },
+  { from: 'Toronto', to: 'London', price: 'CAD 764' },
+];
+
+const TRAVEL_NOTES = [
+  'Prices usually change every few hours based on demand and seat availability.',
+  'Weekend departures may cost more. Mid-week flights often provide better fares.',
+  'Carry-on and check-in baggage allowances vary by airline and fare class.',
+];
+
 export default function Flights() {
   const { flightSearch, setFlightSearch } = useSearchStore();
   const { error: showError } = useToast();
@@ -204,6 +217,27 @@ export default function Flights() {
                   </div>
                 ))}
               </div>
+
+              <section className="content-block">
+                <h3>Popular Routes From {form.from}</h3>
+                <div className="route-grid">
+                  {POPULAR_ROUTES.map((route) => (
+                    <article key={`${route.from}-${route.to}`} className="route-card">
+                      <p>{route.from} -> {route.to}</p>
+                      <strong>from {route.price}</strong>
+                    </article>
+                  ))}
+                </div>
+              </section>
+
+              <section className="content-block">
+                <h3>Travel Tips Before You Book</h3>
+                <div className="tips-list">
+                  {TRAVEL_NOTES.map((note) => (
+                    <div key={note} className="tip-item">{note}</div>
+                  ))}
+                </div>
+              </section>
             </div>
           </section>
         </div>

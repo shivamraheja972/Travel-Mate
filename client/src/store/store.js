@@ -1,20 +1,23 @@
 import { create } from 'zustand';
+import { supabase } from '../config/supabase';
 
 export const useAuthStore = create((set, get) => ({
   user: JSON.parse(localStorage.getItem('tm_user') || 'null'),
-  token: localStorage.getItem('tm_token'),
-  isAuthenticated: !!localStorage.getItem('tm_token'),
+  isAuthenticated: !!localStorage.getItem('tm_user'),
 
-  login: (user, token) => {
-    localStorage.setItem('tm_token', token);
+  login: (user) => {
     localStorage.setItem('tm_user', JSON.stringify(user));
-    set({ user, token, isAuthenticated: true });
+    set({ user, isAuthenticated: true });
   },
 
-  logout: () => {
-    localStorage.removeItem('tm_token');
+  logout: async () => {
+    try {
+      await supabase.auth.signOut();
+    } catch (error) {
+      console.error('Supabase sign out error:', error);
+    }
     localStorage.removeItem('tm_user');
-    set({ user: null, token: null, isAuthenticated: false });
+    set({ user: null, isAuthenticated: false });
   },
 
   updateUser: (user) => {

@@ -16,15 +16,11 @@ if ! command -v node &> /dev/null; then
 fi
 echo -e "${GREEN}✅ Node.js $(node -v) found${NC}"
 
-# Create .env if it doesn't exist
-if [ ! -f server/.env ]; then
-  cp server/.env.example server/.env
-  echo -e "${YELLOW}⚠️  Created server/.env from template. Please add your API keys!${NC}"
+# Create frontend env if it doesn't exist
+if [ ! -f client/.env ]; then
+  cp client/.env.example client/.env
+  echo -e "${YELLOW}⚠️  Created client/.env from template. Please add Supabase keys.${NC}"
 fi
-
-# Install backend
-echo "📦 Installing backend dependencies..."
-cd server && npm install && cd ..
 
 # Install frontend
 echo "📦 Installing frontend dependencies..."
@@ -34,14 +30,12 @@ echo ""
 echo -e "${GREEN}✅ Setup complete!${NC}"
 echo ""
 echo "Next steps:"
-echo "1. Edit server/.env with your API keys"
-echo "2. Run: cd server && npm start"
-echo "3. Run: cd client && npm start"
+echo "1. Edit client/.env with Supabase keys"
+echo "2. Run: cd client && npm start"
 echo ""
 echo "Or with Docker:"
 echo "  docker-compose up -d"
 echo ""
 echo "Access your app:"
 echo "  Frontend: http://localhost:3000"
-echo "  Backend:  http://localhost:5000"
-echo "  API Health: http://localhost:5000/api/health"
+echo "  Health:   http://localhost/health"

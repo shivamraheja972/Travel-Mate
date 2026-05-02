@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import api from '../config/api';
 import { useBookingStore } from '../store/store';
 import { useAuthStore } from '../store/store';
 import { useToast } from '../components/Toast';
+import { confirmBookingPayment } from '../lib/supabaseData';
 
 export default function Checkout() {
   const navigate = useNavigate();
@@ -24,41 +24,22 @@ export default function Checkout() {
   }
 
   const b = currentBooking;
+  const bookingDbId = b.id || b._id;
 
   const handlePayment = async (e) => {
     e.preventDefault();
     setLoading(true);
     try {
-      if (paymentMethod === 'stripe') {
-        // Create payment intent
-        const intentRes = await api.post('/payments/create-payment-intent', {
-          bookingId: b._id,
-          amount: b.price.totalPrice,
-          currency: b.price.currency?.toLowerCase() || 'usd',
-        });
-
-        if (intentRes.data.success || intentRes.data.clientSecret) {
-          // Confirm payment (in real implementation, use Stripe.js)
-          await api.post('/payments/confirm', { paymentIntentId: intentRes.data.paymentIntentId, bookingId: b._id });
-        } else {
-          // Fallback: directly confirm (for demo without Stripe keys)
-          await api.post('/payments/confirm', { paymentIntentId: 'demo-' + Date.now(), bookingId: b._id });
-        }
-      } else {
-        // For Razorpay / demo
-        await api.post('/payments/confirm', { paymentIntentId: 'demo-' + Date.now(), bookingId: b._id });
-      }
+      await confirmBookingPayment({
+        bookingId: bookingDbId,
+        paymentMethod,
+        paymentIntentId: `demo-${Date.now()}`,
+      });
 
       success('🎉 Payment successful! Booking confirmed.');
-      navigate('/booking/' + b._id);
+      navigate('/booking/' + bookingDbId);
     } catch (err) {
-      // Demo: even if API fails, navigate to confirmation
-      if (err.response?.status === 503 || err.response?.status === 404) {
-        success('✅ Booking confirmed! (Demo mode)');
-        navigate('/booking/' + b._id);
-      } else {
-        showError(err.response?.data?.message || 'Payment failed. Please try again.');
-      }
+      showError(err.message || 'Payment failed. Please try again.');
     } finally {
       setLoading(false);
     }

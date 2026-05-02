@@ -3,13 +3,13 @@ import { useNavigate } from 'react-router-dom';
 import { useSearchStore } from '../store/store';
 import { useAuthStore } from '../store/store';
 import { useBookingStore } from '../store/store';
-import api from '../config/api';
+import { createBooking } from '../lib/supabaseData';
 import { useToast } from '../components/Toast';
 
 export default function HotelDetails() {
   const navigate = useNavigate();
   const { selectedHotel } = useSearchStore();
-  const { isAuthenticated } = useAuthStore();
+  const { isAuthenticated, user } = useAuthStore();
   const { setCurrentBooking } = useBookingStore();
   const { error: showError } = useToast();
 
@@ -29,7 +29,8 @@ export default function HotelDetails() {
   const handleBook = async () => {
     if (!isAuthenticated) { navigate('/login'); return; }
     try {
-      const res = await api.post('/bookings/create', {
+      const booking = await createBooking({
+        userId: user?.id,
         bookingType: 'hotel',
         hotelDetails: {
           hotelId: h.id, hotelName: h.name, address: h.address,
@@ -43,10 +44,16 @@ export default function HotelDetails() {
           currency: h.currency || 'USD',
         },
       });
-      setCurrentBooking(res.data.booking);
+      setCurrentBooking({
+        ...booking,
+        bookingId: booking.booking_id,
+        bookingType: booking.booking_type,
+        flightDetails: booking.flight_details,
+        hotelDetails: booking.hotel_details,
+      });
       navigate('/checkout');
     } catch (err) {
-      showError(err.response?.data?.message || 'Failed to create booking');
+      showError(err.message || 'Failed to create booking');
     }
   };
 

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import api from '../config/api';
 import { PageLoading } from '../components/Loading';
+import { getAdminDashboardData } from '../lib/supabaseData';
 
 export default function AdminDashboard() {
   const [stats, setStats] = useState(null);
@@ -10,14 +10,10 @@ export default function AdminDashboard() {
   const [activeTab, setActiveTab] = useState('overview');
 
   useEffect(() => {
-    Promise.all([
-      api.get('/admin/dashboard/stats'),
-      api.get('/admin/bookings/all'),
-      api.get('/admin/users/all'),
-    ]).then(([s, b, u]) => {
-      setStats(s.data.stats);
-      setBookings(b.data.bookings || []);
-      setUsers(u.data.users || []);
+    getAdminDashboardData().then((data) => {
+      setStats(data.stats);
+      setBookings(data.bookings || []);
+      setUsers(data.users || []);
     }).catch(console.error).finally(() => setLoading(false));
   }, []);
 
@@ -97,7 +93,7 @@ export default function AdminDashboard() {
                 </thead>
                 <tbody>
                   {bookings.map(b => (
-                    <tr key={b._id} style={{ borderBottom: '1px solid var(--border)' }}>
+                    <tr key={b.id} style={{ borderBottom: '1px solid var(--border)' }}>
                       <td style={{ padding: '0.875rem 1rem', fontSize: '0.85rem', fontFamily: 'monospace', color: 'var(--accent)' }}>{b.bookingId}</td>
                       <td style={{ padding: '0.875rem 1rem', fontSize: '0.85rem' }}>
                         {b.user ? `${b.user.firstName} ${b.user.lastName}` : 'N/A'}
@@ -140,11 +136,11 @@ export default function AdminDashboard() {
                 </thead>
                 <tbody>
                   {users.map(u => (
-                    <tr key={u._id} style={{ borderBottom: '1px solid var(--border)' }}>
+                    <tr key={u.id} style={{ borderBottom: '1px solid var(--border)' }}>
                       <td style={{ padding: '0.875rem 1rem' }}>
                         <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                           <div style={{ width: 28, height: 28, borderRadius: '50%', background: 'var(--gradient)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.7rem', color: 'white', fontWeight: 700 }}>
-                            {u.firstName?.[0]}
+                            {u.firstName?.[0] || u.email?.[0]}
                           </div>
                           {u.firstName} {u.lastName}
                         </div>

@@ -3,13 +3,13 @@ import { useNavigate } from 'react-router-dom';
 import { useSearchStore } from '../store/store';
 import { useAuthStore } from '../store/store';
 import { useBookingStore } from '../store/store';
-import api from '../config/api';
+import { createBooking } from '../lib/supabaseData';
 import { useToast } from '../components/Toast';
 
 export default function FlightDetails() {
   const navigate = useNavigate();
   const { selectedFlight, flightSearch } = useSearchStore();
-  const { isAuthenticated } = useAuthStore();
+  const { isAuthenticated, user } = useAuthStore();
   const { setCurrentBooking } = useBookingStore();
   const { success, error: showError } = useToast();
 
@@ -49,11 +49,22 @@ export default function FlightDetails() {
           currency: f.currency || 'USD',
         },
       };
-      const res = await api.post('/bookings/create', bookingData);
-      setCurrentBooking(res.data.booking);
+      const booking = await createBooking({
+        userId: user?.id,
+        bookingType: bookingData.bookingType,
+        flightDetails: bookingData.flightDetails,
+        price: bookingData.price,
+      });
+      setCurrentBooking({
+        ...booking,
+        bookingId: booking.booking_id,
+        bookingType: booking.booking_type,
+        flightDetails: booking.flight_details,
+        hotelDetails: booking.hotel_details,
+      });
       navigate('/checkout');
     } catch (err) {
-      showError(err.response?.data?.message || 'Failed to create booking');
+      showError(err.message || 'Failed to create booking');
     }
   };
 

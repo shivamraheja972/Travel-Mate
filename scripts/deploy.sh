@@ -15,10 +15,9 @@ docker-compose up -d
 # Health check
 sleep 10
 echo "🔍 Checking health..."
-curl -f http://localhost:5000/api/health && echo " ✅ API is healthy!" || echo " ❌ API health check failed"
+curl -f http://localhost/health && echo " ✅ Frontend is healthy!" || echo " ❌ Health check failed"
 
 echo ""
 echo "✅ Deployment complete!"
 echo "  Frontend: http://localhost:3000"
-echo "  Backend:  http://localhost:5000"
 docker-compose ps

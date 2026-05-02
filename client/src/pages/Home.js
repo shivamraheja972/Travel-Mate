@@ -61,10 +61,16 @@ export default function Home() {
       {/* Hero Section */}
       <section className="hero-section">
         <div className="container">
+          <div className="hero-pill">Smart booking platform</div>
           <h1 className="hero-title">Smart Flight Finder</h1>
           <p className="hero-subtitle">
             Discover a smarter way to fly — easy booking, reliable service, and a journey designed around your comfort.
           </p>
+          <div className="hero-stats">
+            <div className="hero-stat-chip"><strong>500+</strong> Airlines</div>
+            <div className="hero-stat-chip"><strong>24/7</strong> Support</div>
+            <div className="hero-stat-chip"><strong>2M+</strong> Travelers</div>
+          </div>
           <img src="/images/hero_airplane_1777682199094.png" alt="Airplane" className="hero-plane-img" />
         </div>
       </section>

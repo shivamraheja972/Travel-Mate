@@ -11,3 +11,9 @@ logs/
 coverage/
 *.pem
 ssl/
+
+# Supabase local artifacts
+supabase/.temp/
+supabase/.branches/
+supabase/config.toml
+supabase/migrations/*.sql

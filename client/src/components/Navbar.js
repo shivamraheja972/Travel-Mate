@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import { Menu, X } from 'lucide-react';
 
 const leftLinks = [
   { to: '/', label: 'Home' },
@@ -14,9 +15,28 @@ const rightLinks = [
 
 export default function Navbar() {
   const location = useLocation();
+  const [mobileOpen, setMobileOpen] = useState(false);
+
+  let navBg = 'transparent';
+  let isDark = false;
+  
+  if (location.pathname.startsWith('/deals')) {
+    navBg = location.pathname === '/deals' ? '#020617' : '#0a0f1c';
+    isDark = true;
+  } else if (['/partnership', '/about', '/contact', '/blog'].includes(location.pathname)) {
+    navBg = '#f4f7fa';
+  } else if (location.pathname.startsWith('/blog/')) {
+    navBg = '#f8fafc';
+  } else if (location.pathname === '/login' || location.pathname === '/register') {
+    navBg = 'linear-gradient(180deg, #ecf1fb 0%, #f4f7fa 100%)';
+  }
+
+  useEffect(() => {
+    setMobileOpen(false);
+  }, [location.pathname]);
 
   return (
-    <nav className="fs-nav">
+    <nav className={`fs-nav ${isDark ? 'nav-dark' : ''}`} style={{ background: navBg }}>
       <div className="fs-nav-inner">
         <div className="fs-nav-links left">
           {leftLinks.map((link) => (
@@ -48,6 +68,29 @@ export default function Navbar() {
           ))}
           <Link to="/login" className="fs-login-btn">Login</Link>
         </div>
+
+        <button
+          type="button"
+          className="fs-mobile-toggle"
+          aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
+          aria-expanded={mobileOpen}
+          onClick={() => setMobileOpen((v) => !v)}
+        >
+          {mobileOpen ? <X size={20} /> : <Menu size={20} />}
+        </button>
+      </div>
+
+      <div className={`fs-mobile-menu ${mobileOpen ? 'open' : ''}`}>
+        {[...leftLinks, ...rightLinks].map((link) => (
+          <Link
+            key={`mobile-${link.label}`}
+            to={link.to}
+            className={`fs-mobile-link ${location.pathname === link.to ? 'active' : ''}`}
+          >
+            {link.label}
+          </Link>
+        ))}
+        <Link to="/login" className="fs-mobile-login">Login</Link>
       </div>
     </nav>
   );

@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
-import api from '../config/api';
 import { useBookingStore } from '../store/store';
 import { PageLoading } from '../components/Loading';
+import { getBookingById } from '../lib/supabaseData';
 
 export default function BookingConfirmation() {
   const { id } = useParams();
@@ -13,14 +13,20 @@ export default function BookingConfirmation() {
 
   useEffect(() => {
     if (!currentBooking && id) {
-      api.get('/bookings/' + id).then(res => {
-        setBooking(res.data.booking);
+      getBookingById(id).then((data) => {
+        setBooking({
+          ...data,
+          bookingId: data.booking_id,
+          bookingType: data.booking_type,
+          flightDetails: data.flight_details,
+          hotelDetails: data.hotel_details,
+        });
         setLoading(false);
       }).catch(() => {
         setLoading(false);
       });
     }
-  }, [id]);
+  }, [id, currentBooking]);
 
   if (loading) return <PageLoading />;
 
