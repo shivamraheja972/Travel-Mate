@@ -51,12 +51,13 @@ export default function Register() {
 
       if (error) throw error;
 
-      const userId = data?.user?.id;
-      if (!userId) {
-        success('Account created. Please check your email to confirm your account before logging in.');
+      if (!data.session) {
+        success('Account created! Please check your email to verify your account before logging in.');
         navigate('/login');
         return;
       }
+
+      const userId = data.user.id;
 
       const profile = await getProfileById(userId).catch(() => null);
       const userObj = {

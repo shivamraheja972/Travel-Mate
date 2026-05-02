@@ -15,6 +15,7 @@ export default function Login() {
   const [showPass, setShowPass] = useState(false);
   const [authError, setAuthError] = useState('');
   const [showVerifiedDialog, setShowVerifiedDialog] = useState(false);
+  const [showNotVerifiedDialog, setShowNotVerifiedDialog] = useState(false);
 
   useEffect(() => {
     const hashParams = new URLSearchParams(window.location.hash.replace(/^#/, ''));
@@ -69,10 +70,14 @@ export default function Login() {
       const code = err?.code ? ` (${err.code})` : '';
       const raw = `${status}${code} ${err?.message || ''}`.trim();
       const message = (err?.message || '').toLowerCase();
-      let finalMessage = raw || 'Login failed. Please try again.';
+      
       if (message.includes('email not confirmed')) {
-        finalMessage = 'Please confirm your email before signing in. Check your inbox (and spam folder) for the TravelMate confirmation email.';
-      } else if (message.includes('invalid login credentials')) {
+        setShowNotVerifiedDialog(true);
+        return;
+      }
+
+      let finalMessage = raw || 'Login failed. Please try again.';
+      if (message.includes('invalid login credentials')) {
         finalMessage = 'Invalid email or password. Please try again.';
       } else if (message.includes('failed to fetch')) {
         finalMessage = 'Unable to connect right now. Please try again in a moment.';
@@ -214,6 +219,52 @@ export default function Login() {
               }}
             >
               Continue to Login
+            </button>
+          </div>
+        </div>
+      )}
+
+      {showNotVerifiedDialog && (
+        <div style={{
+          position: 'fixed',
+          inset: 0,
+          background: 'rgba(15, 23, 42, 0.45)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          zIndex: 1000,
+          padding: '1rem',
+        }}>
+          <div style={{
+            width: '100%',
+            maxWidth: 440,
+            background: 'white',
+            borderRadius: '18px',
+            border: '1px solid #dce5f4',
+            boxShadow: '0 18px 36px rgba(20, 36, 68, 0.16)',
+            padding: '24px',
+          }}>
+            <h3 style={{ margin: 0, marginBottom: '10px', color: '#17233b', fontSize: '1.2rem', fontWeight: 800 }}>
+              Email Not Verified
+            </h3>
+            <p style={{ margin: 0, marginBottom: '16px', color: '#475569', lineHeight: 1.5 }}>
+              Please verify your email address to continue. Check your inbox and spam folder for the verification link.
+            </p>
+            <button
+              type="button"
+              onClick={() => setShowNotVerifiedDialog(false)}
+              style={{
+                width: '100%',
+                height: '42px',
+                border: 'none',
+                borderRadius: '10px',
+                background: 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)',
+                color: 'white',
+                fontWeight: 700,
+                cursor: 'pointer',
+              }}
+            >
+              Okay, I'll check my email
             </button>
           </div>
         </div>
