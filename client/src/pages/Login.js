@@ -25,6 +25,10 @@ export default function Login() {
 
     if (verifiedFromQuery || verifiedFromHash) {
       setShowVerifiedDialog(true);
+      if (verifiedFromHash) {
+        // Sign them out immediately so they have to manually type credentials as requested
+        supabase.auth.signOut().catch(console.error);
+      }
       if (!verifiedFromQuery) {
         window.history.replaceState({}, document.title, '/login?verified=1');
       }

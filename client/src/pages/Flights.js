@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import FlightCard from '../components/FlightCard';
 import Loading from '../components/Loading';
 import { useSearchStore } from '../store/store';
@@ -69,8 +69,12 @@ export default function Flights() {
   const { error: showError } = useToast();
   const [flights, setFlights] = useState(MOCK_FLIGHTS);
   const [loading, setLoading] = useState(false);
+  const [liveLoading, setLiveLoading] = useState(false);
   const [searched, setSearched] = useState(true);
   const [activeSort, setActiveSort] = useState('YOU MAY PREFER');
+  const [liveFlights, setLiveFlights] = useState([]);
+  const [liveLocation, setLiveLocation] = useState(null);
+  const [liveError, setLiveError] = useState('');
 
   const [form, setForm] = useState({
     from: flightSearch?.from || 'Toronto',
@@ -95,6 +99,82 @@ export default function Flights() {
       setLoading(false);
     }, 800);
   };
+
+  const fetchLiveFlightsNearMe = async () => {
+    if (!navigator.geolocation) {
+      setLiveError('Geolocation is not supported by your browser.');
+      return;
+    }
+
+    setLiveLoading(true);
+    setLiveError('');
+    setLiveFlights([]);
+
+    navigator.geolocation.getCurrentPosition(
+      async (position) => {
+        try {
+          const lat = position.coords.latitude;
+          const lng = position.coords.longitude;
+          setLiveLocation({ lat, lng });
+
+          // ~180km search box around the user
+          const delta = 1.6;
+          const lamin = (lat - delta).toFixed(4);
+          const lamax = (lat + delta).toFixed(4);
+          const lomin = (lng - delta).toFixed(4);
+          const lomax = (lng + delta).toFixed(4);
+
+          const res = await fetch(
+            `https://opensky-network.org/api/states/all?lamin=${lamin}&lomin=${lomin}&lamax=${lamax}&lomax=${lomax}`
+          );
+
+          if (!res.ok) {
+            throw new Error(`Live API request failed (${res.status})`);
+          }
+
+          const payload = await res.json();
+          const states = Array.isArray(payload?.states) ? payload.states : [];
+
+          const normalized = states
+            .filter((s) => s && s[5] && s[6])
+            .slice(0, 20)
+            .map((s, i) => ({
+              id: `${s[0]}-${i}`,
+              callsign: (s[1] || 'Unknown').trim(),
+              country: s[2] || 'Unknown',
+              longitude: Number(s[5]).toFixed(4),
+              latitude: Number(s[6]).toFixed(4),
+              altitude: s[7] ? `${Math.round(s[7])} m` : 'N/A',
+              velocity: s[9] ? `${Math.round(s[9] * 3.6)} km/h` : 'N/A',
+              onGround: !!s[8],
+            }));
+
+          setLiveFlights(normalized);
+          if (normalized.length === 0) {
+            setLiveError('No live flights found near your current location.');
+          }
+        } catch (err) {
+          setLiveError(err.message || 'Unable to fetch live flights right now.');
+        } finally {
+          setLiveLoading(false);
+        }
+      },
+      (err) => {
+        setLiveLoading(false);
+        if (err.code === 1) {
+          setLiveError('Location access denied. Please allow location permission and try again.');
+        } else {
+          setLiveError('Unable to get your location. Please try again.');
+        }
+      },
+      { enableHighAccuracy: true, timeout: 10000, maximumAge: 60000 }
+    );
+  };
+
+  const liveSummary = useMemo(() => {
+    if (!liveLocation) return '';
+    return `${liveLocation.lat.toFixed(3)}, ${liveLocation.lng.toFixed(3)}`;
+  }, [liveLocation]);
 
   return (
     <div className="flights-page">
@@ -217,6 +297,56 @@ export default function Flights() {
                   </div>
                 ))}
               </div>
+
+              <section className="content-block">
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
+                  <h3>Live Flights Near You</h3>
+                  <button type="button" className="sort-chip" onClick={fetchLiveFlightsNearMe} disabled={liveLoading}>
+                    {liveLoading ? 'Locating & Loading...' : 'Use My Location'}
+                  </button>
+                </div>
+                <p style={{ color: '#64748b', marginTop: 8, marginBottom: 12 }}>
+                  Real-time aircraft data from OpenSky Network.
+                  {liveSummary ? ` Current point: ${liveSummary}` : ''}
+                </p>
+
+                {liveError ? (
+                  <div style={{ background: '#fff1f2', border: '1px solid #fecdd3', color: '#be123c', borderRadius: 12, padding: 12 }}>
+                    {liveError}
+                  </div>
+                ) : null}
+
+                {!liveError && liveFlights.length > 0 ? (
+                  <div style={{ overflowX: 'auto' }}>
+                    <table style={{ width: '100%', borderCollapse: 'collapse', minWidth: 760 }}>
+                      <thead>
+                        <tr style={{ background: '#eef2ff' }}>
+                          {['Callsign', 'Country', 'Latitude', 'Longitude', 'Altitude', 'Speed', 'Status'].map((h) => (
+                            <th key={h} style={{ textAlign: 'left', padding: '10px 12px', color: '#334155', fontSize: '0.84rem' }}>{h}</th>
+                          ))}
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {liveFlights.map((f) => (
+                          <tr key={f.id} style={{ borderBottom: '1px solid #e2e8f0' }}>
+                            <td style={{ padding: '10px 12px', fontWeight: 700 }}>{f.callsign}</td>
+                            <td style={{ padding: '10px 12px' }}>{f.country}</td>
+                            <td style={{ padding: '10px 12px' }}>{f.latitude}</td>
+                            <td style={{ padding: '10px 12px' }}>{f.longitude}</td>
+                            <td style={{ padding: '10px 12px' }}>{f.altitude}</td>
+                            <td style={{ padding: '10px 12px' }}>{f.velocity}</td>
+                            <td style={{ padding: '10px 12px' }}>
+                              <span className={`badge ${f.onGround ? 'badge-warning' : 'badge-success'}`}>
+                                {f.onGround ? 'On Ground' : 'Airborne'}
+                              </span>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                ) : null}
+              </section>
 
               <section className="content-block">
                 <h3>Popular Routes From {form.from}</h3>
