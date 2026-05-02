@@ -13,8 +13,10 @@ const destinations = [
 ];
 
 const flights = [
-  { airline: 'Turkish Airlines', code: 'GI 2023', class: 'Business', depart: '06:00', arrive: '07:40', duration: '1h 40m', stops: 'Direct', from: 'Jakarta', to: 'Jakarta', price: 380.50, oldPrice: 380.50, logo: 'https://images.unsplash.com/photo-1614680376593-902f74cf0d41?auto=format&fit=crop&w=64&h=64&q=80' },
-  { airline: 'Emirates Airlines', code: 'GI 2023', class: 'Business', depart: '06:00', arrive: '07:40', duration: '1h 40m', stops: 'Direct', from: 'Jakarta', to: 'Jakarta', price: 380.50, logo: 'https://images.unsplash.com/photo-1614680376408-81e91ffe3db7?auto=format&fit=crop&w=64&h=64&q=80' }
+  { airline: 'Turkish Airlines', code: 'GI 2023', class: 'Business', depart: '06:00', arrive: '07:40', duration: '1h 40m', stops: 'Direct', from: 'Jakarta', to: 'Jakarta', price: 380.50, oldPrice: 380.50, logo: '/images/turkish-airlines.png' },
+  { airline: 'Emirates Airlines', code: 'GI 2023', class: 'Business', depart: '06:00', arrive: '07:40', duration: '1h 40m', stops: 'Direct', from: 'Jakarta', to: 'Jakarta', price: 380.50, logo: '/images/emirates-airlines.png' },
+  { airline: 'Qatar Airways', code: 'GI 2023', class: 'Business', depart: '06:00', arrive: '07:40', duration: '1h 40m', stops: 'Direct', from: 'Jakarta', to: 'Jakarta', price: 390.20, oldPrice: 420.00, logo: '/images/qatar-airways.png' },
+  { airline: 'Singapore Airlines', code: 'GI 2023', class: 'Business', depart: '06:00', arrive: '07:40', duration: '1h 40m', stops: 'Direct', from: 'Jakarta', to: 'Jakarta', price: 410.10, oldPrice: 455.00, logo: '/images/singapore-airlines.png' }
 ];
 
 const airlines = [
@@ -22,6 +24,13 @@ const airlines = [
   'Qatar Airways', 'Malaysia Airlines', 'Etihad Airways',
   'Cathay Pacific', 'Himalaya Airlines', 'Saudia Airlines'
 ];
+
+const airlineLogos = {
+  Emirates: '/images/emirates-airlines.png',
+  'Singapore Airlines': '/images/singapore-airlines.png',
+  'Turkish Airlines': '/images/turkish-airlines.png',
+  'Qatar Airways': '/images/qatar-airways.png',
+};
 
 export default function Home() {
   const navigate = useNavigate();
@@ -48,7 +57,7 @@ export default function Home() {
   };
 
   return (
-    <main>
+    <main className="home-page">
       {/* Hero Section */}
       <section className="hero-section">
         <div className="container">
@@ -265,24 +274,27 @@ export default function Home() {
         <div className="banners-grid">
           <div className="banners-left">
             <div className="banner banner-student" style={{ backgroundImage: `url(/images/student_banner_1777682217594.png)` }}>
+              <span className="banner-kicker">Students only</span>
               <h3>Exclusive Student Flight Discounts!</h3>
               <button className="banner-btn">Book Student Flight</button>
             </div>
             <div className="banner banner-smooth" style={{ backgroundImage: `url(/images/beach_banner_1777682230365.png)` }}>
+              <span className="banner-kicker">Fast booking</span>
               <h3>Smooth Flights<br/>Smart Choices</h3>
               <button className="banner-btn">Endless Destinations</button>
             </div>
           </div>
           <div className="banner banner-tall" style={{ backgroundImage: `url(/images/dream_banner_1777682241634.png)` }}>
+            <span className="banner-kicker">Top picks</span>
             <h3>Fly To Your Dream Destination</h3>
             <p>Discover exclusive deals and hassle-free booking for every journey.</p>
-            <button className="banner-btn" style={{ marginTop: 'auto' }}>Explore Deals</button>
+            <button className="banner-btn banner-btn-primary" style={{ marginTop: 'auto' }}>Explore Deals</button>
           </div>
         </div>
       </section>
 
       {/* Airlines Grid */}
-      <section className="container">
+      <section className="container airlines-section">
         <div className="section-header">
           <h2 className="section-title">Most Popular Airlines</h2>
           <p className="section-subtitle">Discover Top Airlines On ShareTrip And Seamlessly Search Any Flight.</p>
@@ -291,7 +303,11 @@ export default function Home() {
           {airlines.map((airline, i) => (
             <div key={i} className="airline-pill-btn">
               <div className="airline-pill-left">
-                <div style={{ width: 24, height: 24, background: '#f1f5f9', borderRadius: '50%' }}></div>
+                {airlineLogos[airline] ? (
+                  <img src={airlineLogos[airline]} alt={airline} className="airline-logo-img" />
+                ) : (
+                  <div className="airline-logo-fallback">{airline.charAt(0)}</div>
+                )}
                 {airline}
               </div>
               <ArrowRightLeft size={16} color="#94a3b8" />
