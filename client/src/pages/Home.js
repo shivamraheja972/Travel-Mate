@@ -7,9 +7,9 @@ const destinations = [
   { city: 'Tokyo', date: '24 Dec 2025 - 07 Jan 2026', price: 'USD $450', img: '/images/tokyo.png' },
   { city: 'New York', date: '24 Dec 2025 - 07 Jan 2026', price: 'USD $249', img: '/images/newyork.png' },
   { city: 'Dubai', date: '24 Dec 2025 - 07 Jan 2026', price: 'USD $310', img: '/images/dubai.png' },
-  { city: 'Paris', date: '10 Feb 2026 - 20 Feb 2026', price: 'USD $550', img: 'https://images.unsplash.com/photo-1502602881469-44781cf434e3?auto=format&fit=crop&w=900&q=80' },
-  { city: 'London', date: '15 Mar 2026 - 25 Mar 2026', price: 'USD $420', img: 'https://images.unsplash.com/photo-1513635269975-5969336ac1fc?auto=format&fit=crop&w=900&q=80' },
-  { city: 'Sydney', date: '05 Apr 2026 - 15 Apr 2026', price: 'USD $680', img: 'https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9?auto=format&fit=crop&w=900&q=80' }
+  { city: 'Paris', date: '10 Feb 2026 - 20 Feb 2026', price: 'USD $550', img: '/images/paris.png' },
+  { city: 'London', date: '15 Mar 2026 - 25 Mar 2026', price: 'USD $420', img: '/images/london.png' },
+  { city: 'Sydney', date: '05 Apr 2026 - 15 Apr 2026', price: 'USD $680', img: '/images/sydney.png' }
 ];
 
 const flights = [
@@ -123,101 +123,142 @@ export default function Home() {
         </div>
         <div className="destinations-slider-wrapper">
           <div className="destinations-grid">
-            {destinations.map((dest, i) => (
-              <div key={i} className="destination-card" style={{ backgroundImage: `url(${dest.img})` }}>
-                <div className="destination-overlay">
-                  <div className="dest-info">
-                    <h3>{dest.city}</h3>
-                    <p>{dest.date}</p>
-                  </div>
-                  <div className="dest-price">
-                    <span>Economy From</span>
-                    <strong>{dest.price}</strong>
+            <div className="destinations-track">
+              {destinations.map((dest, i) => (
+                <div key={i} className="destination-card" style={{ backgroundImage: `url(${dest.img})` }}>
+                  <div className="destination-overlay">
+                    <div className="dest-info">
+                      <h3>{dest.city}</h3>
+                      <p>{dest.date}</p>
+                    </div>
+                    <div className="dest-price">
+                      <span>Economy From</span>
+                      <strong>{dest.price}</strong>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
+            <div className="destinations-track">
+              {destinations.map((dest, i) => (
+                <div key={`dup-${i}`} className="destination-card" style={{ backgroundImage: `url(${dest.img})` }}>
+                  <div className="destination-overlay">
+                    <div className="dest-info">
+                      <h3>{dest.city}</h3>
+                      <p>{dest.date}</p>
+                    </div>
+                    <div className="dest-price">
+                      <span>Economy From</span>
+                      <strong>{dest.price}</strong>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </section>
 
       {/* Choose Perfect Flight */}
-      <section className="perfect-flight-section container">
-        <div className="perfect-flight-left">
-          <div className="perfect-flight-header">
-            <h2>Choose Your Perfect Flight</h2>
-          </div>
-          <aside className="filters-sidebar">
-            <div className="filter-header">
-              <h3>Filters</h3>
-              <button className="reset-btn">Reset</button>
+      <div className="perfect-flight-wrapper">
+        <section className="perfect-flight-section container">
+          <div className="perfect-flight-left">
+            <div className="perfect-flight-header">
+              <h2>Choose Your Perfect Flight</h2>
             </div>
-            
-            <div className="filter-group">
-              <h4 className="filter-title">Price</h4>
-              <div className="range-slider-wrapper">
-                <input type="range" className="range-slider" min="0" max="1000" defaultValue="450" />
+            <aside className="filters-sidebar">
+              <div className="filter-header">
+                <h3>Filters</h3>
+                <button className="reset-btn">Reset</button>
+              </div>
+
+              <div className="filter-group">
+                <h4 className="filter-title">Price Range</h4>
+                <div className="price-range-values">
+                  <span>$120</span>
+                  <span>$450</span>
+                </div>
+                <div className="range-slider-wrapper">
+                  <input type="range" className="range-slider" min="0" max="1000" defaultValue="450" />
+                </div>
+              </div>
+
+              <div className="filter-group">
+                <h4 className="filter-title">Airlines</h4>
+                <div className="checkbox-list">
+                  <label className="checkbox-item"><input type="checkbox" /> All</label>
+                  <label className="checkbox-item"><input type="checkbox" defaultChecked /> Emirates</label>
+                  <label className="checkbox-item"><input type="checkbox" /> Cathay Pacific</label>
+                  <label className="checkbox-item"><input type="checkbox" defaultChecked /> Qatar Airways</label>
+                </div>
+              </div>
+
+              <div className="filter-group">
+                <h4 className="filter-title">Stops</h4>
+                <div className="stops-chips">
+                  <button type="button" className="stop-chip active">Direct</button>
+                  <button type="button" className="stop-chip">1 Stop</button>
+                  <button type="button" className="stop-chip">2+ Stops</button>
+                </div>
+              </div>
+            </aside>
+          </div>
+
+          <div className="perfect-flight-right">
+            <div className="perfect-flight-header perfect-flight-controls">
+              <div className="result-meta">98 flights found</div>
+              <div className="results-actions">
+                <button type="button" className="sort-chip">Best Match</button>
+                <button type="button" className="sort-chip">Lowest Price</button>
+                <label className="offer-toggle">
+                  <input type="checkbox" style={{ accentColor: 'var(--brand-blue)', width: 36, height: 20 }} defaultChecked />
+                  Offers
+                </label>
               </div>
             </div>
 
-            <div className="filter-group">
-              <h4 className="filter-title">Airlines</h4>
-              <div className="checkbox-list">
-                <label className="checkbox-item"><input type="checkbox" /> All</label>
-                <label className="checkbox-item"><input type="checkbox" defaultChecked /> Emirates</label>
-                <label className="checkbox-item"><input type="checkbox" /> Cathay Pacific</label>
-              </div>
+            <div className="flight-results">
+              {flights.map((flight, i) => (
+                <div key={i} className="flight-card">
+                  <div className="flight-airline">
+                    <img src={flight.logo} alt={flight.airline} />
+                    <div>
+                      <h4>{flight.airline}</h4>
+                      <p>{flight.code} <span className="class-badge">{flight.class}</span></p>
+                    </div>
+                  </div>
+
+                  <div className="flight-time-info">
+                    <div className="time-block">
+                      <h4>{flight.depart}</h4>
+                      <p>{flight.from}</p>
+                    </div>
+
+                    <div className="duration-block">
+                      <div className="duration-line-container">
+                        <div className="duration-line"></div>
+                        <Plane size={14} className="duration-plane" />
+                      </div>
+                      <span>{flight.duration} · {flight.stops}</span>
+                    </div>
+
+                    <div className="time-block">
+                      <h4>{flight.arrive}</h4>
+                      <p>{flight.to}</p>
+                    </div>
+                  </div>
+
+                  <div className="flight-price-action">
+                    <h3><span>USD</span> {flight.price.toFixed(2)} <span>/Pax</span></h3>
+                    {flight.oldPrice && <s>USD {flight.oldPrice.toFixed(2)}</s>}
+                    <button className="choose-flight-btn">Choose Flight</button>
+                  </div>
+                </div>
+              ))}
             </div>
-          </aside>
-        </div>
-
-        <div className="perfect-flight-right">
-          <div className="perfect-flight-header" style={{ justifyContent: 'flex-end' }}>
-            <label className="offer-toggle">
-              <input type="checkbox" style={{ accentColor: 'var(--brand-blue)', width: 36, height: 20 }} defaultChecked />
-              Offer
-            </label>
           </div>
-
-          <div className="flight-results">
-            {flights.map((flight, i) => (
-              <div key={i} className="flight-card">
-                <div className="flight-airline">
-                  <img src={flight.logo} alt={flight.airline} />
-                  <div>
-                    <h4>{flight.airline}</h4>
-                    <p>{flight.code} <span className="class-badge">{flight.class}</span></p>
-                  </div>
-                </div>
-
-                <div className="flight-time-info">
-                  <div className="time-block">
-                    <h4>{flight.depart}</h4>
-                    <p>{flight.from}</p>
-                  </div>
-                  
-                  <div className="duration-block">
-                    <Plane size={16} />
-                    <div className="duration-line"></div>
-                    <span>{flight.duration} · {flight.stops}</span>
-                  </div>
-
-                  <div className="time-block">
-                    <h4>{flight.arrive}</h4>
-                    <p>{flight.to}</p>
-                  </div>
-                </div>
-
-                <div className="flight-price-action">
-                  <h3><span>USD</span> {flight.price.toFixed(2)} <span>/Pax</span></h3>
-                  {flight.oldPrice && <s>USD {flight.oldPrice.toFixed(2)}</s>}
-                  <button className="choose-flight-btn">Choose Flight</button>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+        </section>
+      </div>
 
       {/* Banners Section */}
       <section className="container">

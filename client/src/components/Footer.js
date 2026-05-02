@@ -23,7 +23,7 @@ const columns = [
 export default function Footer() {
   return (
     <footer className="footer-section">
-      <div className="container">
+      <div className="footer-container">
         <div className="footer-grid">
           <div className="footer-brand">
             <h2>TravelMate</h2>
