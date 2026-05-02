@@ -25,7 +25,7 @@
 
 body {
   font-family: var(--font-main);
-  background: linear-gradient(180deg, #e0eaff 0%, #e4ecf9 20%, #f4f7fc 40%, #ffffff 100%);
+  background: linear-gradient(180deg, #eef2f6 0%, #f0f4f8 20%, #f6f8fb 40%, #ffffff 100%);
   color: var(--text-main);
   -webkit-font-smoothing: antialiased;
   min-height: 100vh;
@@ -242,46 +242,50 @@ select {
 
 /* Flight Search Widget */
 .search-widget-container {
-  max-width: 1060px;
-  margin: -0px auto 60px;
+  max-width: 1100px;
+  margin: -20px auto 60px;
   position: relative;
   z-index: 10;
-  background: var(--bg-white);
-  border-radius: 24px;
-  box-shadow: var(--shadow-lg);
-  padding: 24px 32px;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-radius: 32px;
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.08);
+  padding: 32px 40px;
+  border: 1px solid rgba(255, 255, 255, 0.8);
 }
 
 .search-widget-top {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 20px;
+  margin-bottom: 24px;
 }
 
 .trip-types {
   display: flex;
-  gap: 24px;
+  gap: 8px;
 }
 
 .trip-type-label {
   display: flex;
   align-items: center;
-  gap: 8px;
+  padding: 8px 16px;
+  border-radius: 40px;
   font-weight: 600;
   font-size: 0.95rem;
   cursor: pointer;
   color: var(--text-soft);
+  transition: all 0.2s;
 }
 
 .trip-type-label.active {
-  color: var(--text-main);
+  background: #f0f4fb;
+  color: var(--brand-blue);
 }
 
 .trip-type-label input[type="radio"] {
-  accent-color: var(--brand-blue);
-  width: 18px;
-  height: 18px;
+  display: none;
 }
 
 .class-selector {
@@ -294,25 +298,56 @@ select {
 }
 
 .search-inputs-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr auto;
-  gap: 16px;
+  display: flex;
+  border: 1px solid #e2e8f0;
+  border-radius: 60px;
+  background: #ffffff;
+  padding: 10px;
   align-items: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
 }
 
 .search-input-group {
-  border: 1px solid var(--border-light);
-  border-radius: 12px;
-  padding: 12px 16px;
+  flex: 1;
+  position: relative;
+  border: none;
+  background: transparent;
+  padding: 12px 24px;
+  border-radius: 40px;
+  transition: background 0.2s;
+  cursor: pointer;
   display: flex;
   flex-direction: column;
-  background: #fdfdfd;
+}
+
+.search-input-group:hover {
+  background: #f8fafc;
+}
+
+.search-input-group:not(:last-of-type)::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  height: 60%;
+  width: 1px;
+  background: #e2e8f0;
+  transition: opacity 0.2s;
+}
+
+.search-input-group:hover::after,
+.search-input-group:hover+.search-input-group::after {
+  opacity: 0;
 }
 
 .search-input-group label {
-  font-size: 0.8rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
   color: var(--text-soft);
-  margin-bottom: 4px;
+  margin-bottom: 6px;
   display: flex;
   align-items: center;
   gap: 6px;
@@ -327,31 +362,43 @@ select {
 .search-input-group select {
   border: none;
   background: transparent;
-  font-size: 1rem;
-  font-weight: 600;
+  font-size: 1.1rem;
+  font-weight: 700;
   color: var(--text-main);
   outline: none;
   width: 100%;
+  padding: 0;
+  cursor: pointer;
+}
+
+.search-input-group select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
 }
 
 .search-btn {
   background: var(--brand-blue);
   color: #fff;
   border: none;
-  border-radius: 12px;
-  padding: 0 32px;
+  border-radius: 50px;
+  padding: 0 40px;
+  min-height: 60px;
   height: 100%;
-  min-height: 64px;
-  font-weight: 600;
-  font-size: 1rem;
+  font-weight: 700;
+  font-size: 1.05rem;
   display: flex;
   align-items: center;
   gap: 8px;
-  transition: background 0.2s;
+  transition: all 0.2s;
+  margin-left: 8px;
+  box-shadow: 0 8px 16px rgba(50, 117, 227, 0.2);
 }
 
 .search-btn:hover {
   background: var(--brand-dark);
+  box-shadow: 0 12px 24px rgba(50, 117, 227, 0.3);
+  transform: translateY(-2px);
 }
 
 /* Sections Common */
@@ -374,20 +421,36 @@ select {
 
 /* Top Destinations */
 .destinations-section {
-  padding: 40px 0;
+  padding: 60px 0;
+  overflow: hidden;
+}
+
+.destinations-slider-wrapper {
+  width: 100%;
 }
 
 .destinations-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  display: flex;
   gap: 24px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  padding: 0 40px;
+  padding-bottom: 24px;
+  scrollbar-width: none;
+}
+
+.destinations-grid::-webkit-scrollbar {
+  display: none;
 }
 
 .destination-card {
+  flex: 0 0 360px;
+  min-width: 360px;
+  scroll-snap-align: center;
   position: relative;
   border-radius: 20px;
   overflow: hidden;
-  height: 400px;
+  height: 480px;
   background-size: cover;
   background-position: center;
   box-shadow: var(--shadow-md);

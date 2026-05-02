@@ -4,9 +4,12 @@ import { useSearchStore } from '../store/store';
 import { Plane, ArrowRightLeft, Calendar, User, Search, ChevronDown, CheckCircle2 } from 'lucide-react';
 
 const destinations = [
-  { city: 'Tokyo', date: '24 Dec 2025 - 07 Jan 2026', price: 'USD $450', img: 'https://images.unsplash.com/photo-1503899036084-c55cdd92da26?auto=format&fit=crop&w=900&q=80' },
-  { city: 'New York', date: '24 Dec 2025 - 07 Jan 2026', price: 'USD $249', img: 'https://images.unsplash.com/photo-1496588152823-86ff7695d4b0?auto=format&fit=crop&w=900&q=80' },
-  { city: 'Dubai', date: '24 Dec 2025 - 07 Jan 2026', price: 'USD $310', img: 'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=900&q=80' },
+  { city: 'Tokyo', date: '24 Dec 2025 - 07 Jan 2026', price: 'USD $450', img: '/images/tokyo.png' },
+  { city: 'New York', date: '24 Dec 2025 - 07 Jan 2026', price: 'USD $249', img: '/images/newyork.png' },
+  { city: 'Dubai', date: '24 Dec 2025 - 07 Jan 2026', price: 'USD $310', img: '/images/dubai.png' },
+  { city: 'Paris', date: '10 Feb 2026 - 20 Feb 2026', price: 'USD $550', img: 'https://images.unsplash.com/photo-1502602881469-44781cf434e3?auto=format&fit=crop&w=900&q=80' },
+  { city: 'London', date: '15 Mar 2026 - 25 Mar 2026', price: 'USD $420', img: 'https://images.unsplash.com/photo-1513635269975-5969336ac1fc?auto=format&fit=crop&w=900&q=80' },
+  { city: 'Sydney', date: '05 Apr 2026 - 15 Apr 2026', price: 'USD $680', img: 'https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9?auto=format&fit=crop&w=900&q=80' }
 ];
 
 const flights = [
@@ -117,6 +120,8 @@ export default function Home() {
             <h2 className="section-title">Explore Top Destinations</h2>
             <p className="section-subtitle">Get Exclusive Flight Deals To Your Favorite Cities.</p>
           </div>
+        </div>
+        <div className="destinations-slider-wrapper">
           <div className="destinations-grid">
             {destinations.map((dest, i) => (
               <div key={i} className="destination-card" style={{ backgroundImage: `url(${dest.img})` }}>
