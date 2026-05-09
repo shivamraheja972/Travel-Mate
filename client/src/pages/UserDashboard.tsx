@@ -66,16 +66,19 @@ export default function UserDashboard() {
 
   if (loading) return <PageLoading />;
 
-  // Calculate real stats or use fallbacks to match mockup UI
-  const totalBookings = bookings.length || 545;
-  const activeBookings = bookings.filter(b => b.status === 'confirmed').length || 22333;
-  const pendingBookings = bookings.filter(b => b.status === 'pending').length || 43;
-  
+  // Calculate real stats from actual booking data
+  const totalBookings = bookings.length;
+  const confirmedBookings = bookings.filter(b => b.status === 'confirmed' || b.status === 'completed').length;
+  const pendingBookings = bookings.filter(b => b.status === 'pending').length;
+  const totalRevenue = bookings
+    .filter(b => b.status === 'confirmed' || b.status === 'completed')
+    .reduce((sum, b) => sum + (b.price?.totalPrice || b.price?.total_price || 0), 0);
+
   const stats = [
-    { label: 'Active Booking', value: activeBookings.toLocaleString(), trend: '↑ 4.85%', icon: <CalendarCheck size={24} />, color: '#6366f1', bg: '#e0e7ff', trendColor: '#10b981' },
-    { label: 'Success Bookings', value: '$1280', trend: '↑ 4.85%', icon: <CheckCircle2 size={24} />, color: '#10b981', bg: '#d1fae5', trendColor: '#10b981' },
-    { label: 'Pending Bookings', value: pendingBookings.toString(), trend: '↑ 4.85%', icon: <FileClock size={24} />, color: '#f59e0b', bg: '#fef3c7', trendColor: '#10b981' },
-    { label: 'Total Bookings', value: totalBookings.toString(), trend: '↑ 4.85%', icon: <XOctagon size={24} />, color: '#ef4444', bg: '#fee2e2', trendColor: '#10b981' },
+    { label: 'Active Bookings', value: confirmedBookings.toString(), icon: <CalendarCheck size={24} />, color: '#6366f1', bg: '#e0e7ff' },
+    { label: 'Total Spent', value: `$${totalRevenue.toLocaleString()}`, icon: <CheckCircle2 size={24} />, color: '#10b981', bg: '#d1fae5' },
+    { label: 'Pending Bookings', value: pendingBookings.toString(), icon: <FileClock size={24} />, color: '#f59e0b', bg: '#fef3c7' },
+    { label: 'Total Bookings', value: totalBookings.toString(), icon: <XOctagon size={24} />, color: '#ef4444', bg: '#fee2e2' },
   ];
 
   const getStatusBadge = (status: string) => {
@@ -175,10 +178,7 @@ export default function UserDashboard() {
                 </div>
                 <div>
                   <div style={{ color: '#64748b', fontSize: '0.9rem', fontWeight: 500, marginBottom: '6px' }}>{stat.label}</div>
-                  <div style={{ display: 'flex', alignItems: 'baseline', gap: '12px' }}>
-                    <span style={{ fontSize: '1.6rem', fontWeight: 700, color: '#1e293b' }}>{stat.value}</span>
-                    <span style={{ fontSize: '0.85rem', fontWeight: 600, color: stat.trendColor }}>{stat.trend}</span>
-                  </div>
+                  <div style={{ fontSize: '1.6rem', fontWeight: 700, color: '#1e293b' }}>{stat.value}</div>
                 </div>
               </div>
             ))}
