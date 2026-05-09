@@ -97,34 +97,38 @@ export default function Checkout() {
   const fmtExpiry = (val) => val.replace(/\D/g, '').replace(/(\d{2})(\d)/, '$1/$2').slice(0, 5);
 
   return (
-    <div style={{ background: 'var(--bg)', minHeight: '100vh', padding: '2rem 0' }}>
-      <div className="container" style={{ maxWidth: 1000 }}>
-        <h1 style={{ fontFamily: 'var(--font-display)', fontSize: '1.8rem', marginBottom: '0.5rem' }}>Checkout</h1>
-        <p style={{ color: 'var(--text-muted)', marginBottom: '2rem' }}>Complete your booking</p>
+    <div className="checkout-page">
+      <div className="checkout-hero">
+        <div className="container" style={{ maxWidth: 1000, position: 'relative', zIndex: 10 }}>
+          <h1 className="checkout-title">Complete your booking</h1>
+          <p className="checkout-subtitle">Secure payment via Stripe or Razorpay</p>
+        </div>
+      </div>
 
+      <div className="container checkout-container">
         <form onSubmit={isAuthenticated ? handlePayment : handleInlineLogin}>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 350px', gap: '2rem', alignItems: 'start' }}>
-            <div>
+          <div className="checkout-grid">
+            <div className="checkout-main-col">
               {/* Booking summary */}
-              <div className="card" style={{ padding: '1.5rem', marginBottom: '1.5rem' }}>
-                <h3 style={{ fontFamily: 'var(--font-display)', marginBottom: '1rem' }}>Booking Summary</h3>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', padding: '1rem', background: 'var(--bg-elevated)', borderRadius: 'var(--radius-sm)' }}>
-                  <span style={{ fontSize: '2rem' }}>{b.bookingType === 'flight' ? '✈️' : '🏨'}</span>
-                  <div>
-                    <div style={{ fontWeight: 600 }}>
+              <div className="checkout-card" style={{ marginBottom: '2rem' }}>
+                <h3 className="checkout-card-title">Booking Summary</h3>
+                <div className="checkout-booking-preview">
+                  <div className="cbp-icon">{b.bookingType === 'flight' ? '✈️' : '🏨'}</div>
+                  <div className="cbp-details">
+                    <div className="cbp-title">
                       {b.bookingType === 'flight'
                         ? `${b.flightDetails?.from} → ${b.flightDetails?.to}`
                         : b.hotelDetails?.hotelName
                       }
                     </div>
-                    <div style={{ color: 'var(--text-muted)', fontSize: '0.875rem' }}>
+                    <div className="cbp-subtitle">
                       {b.bookingType === 'flight'
                         ? `${b.flightDetails?.airline} · ${b.flightDetails?.flightNumber}`
                         : b.hotelDetails?.city
                       }
                     </div>
                   </div>
-                  <div style={{ marginLeft: 'auto', fontFamily: 'var(--font-display)', fontWeight: 800, color: 'var(--accent)', fontSize: '1.2rem' }}>
+                  <div className="cbp-price">
                     ${b.price?.totalPrice}
                   </div>
                 </div>
@@ -132,97 +136,88 @@ export default function Checkout() {
 
               {!isAuthenticated ? (
                 /* Inline Login Form for Guests */
-                <div className="card" style={{ padding: '2rem', marginBottom: '1.5rem', border: '2px solid #e2e8f0', background: '#f8fafc' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1.5rem' }}>
-                    <div style={{ width: 48, height: 48, borderRadius: '50%', background: 'var(--brand-blue)', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <div className="checkout-card checkout-guest-auth">
+                  <div className="cga-header">
+                    <div className="cga-icon">
                       <Lock size={20} />
                     </div>
                     <div>
-                      <h3 style={{ fontFamily: 'var(--font-display)', margin: 0, fontSize: '1.25rem' }}>Sign in to continue</h3>
-                      <p style={{ margin: 0, color: 'var(--text-soft)', fontSize: '0.9rem' }}>We need to link this booking to your account</p>
+                      <h3>Sign in to continue</h3>
+                      <p>We need to link this booking to your account</p>
                     </div>
                   </div>
 
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '15px', maxWidth: '400px' }}>
-                    <div style={{ position: 'relative' }}>
-                      <div style={{ position: 'absolute', left: '14px', top: '50%', transform: 'translateY(-50%)', color: '#94a3b8' }}><Mail size={18} /></div>
+                  <div className="cga-form-wrapper">
+                    <div className="checkout-input-group">
+                      <div className="ci-icon"><Mail size={18} /></div>
                       <input type="email" placeholder="Email address" value={authForm.email}
-                        onChange={e => setAuthForm(f => ({ ...f, email: e.target.value }))} required
-                        style={{ width: '100%', padding: '12px 12px 12px 42px', borderRadius: '8px', border: '1px solid #cbd5e1', fontSize: '0.95rem' }} />
+                        onChange={e => setAuthForm(f => ({ ...f, email: e.target.value }))} required />
                     </div>
 
-                    <div style={{ position: 'relative' }}>
-                      <div style={{ position: 'absolute', left: '14px', top: '50%', transform: 'translateY(-50%)', color: '#94a3b8' }}><Lock size={18} /></div>
+                    <div className="checkout-input-group">
+                      <div className="ci-icon"><Lock size={18} /></div>
                       <input type={showPass ? 'text' : 'password'} placeholder="Password" value={authForm.password}
-                        onChange={e => setAuthForm(f => ({ ...f, password: e.target.value }))} required
-                        style={{ width: '100%', padding: '12px 42px 12px 42px', borderRadius: '8px', border: '1px solid #cbd5e1', fontSize: '0.95rem' }} />
-                      <button type="button" onClick={() => setShowPass(!showPass)}
-                        style={{ position: 'absolute', right: '14px', top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', cursor: 'pointer', color: '#94a3b8' }}>
+                        onChange={e => setAuthForm(f => ({ ...f, password: e.target.value }))} required />
+                      <button type="button" onClick={() => setShowPass(!showPass)} className="ci-toggle">
                         {showPass ? <EyeOff size={18} /> : <Eye size={18} />}
                       </button>
                     </div>
 
-                    <button type="submit" disabled={authLoading} className="btn btn-primary" style={{ padding: '12px', fontSize: '1rem' }}>
+                    <button type="submit" disabled={authLoading} className="checkout-btn primary-btn">
                       {authLoading ? 'Signing in...' : 'Sign In & Continue'}
                     </button>
                   </div>
                   
-                  <div style={{ marginTop: '1rem', fontSize: '0.9rem', color: 'var(--text-soft)' }}>
-                    Don't have an account? <Link to="/register" target="_blank" style={{ color: 'var(--brand-blue)', fontWeight: 600 }}>Register here</Link> and then sign in above.
+                  <div className="cga-footer">
+                    Don't have an account? <Link to="/register" target="_blank">Register here</Link> and then sign in above.
                   </div>
                 </div>
               ) : (
-                /* Payment method (Only visible if logged in) */
-                <div className="card" style={{ padding: '1.5rem', marginBottom: '1.5rem' }}>
-                  <h3 style={{ fontFamily: 'var(--font-display)', marginBottom: '1rem' }}>Payment Method</h3>
-                  <div style={{ display: 'flex', gap: '0.75rem', marginBottom: '1.5rem', flexWrap: 'wrap' }}>
+                /* Payment method */
+                <div className="checkout-card" style={{ marginBottom: '2rem' }}>
+                  <h3 className="checkout-card-title">Payment Method</h3>
+                  <div className="payment-tabs">
                     {[
                       { id: 'stripe', label: '💳 Credit/Debit Card' },
                       { id: 'razorpay', label: '📱 UPI / NetBanking' },
                     ].map(({ id, label }) => (
                       <button key={id} type="button" onClick={() => setPaymentMethod(id)}
-                        className="btn" style={{
-                          background: paymentMethod === id ? 'rgba(59,130,246,0.15)' : 'rgba(255,255,255,0.04)',
-                          border: `1px solid ${paymentMethod === id ? 'var(--primary)' : 'var(--border)'}`,
-                          color: paymentMethod === id ? 'var(--primary)' : 'var(--text-muted)',
-                          fontWeight: 500, flex: 1,
-                        }}
+                        className={`payment-tab ${paymentMethod === id ? 'active' : ''}`}
                       >{label}</button>
                     ))}
                   </div>
 
                   {paymentMethod === 'stripe' && (
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                      <div className="form-group">
-                        <label>Card Number</label>
+                    <div className="stripe-mock-form">
+                      <div className="checkout-form-group">
+                        <label>Card Number <small>Test: 4242 4242 4242 4242</small></label>
                         <input placeholder="4242 4242 4242 4242" value={cardForm.cardNumber}
                           onChange={e => setCardForm(f => ({ ...f, cardNumber: fmtCard(e.target.value) }))} required />
-                        <small>Test: 4242 4242 4242 4242</small>
                       </div>
-                      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '1rem' }}>
-                        <div className="form-group">
+                      <div className="checkout-form-row">
+                        <div className="checkout-form-group">
                           <label>Expiry</label>
                           <input placeholder="MM/YY" value={cardForm.expiry}
                             onChange={e => setCardForm(f => ({ ...f, expiry: fmtExpiry(e.target.value) }))} required />
                         </div>
-                        <div className="form-group">
+                        <div className="checkout-form-group">
                           <label>CVV</label>
                           <input placeholder="123" type="password" maxLength={4} value={cardForm.cvv}
                             onChange={e => setCardForm(f => ({ ...f, cvv: e.target.value.replace(/\D/g, '') }))} required />
                         </div>
-                        <div className="form-group" style={{ gridColumn: 'span 1' }}>
-                          <label>Name</label>
-                          <input placeholder="Name on card" value={cardForm.name}
-                            onChange={e => setCardForm(f => ({ ...f, name: e.target.value }))} required />
-                        </div>
+                      </div>
+                      <div className="checkout-form-group">
+                        <label>Name on Card</label>
+                        <input placeholder="e.g. John Doe" value={cardForm.name}
+                          onChange={e => setCardForm(f => ({ ...f, name: e.target.value }))} required />
                       </div>
                     </div>
                   )}
 
                   {paymentMethod === 'razorpay' && (
-                    <div className="card" style={{ padding: '1.5rem', textAlign: 'center', background: 'var(--bg-elevated)' }}>
-                      <div style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>📱</div>
-                      <p style={{ color: 'var(--text-muted)' }}>You'll be redirected to Razorpay for secure payment via UPI, Net Banking, or Cards.</p>
+                    <div className="razorpay-mock-box">
+                      <div className="rmb-icon">📱</div>
+                      <p>You'll be redirected to Razorpay for secure payment via UPI, Net Banking, or Cards.</p>
                     </div>
                   )}
                 </div>
@@ -230,14 +225,14 @@ export default function Checkout() {
 
               {/* Contact (Only if logged in) */}
               {isAuthenticated && (
-                <div className="card" style={{ padding: '1.5rem' }}>
-                  <h3 style={{ fontFamily: 'var(--font-display)', marginBottom: '1rem' }}>Contact Details</h3>
-                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
-                    <div className="form-group">
+                <div className="checkout-card">
+                  <h3 className="checkout-card-title">Contact Details</h3>
+                  <div className="checkout-form-row">
+                    <div className="checkout-form-group">
                       <label>Email</label>
                       <input type="email" defaultValue={user?.email} disabled />
                     </div>
-                    <div className="form-group">
+                    <div className="checkout-form-group">
                       <label>Phone</label>
                       <input type="tel" defaultValue={user?.phone || ''} placeholder="+1 234 567 8900" />
                     </div>
@@ -246,35 +241,35 @@ export default function Checkout() {
               )}
             </div>
 
-            {/* Price panel */}
-            <div className="card" style={{ padding: '1.5rem', minWidth: 250, position: 'sticky', top: 84 }}>
-              <h3 style={{ fontFamily: 'var(--font-display)', marginBottom: '1.25rem' }}>Order Summary</h3>
-              {[
-                { label: 'Base price', value: `$${b.price?.basePrice || 0}` },
-                { label: 'Taxes', value: `$${b.price?.taxes || 0}` },
-                { label: 'Service fees', value: `$${b.price?.fees || 0}` },
-              ].map(({ label, value }) => (
-                <div key={label} style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.6rem', fontSize: '0.875rem', color: 'var(--text-muted)' }}>
-                  <span>{label}</span><span>{value}</span>
+            <div className="checkout-sidebar-col">
+              <div className="checkout-summary-box">
+                <h3 className="checkout-card-title">Order Summary</h3>
+                <div className="csb-row">
+                  <span>Base price</span><span>${b.price?.basePrice || 0}</span>
                 </div>
-              ))}
-              <div style={{ borderTop: '1px solid var(--border)', paddingTop: '0.75rem', display: 'flex', justifyContent: 'space-between', fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '1.3rem', marginBottom: '1.25rem' }}>
-                <span>Total</span>
-                <span style={{ color: 'var(--accent)' }}>${b.price?.totalPrice || 0}</span>
-              </div>
-              
-              <button 
-                type="submit" 
-                className="btn btn-accent btn-lg" 
-                style={{ width: '100%', opacity: !isAuthenticated ? 0.5 : 1 }} 
-                disabled={loading || !isAuthenticated}
-                title={!isAuthenticated ? "Sign in to pay" : ""}
-              >
-                {loading ? '⏳ Processing...' : !isAuthenticated ? 'Sign In Required' : `🔒 Pay $${b.price?.totalPrice || 0}`}
-              </button>
-              
-              <div style={{ marginTop: '1rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.4rem', color: 'var(--text-subtle)', fontSize: '0.75rem' }}>
-                🔒 Secured by Stripe & Razorpay
+                <div className="csb-row">
+                  <span>Taxes</span><span>${b.price?.taxes || 0}</span>
+                </div>
+                <div className="csb-row">
+                  <span>Service fees</span><span>${b.price?.fees || 0}</span>
+                </div>
+                
+                <div className="csb-total">
+                  <span>Total</span>
+                  <span className="csb-amount">${b.price?.totalPrice || 0}</span>
+                </div>
+                
+                <button 
+                  type="submit" 
+                  className={`checkout-btn grand-pay-btn ${!isAuthenticated ? 'disabled-btn' : ''}`} 
+                  disabled={loading || !isAuthenticated}
+                >
+                  {loading ? '⏳ Processing...' : !isAuthenticated ? 'Sign In Required' : `🔒 Pay $${b.price?.totalPrice || 0}`}
+                </button>
+                
+                <div className="csb-security-badge">
+                  🔒 Secured by Stripe & Razorpay
+                </div>
               </div>
             </div>
           </div>
