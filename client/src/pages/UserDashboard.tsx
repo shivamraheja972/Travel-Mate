@@ -301,6 +301,7 @@ interface Booking {
   flight_details?: { from?: string; to?: string };
   hotel_details?: { hotelName?: string };
   created_at: string;
+  special_requests?: string;
 }
 
 export default function UserDashboard() {
@@ -311,6 +312,7 @@ export default function UserDashboard() {
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [activeTab, setActiveTab] = useState<string>('overview');
+  const [selectedBooking, setSelectedBooking] = useState<Booking | null>(null);
 
   useEffect(() => {
     if (!user) {
@@ -333,6 +335,12 @@ export default function UserDashboard() {
 
     fetchDashboardData();
   }, [user, navigate]);
+
+  useEffect(() => {
+    if (!selectedBooking && bookings.length > 0) {
+      setSelectedBooking(bookings[0]);
+    }
+  }, [bookings, selectedBooking]);
 
   const handleLogout = () => {
     logout();
@@ -365,6 +373,21 @@ export default function UserDashboard() {
       return <span style={{ padding: '6px 12px', background: '#fef3c7', color: '#d97706', borderRadius: '6px', fontSize: '0.85rem', fontWeight: 600 }}>Pending</span>;
     }
     return <span style={{ padding: '6px 12px', background: '#f1f5f9', color: '#64748b', borderRadius: '6px', fontSize: '0.85rem', fontWeight: 600 }}>{status}</span>;
+  };
+
+  const getBookingAmount = (booking: Booking) => booking.price?.totalPrice || booking.price?.total_price || 0;
+
+  const getBookingSummary = (booking: Booking) => {
+    if (booking.booking_type === 'flight' && booking.flight_details) {
+      return `${booking.flight_details.from || 'Unknown'} -> ${booking.flight_details.to || 'Unknown'}`;
+    }
+    if (booking.booking_type === 'hotel' && booking.hotel_details) {
+      return booking.hotel_details.hotelName || 'Hotel stay';
+    }
+    if (booking.booking_type === 'flight+hotel') {
+      return 'Flight + Hotel package';
+    }
+    return 'Trip details unavailable';
   };
 
   // Generate mockup data to fill table if empty
@@ -484,7 +507,15 @@ export default function UserDashboard() {
                         <tr><td colSpan={6} style={{ padding: '40px', textAlign: 'center', color: '#94a3b8' }}>No bookings yet.</td></tr>
                       ) : bookings.map((b: any, index: number) => (
                         <tr key={b.id || index} style={{ borderBottom: '1px solid #e2e8f0' }}>
-                          <td style={{ padding: '16px 24px', color: '#6366f1', fontWeight: 600, fontSize: '0.9rem' }}>{b.booking_id}</td>
+                          <td style={{ padding: '16px 24px', color: '#6366f1', fontWeight: 600, fontSize: '0.9rem' }}>
+                            <button
+                              type="button"
+                              onClick={() => setSelectedBooking(b)}
+                              style={{ border: 'none', background: 'transparent', color: '#6366f1', fontWeight: 700, cursor: 'pointer', padding: 0 }}
+                            >
+                              {b.booking_id}
+                            </button>
+                          </td>
                           <td style={{ padding: '16px 24px' }}>
                             <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
                               <div style={{ width: '36px', height: '36px', borderRadius: '50%', background: '#e0e7ff', color: '#6366f1', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 600 }}>
@@ -497,7 +528,7 @@ export default function UserDashboard() {
                             {new Date(b.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
                           </td>
                           <td style={{ padding: '16px 24px', fontWeight: 600, color: '#1e293b' }}>
-                            ${b.price?.totalPrice || b.price?.total_price || '—'}
+                            ${getBookingAmount(b) || '—'}
                           </td>
                           <td style={{ padding: '16px 24px', color: '#1e293b', fontWeight: 500 }}>
                             {b.payment?.method || 'Stripe'}
@@ -509,6 +540,54 @@ export default function UserDashboard() {
                   </table>
                 </div>
               </div>
+
+              {selectedBooking && (
+                <div style={{ background: 'white', borderRadius: '16px', border: '1px solid #e2e8f0', marginTop: '20px', overflow: 'hidden' }}>
+                  <div style={{ padding: '18px 24px', borderBottom: '1px solid #e2e8f0', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                    <h3 style={{ margin: 0, fontSize: '1.05rem', color: '#1e293b' }}>Booking Details</h3>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#6366f1', fontWeight: 600, fontSize: '0.88rem' }}>
+                      <Eye size={16} />
+                      {selectedBooking.booking_id}
+                    </div>
+                  </div>
+                  <div style={{ padding: '20px 24px', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '16px' }}>
+                    <div>
+                      <div style={{ fontSize: '0.78rem', color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.04em', marginBottom: '6px' }}>Trip Type</div>
+                      <div style={{ fontWeight: 700, color: '#1e293b' }}>{selectedBooking.booking_type || '—'}</div>
+                    </div>
+                    <div>
+                      <div style={{ fontSize: '0.78rem', color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.04em', marginBottom: '6px' }}>Route / Stay</div>
+                      <div style={{ fontWeight: 700, color: '#1e293b' }}>{getBookingSummary(selectedBooking)}</div>
+                    </div>
+                    <div>
+                      <div style={{ fontSize: '0.78rem', color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.04em', marginBottom: '6px' }}>Amount</div>
+                      <div style={{ fontWeight: 700, color: '#1e293b' }}>${getBookingAmount(selectedBooking).toLocaleString()}</div>
+                    </div>
+                    <div>
+                      <div style={{ fontSize: '0.78rem', color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.04em', marginBottom: '6px' }}>Payment Method</div>
+                      <div style={{ fontWeight: 700, color: '#1e293b' }}>{selectedBooking.payment?.method || 'Stripe'}</div>
+                    </div>
+                    <div>
+                      <div style={{ fontSize: '0.78rem', color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.04em', marginBottom: '6px' }}>Booked On</div>
+                      <div style={{ fontWeight: 700, color: '#1e293b' }}>
+                        {new Date(selectedBooking.created_at).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
+                      </div>
+                    </div>
+                    <div>
+                      <div style={{ fontSize: '0.78rem', color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.04em', marginBottom: '6px' }}>Status</div>
+                      <div>{getStatusBadge(selectedBooking.status)}</div>
+                    </div>
+                  </div>
+                  {selectedBooking.special_requests && (
+                    <div style={{ padding: '0 24px 20px 24px' }}>
+                      <div style={{ fontSize: '0.78rem', color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.04em', marginBottom: '6px' }}>Special Requests</div>
+                      <div style={{ background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: '10px', padding: '12px 14px', color: '#334155' }}>
+                        {selectedBooking.special_requests}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              )}
             </>
           )}
 
