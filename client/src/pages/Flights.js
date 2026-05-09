@@ -98,6 +98,7 @@ export default function Flights() {
   const [liveLoading, setLiveLoading] = useState(false);
   const [searched, setSearched] = useState(true);
   const [activeSort, setActiveSort] = useState('YOU MAY PREFER');
+  const [filterStops, setFilterStops] = useState(null);
   const [liveFlights, setLiveFlights] = useState([]);
   const [liveLocation, setLiveLocation] = useState(null);
   const [liveError, setLiveError] = useState('');
@@ -117,9 +118,10 @@ export default function Flights() {
     // eslint-disable-next-line
   }, []);
 
-  const handleSearch = async (e) => {
-    if (e) e.preventDefault();
-    if (!form.from || !form.to || !form.departDate) {
+  const handleSearch = async (e, overrideForm) => {
+    if (e && e.preventDefault) e.preventDefault();
+    const currentForm = overrideForm || form;
+    if (!currentForm.from || !currentForm.to || !currentForm.departDate) {
       showError('Please fill in origin, destination, and date');
       return;
     }
@@ -128,32 +130,29 @@ export default function Flights() {
     try {
       const allFlights = await fetchFlights();
       
-      // Filter by origin and destination (case-insensitive partial match)
       const filtered = allFlights.filter(f => 
-        (f.from.toLowerCase().includes(form.from.toLowerCase()) || f.fromCode.toLowerCase().includes(form.from.toLowerCase())) &&
-        (f.to.toLowerCase().includes(form.to.toLowerCase()) || f.toCode.toLowerCase().includes(form.to.toLowerCase()))
+        (f.from.toLowerCase().includes(currentForm.from.toLowerCase()) || f.fromCode.toLowerCase().includes(currentForm.from.toLowerCase())) &&
+        (f.to.toLowerCase().includes(currentForm.to.toLowerCase()) || f.toCode.toLowerCase().includes(currentForm.to.toLowerCase()))
       );
       
       let finalFlights = filtered;
       
-      // If we don't find exact routes in our 250 mocks, fallback to 10 random flights and rename their endpoints
-      // so the user always sees a full UI for their specific search.
       if (filtered.length === 0) {
         const shuffled = [...allFlights].sort(() => 0.5 - Math.random()).slice(0, 10);
         finalFlights = shuffled.map(f => ({
           ...f,
-          from: form.from,
-          fromCode: toIataLike(form.from),
-          to: form.to,
-          toCode: toIataLike(form.to),
-          date: form.departDate
+          from: currentForm.from,
+          fromCode: toIataLike(currentForm.from),
+          to: currentForm.to,
+          toCode: toIataLike(currentForm.to),
+          date: currentForm.departDate
         }));
       } else {
-        finalFlights = finalFlights.map(f => ({ ...f, date: form.departDate }));
+        finalFlights = finalFlights.map(f => ({ ...f, date: currentForm.departDate }));
       }
       
       setFlights(finalFlights);
-      setFlightSearch(form);
+      setFlightSearch(currentForm);
     } catch (err) {
       showError(err.message || 'Failed to load flights.');
       setFlights([]);
@@ -229,6 +228,38 @@ export default function Flights() {
     if (!liveLocation) return '';
     return `${liveLocation.lat.toFixed(3)}, ${liveLocation.lng.toFixed(3)}`;
   }, [liveLocation]);
+
+  const displayedFlights = useMemo(() => {
+    let result = [...flights];
+    if (filterStops !== null) {
+      if (filterStops === 0) result = result.filter(f => f.stops?.toLowerCase().includes('direct'));
+      if (filterStops === 1) result = result.filter(f => f.stops?.toLowerCase().includes('1 stop'));
+    }
+    if (activeSort === 'CHEAPEST') {
+      result.sort((a, b) => a.price - b.price);
+    } else if (activeSort === 'FASTEST') {
+      result.sort((a, b) => parseInt(a.duration) - parseInt(b.duration));
+    }
+    return result;
+  }, [flights, activeSort, filterStops]);
+
+  const dateCarousel = useMemo(() => {
+    const base = new Date(form.departDate + 'T12:00:00');
+    const days = [];
+    for (let i = 0; i <= 6; i++) {
+      const d = new Date(base);
+      d.setDate(d.getDate() + i);
+      days.push(d);
+    }
+    return days;
+  }, [form.departDate]);
+
+  const handleDateClick = (d) => {
+    const dateStr = d.toISOString().slice(0, 10);
+    const updatedForm = { ...form, departDate: dateStr };
+    setForm(updatedForm);
+    handleSearch(null, updatedForm);
+  };
 
   const handleBookNow = (f) => {
     const baseDate = form.departDate || new Date().toISOString().slice(0, 10);
@@ -312,19 +343,21 @@ export default function Flights() {
               <div className="adv-filter-box">
                 <h4>Popular Filters</h4>
                 <div className="checkbox-list">
-                  <label className="checkbox-item"><span><input type="checkbox" /> Morning Departures (30)</span><span className="price-tag">CAD 1,212</span></label>
-                  <label className="checkbox-item"><span><input type="checkbox" /> Late Departures (36)</span><span className="price-tag">CAD 1,251</span></label>
-                  <label className="checkbox-item"><span><input type="checkbox" /> Hide Nearby Airports (111)</span><span className="price-tag">CAD 1,204</span></label>
-                  <label className="checkbox-item"><span><input type="checkbox" /> 1 Stop (64)</span><span className="price-tag">CAD 1,205</span></label>
-                  <button className="link-btn">+ 2 more</button>
-                </div>
-              </div>
-
-              <div className="adv-filter-box">
-                <h4>Departure Airports</h4>
-                <div className="checkbox-list">
-                  <label className="checkbox-item"><span><input type="checkbox" /> Pearson Intl-ON</span><span className="price-tag">CAD 1,205</span></label>
-                  <label className="checkbox-item"><span><input type="checkbox" /> Toronto Island-ON (21Km)</span><span className="price-tag">CAD 1,474</span></label>
+                  <label className="checkbox-item">
+                    <span>
+                      <input type="checkbox" checked={filterStops === 0} onChange={() => setFilterStops(filterStops === 0 ? null : 0)} /> 
+                      Direct Flights
+                    </span>
+                  </label>
+                  <label className="checkbox-item">
+                    <span>
+                      <input type="checkbox" checked={filterStops === 1} onChange={() => setFilterStops(filterStops === 1 ? null : 1)} /> 
+                      1 Stop
+                    </span>
+                  </label>
+                  <label className="checkbox-item">
+                    <span><input type="checkbox" /> Morning Departures</span>
+                  </label>
                 </div>
               </div>
             </aside>
@@ -335,13 +368,17 @@ export default function Flights() {
               <div className="date-carousel">
                 <button className="nav-arrow"><ChevronLeft size={18} /></button>
                 <div className="date-items">
-                  <div className="date-item active"><strong>Sat, May 2</strong><span>View</span></div>
-                  <div className="date-item"><strong>Sun, May 3</strong><span>View</span></div>
-                  <div className="date-item"><strong>Mon, May 4</strong><span>View</span></div>
-                  <div className="date-item"><strong>Tue, May 5</strong><span>View</span></div>
-                  <div className="date-item"><strong>Wed, May 6</strong><span>View</span></div>
-                  <div className="date-item"><strong>Thu, May 7</strong><span>View</span></div>
-                  <div className="date-item"><strong>Fri, May 8</strong><span>View</span></div>
+                  {dateCarousel.map((d, i) => (
+                    <div 
+                      key={i} 
+                      className={`date-item ${d.toISOString().slice(0, 10) === form.departDate ? 'active' : ''}`}
+                      onClick={() => handleDateClick(d)}
+                      style={{ cursor: 'pointer' }}
+                    >
+                      <strong>{d.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })}</strong>
+                      <span>View</span>
+                    </div>
+                  ))}
                 </div>
                 <button className="nav-arrow"><ChevronRight size={18} /></button>
               </div>
@@ -368,15 +405,20 @@ export default function Flights() {
               <h3 className="sort-header">Flights sorted by popularity (based on price, duration and convenience)</h3>
 
               <div className="flight-results" style={{ gap: '18px' }}>
-                {flights.map((f) => (
+                {displayedFlights.map((f) => (
                   <div key={f.id}>
                     <div className="flight-group-header">
                       <img src={f.logo} alt="" />
-                      <h4>Flights with similar prices</h4>
+                      <h4>{f.airline} Flight</h4>
                     </div>
                     <FlightCard flight={f} onBookNow={handleBookNow} />
                   </div>
                 ))}
+                {displayedFlights.length === 0 && (
+                  <div style={{ textAlign: 'center', padding: '40px', background: '#f8fafc', borderRadius: '12px' }}>
+                    <p style={{ color: '#64748b' }}>No flights match your filters.</p>
+                  </div>
+                )}
               </div>
 
               <section className="content-block">
