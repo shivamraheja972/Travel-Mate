@@ -110,6 +110,8 @@ export default function Flights() {
     passengers: flightSearch?.passengers || 1,
   });
 
+  const [anchorDate, setAnchorDate] = useState(form.departDate);
+
   const handleChange = (e) => setForm((f) => ({ ...f, [e.target.name]: e.target.value }));
 
   React.useEffect(() => {
@@ -125,6 +127,12 @@ export default function Flights() {
       showError('Please fill in origin, destination, and date');
       return;
     }
+    
+    // If it's a primary search from the form, update the anchor date so the carousel starts here
+    if (e) {
+      setAnchorDate(currentForm.departDate);
+    }
+
     setLoading(true);
     setSearched(true);
     try {
@@ -244,7 +252,7 @@ export default function Flights() {
   }, [flights, activeSort, filterStops]);
 
   const dateCarousel = useMemo(() => {
-    const base = new Date(form.departDate + 'T12:00:00');
+    const base = new Date(anchorDate + 'T12:00:00');
     const days = [];
     for (let i = 0; i <= 6; i++) {
       const d = new Date(base);
@@ -252,7 +260,7 @@ export default function Flights() {
       days.push(d);
     }
     return days;
-  }, [form.departDate]);
+  }, [anchorDate]);
 
   const handleDateClick = (d) => {
     const dateStr = d.toISOString().slice(0, 10);
@@ -395,10 +403,6 @@ export default function Flights() {
                 <div className={`sort-card ${activeSort === 'YOU MAY PREFER' ? 'active' : ''}`} onClick={() => setActiveSort('YOU MAY PREFER')}>
                   <div className="sort-icon"><Star size={16} /></div>
                   <div><h4>YOU MAY PREFER</h4><p>CAD 1,383 · 18h</p></div>
-                </div>
-                <div className="sort-card">
-                  <div className="sort-icon"><Menu size={16} /></div>
-                  <div><h4>OTHER SORT</h4></div>
                 </div>
               </div>
 
