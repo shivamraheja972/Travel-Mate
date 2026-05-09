@@ -263,44 +263,61 @@ export async function getUserBookings(userId) {
   if (error) throw error;
   return data || [];
 }
-
 export async function getAdminDashboardData() {
   let bookings = [];
   let users = [];
 
-  if (!isSupabaseConfigured()) {
-    const db = readMockDb();
-    bookings = db.bookings;
-    users = db.users.map((u) => ({
-      id: u.id,
-      first_name: u.firstName,
-      last_name: u.lastName,
-      email: u.email,
-      role: u.role || 'user',
-      created_at: u.created_at,
-      is_active: true,
-    }));
-  } else {
-    const [{ data: b, error: bookingsError }, { data: u, error: usersError }] = await Promise.all([
-      supabase.from('bookings').select('*').order('created_at', { ascending: false }),
-      supabase.from('profiles').select('*').order('created_at', { ascending: false }),
-    ]);
-    if (bookingsError) throw bookingsError;
-    if (usersError) throw usersError;
-    bookings = b || [];
-    users = u || [];
+  try {
+    if (!isSupabaseConfigured()) {
+      const db = readMockDb();
+      bookings = db.bookings || [];
+      users = (db.users || []).map((u) => ({
+        id: u.id,
+        first_name: u.firstName,
+        last_name: u.lastName,
+        email: u.email,
+        role: u.role || 'user',
+        created_at: u.created_at,
+        is_active: true,
+      }));
+    } else {
+      const [{ data: b, error: bookingsError }, { data: u, error: usersError }] = await Promise.all([
+        supabase.from('bookings').select('*').order('created_at', { ascending: false }),
+        supabase.from('profiles').select('*').order('created_at', { ascending: false }),
+      ]);
+      
+      if (bookingsError) {
+        console.error('Bookings fetch error:', bookingsError);
+        bookings = [];
+      } else {
+        bookings = b || [];
+      }
+
+      if (usersError) {
+        console.error('Profiles fetch error:', usersError);
+        users = [];
+      } else {
+        users = u || [];
+      }
+    }
+  } catch (err) {
+    console.error('Admin dashboard data fetch failed:', err);
   }
 
   const today = new Date();
   today.setHours(0, 0, 0, 0);
+
   const stats = {
     totalBookings: bookings.length,
-    confirmedBookings: bookings.filter((b) => ['confirmed', 'completed', 'active'].includes(b.status?.toLowerCase())).length,
-    cancelledBookings: bookings.filter((b) => b.status === 'cancelled').length,
-    totalUsers: users.length, // Count all profiles for admin view
+    confirmedBookings: bookings.filter((b) => 
+      ['confirmed', 'completed', 'active', 'success'].includes(b.status?.toLowerCase())
+    ).length,
+    cancelledBookings: bookings.filter((b) => 
+      ['cancelled', 'failed', 'refunded'].includes(b.status?.toLowerCase())
+    ).length,
+    totalUsers: users.length,
     totalRevenue: bookings.reduce((sum, b) => {
-      // If confirmed or completed, count towards revenue
-      if (['confirmed', 'completed', 'active'].includes(b.status?.toLowerCase())) {
+      if (['confirmed', 'completed', 'active', 'success'].includes(b.status?.toLowerCase())) {
         return sum + (Number(b.price?.totalPrice || b.price?.total_price) || 0);
       }
       return sum;
@@ -316,8 +333,8 @@ export async function getAdminDashboardData() {
     createdAt: b.created_at,
     user: userMap.get(b.user_id)
       ? {
-          firstName: userMap.get(b.user_id).first_name,
-          lastName: userMap.get(b.user_id).last_name,
+          firstName: userMap.get(b.user_id).first_name || userMap.get(b.user_id).firstName,
+          lastName: userMap.get(b.user_id).last_name || userMap.get(b.user_id).lastName,
           email: userMap.get(b.user_id).email,
         }
       : null,
@@ -326,8 +343,8 @@ export async function getAdminDashboardData() {
   const mappedUsers = users.map((u) => ({
     ...u,
     _id: u.id,
-    firstName: u.first_name,
-    lastName: u.last_name,
+    firstName: u.first_name || u.firstName,
+    lastName: u.last_name || u.lastName,
     createdAt: u.created_at,
     isActive: u.is_active !== false,
   }));

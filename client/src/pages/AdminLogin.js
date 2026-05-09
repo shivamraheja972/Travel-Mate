@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuthStore } from '../store/store';
+import { supabase } from '../config/supabase';
 
 export default function AdminLogin() {
   const [email, setEmail] = useState('');
@@ -19,23 +20,51 @@ export default function AdminLogin() {
     const adminPassword = process.env.REACT_APP_ADMIN_PASSWORD || 'admin123';
 
     try {
-      // Simulate network delay
-      await new Promise(resolve => setTimeout(resolve, 800));
+      // 1. Try real Supabase Authentication first
+      const { data, error: authError } = await supabase.auth.signInWithPassword({
+        email: email.trim().toLowerCase(),
+        password: password
+      });
 
-      if (adminEmail && adminPassword && email.trim().toLowerCase() === adminEmail && password === adminPassword) {
+      if (!authError && data.user) {
+        // Fetch profile to verify admin role
+        const { data: profile } = await supabase
+          .from('profiles')
+          .select('role, first_name, last_name')
+          .eq('id', data.user.id)
+          .single();
+
+        if (profile?.role === 'admin' || email.toLowerCase() === adminEmail) {
+          login({
+            id: data.user.id,
+            email: data.user.email,
+            firstName: profile?.first_name || 'Admin',
+            lastName: profile?.last_name || 'User',
+            role: 'admin',
+          });
+          navigate('/admin');
+          return;
+        } else {
+          setError('Access denied. You do not have admin privileges.');
+          return;
+        }
+      }
+
+      // 2. Fallback to ENV credentials (only for development/mocking)
+      if (email.trim().toLowerCase() === adminEmail && password === adminPassword) {
         login({
           id: 'env-admin-id',
           email: adminEmail,
           firstName: 'Admin',
           lastName: 'User',
-          phone: '',
           role: 'admin',
         });
         navigate('/admin');
       } else {
-        setError('Invalid admin credentials. Access denied.');
+        setError(authError?.message || 'Invalid admin credentials.');
       }
     } catch (err) {
+      console.error('Login error:', err);
       setError('An error occurred during login.');
     } finally {
       setLoading(false);
