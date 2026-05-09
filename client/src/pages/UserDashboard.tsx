@@ -36,6 +36,7 @@ export default function UserDashboard() {
   
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
+  const [activeTab, setActiveTab] = useState<string>('overview');
 
   useEffect(() => {
     if (!user) {
@@ -117,18 +118,18 @@ export default function UserDashboard() {
 
         <div style={{ flex: 1, overflowY: 'auto', padding: '20px 0' }}>
           <div style={{ padding: '0 24px', fontSize: '0.75rem', fontWeight: 600, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '12px' }}>Menu</div>
-          <NavItem icon={<LayoutDashboard size={18} />} label="Overview" active />
-          <NavItem icon={<Calendar size={18} />} label="Booking" />
-          <NavItem icon={<Wallet size={18} />} label="Wallet" />
-          <NavItem icon={<MessageCircle size={18} />} label="Chat" />
-          <NavItem icon={<CalendarCheck size={18} />} label="Calendar" />
-          <NavItem icon={<Grid size={18} />} label="Services" />
+          <NavItem icon={<LayoutDashboard size={18} />} label="Overview" active={activeTab === 'overview'} onClick={() => setActiveTab('overview')} />
+          <NavItem icon={<Calendar size={18} />} label="Booking" active={activeTab === 'booking'} onClick={() => setActiveTab('booking')} />
+          <NavItem icon={<Wallet size={18} />} label="Wallet" active={activeTab === 'wallet'} onClick={() => setActiveTab('wallet')} />
+          <NavItem icon={<MessageCircle size={18} />} label="Chat" active={activeTab === 'chat'} onClick={() => setActiveTab('chat')} />
+          <NavItem icon={<CalendarCheck size={18} />} label="Calendar" active={activeTab === 'calendar'} onClick={() => setActiveTab('calendar')} />
+          <NavItem icon={<Grid size={18} />} label="Services" active={activeTab === 'services'} onClick={() => setActiveTab('services')} />
 
           <div style={{ padding: '0 24px', fontSize: '0.75rem', fontWeight: 600, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.05em', marginTop: '32px', marginBottom: '12px' }}>Support</div>
-          <NavItem icon={<Globe size={18} />} label="Website CMS" />
-          <NavItem icon={<FileText size={18} />} label="Blogs" />
-          <NavItem icon={<Settings size={18} />} label="Settings" />
-          <NavItem icon={<HelpCircle size={18} />} label="Support & Ticket" />
+          <NavItem icon={<Globe size={18} />} label="Website" active={activeTab === 'website'} onClick={() => navigate('/')} />
+          <NavItem icon={<FileText size={18} />} label="Blogs" active={activeTab === 'blog'} onClick={() => navigate('/blog')} />
+          <NavItem icon={<Settings size={18} />} label="Settings" active={activeTab === 'settings'} onClick={() => setActiveTab('settings')} />
+          <NavItem icon={<HelpCircle size={18} />} label="Support & Ticket" active={activeTab === 'support'} onClick={() => navigate('/contact')} />
           <NavItem icon={<LogOut size={18} />} label="Logout" onClick={handleLogout} />
         </div>
       </aside>
@@ -168,122 +169,115 @@ export default function UserDashboard() {
 
         {/* Dashboard Body */}
         <div style={{ padding: '32px', flex: 1, overflowY: 'auto' }}>
-          
-          {/* Stats Grid */}
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '24px', marginBottom: '32px' }}>
-            {stats.map((stat, i) => (
-              <div key={i} style={{ background: 'white', padding: '24px', borderRadius: '16px', border: '1px solid #e2e8f0', display: 'flex', alignItems: 'center', gap: '20px' }}>
-                <div style={{ width: '64px', height: '64px', borderRadius: '16px', background: stat.bg, color: stat.color, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                  {stat.icon}
-                </div>
-                <div>
-                  <div style={{ color: '#64748b', fontSize: '0.9rem', fontWeight: 500, marginBottom: '6px' }}>{stat.label}</div>
-                  <div style={{ fontSize: '1.6rem', fontWeight: 700, color: '#1e293b' }}>{stat.value}</div>
-                </div>
-              </div>
-            ))}
-          </div>
 
-          {/* Table Container */}
-          <div style={{ background: 'white', borderRadius: '16px', border: '1px solid #e2e8f0', overflow: 'hidden' }}>
-            
-            {/* Table Header Controls */}
-            <div style={{ padding: '24px', borderBottom: '1px solid #e2e8f0', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <h2 style={{ fontSize: '1.25rem', fontWeight: 700, color: '#1e293b', margin: 0 }}>All Booking</h2>
-              
-              <div style={{ display: 'flex', gap: '16px' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', background: '#f8fafc', border: '1px solid #e2e8f0', padding: '8px 16px', borderRadius: '8px' }}>
-                  <Search size={16} color="#94a3b8" />
-                  <input type="text" placeholder="Search Course..." style={{ border: 'none', background: 'transparent', outline: 'none', fontSize: '0.9rem', width: '150px' }} />
-                </div>
-                <button style={{ display: 'flex', alignItems: 'center', gap: '8px', background: 'white', border: '1px solid #e2e8f0', padding: '8px 16px', borderRadius: '8px', color: '#1e293b', fontWeight: 500, cursor: 'pointer' }}>
-                  <Calendar size={16} color="#64748b" />
-                  This Week
-                  <ChevronDown size={16} color="#64748b" />
-                </button>
-              </div>
-            </div>
-
-            {/* Table */}
-            <div style={{ overflowX: 'auto' }}>
-              <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
-                <thead>
-                  <tr style={{ background: '#f8fafc', borderBottom: '1px solid #e2e8f0' }}>
-                    <th style={{ padding: '16px 24px', fontWeight: 600, color: '#64748b', fontSize: '0.85rem' }}>
-                      <input type="checkbox" style={{ cursor: 'pointer' }} />
-                    </th>
-                    <th style={{ padding: '16px 24px', fontWeight: 600, color: '#1e293b', fontSize: '0.85rem' }}>ID ↕</th>
-                    <th style={{ padding: '16px 24px', fontWeight: 600, color: '#1e293b', fontSize: '0.85rem' }}>Name & Image ↕</th>
-                    <th style={{ padding: '16px 24px', fontWeight: 600, color: '#1e293b', fontSize: '0.85rem' }}>Order Time ↕</th>
-                    <th style={{ padding: '16px 24px', fontWeight: 600, color: '#1e293b', fontSize: '0.85rem' }}>Amount ↕</th>
-                    <th style={{ padding: '16px 24px', fontWeight: 600, color: '#1e293b', fontSize: '0.85rem' }}>Payment ↕</th>
-                    <th style={{ padding: '16px 24px', fontWeight: 600, color: '#1e293b', fontSize: '0.85rem' }}>Status ↕</th>
-                    <th style={{ padding: '16px 24px', fontWeight: 600, color: '#1e293b', fontSize: '0.85rem' }}>Action ↕</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {displayBookings.map((b: any, index) => (
-                    <tr key={b.id || index} style={{ borderBottom: '1px solid #e2e8f0' }}>
-                      <td style={{ padding: '16px 24px' }}>
-                        <input type="checkbox" style={{ cursor: 'pointer' }} />
-                      </td>
-                      <td style={{ padding: '16px 24px', color: '#6366f1', fontWeight: 600, fontSize: '0.9rem' }}>
-                        {b.booking_id || `#SK342${index}`}
-                      </td>
-                      <td style={{ padding: '16px 24px' }}>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                          <div style={{ width: '36px', height: '36px', borderRadius: '50%', background: '#e0e7ff', color: '#6366f1', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 600 }}>
-                            {(b.mockName || user?.firstName || 'J')[0]}
-                          </div>
-                          <span style={{ fontWeight: 600, color: '#1e293b', fontSize: '0.95rem' }}>
-                            {b.mockName || user?.firstName || 'Jhone Martin'}
-                          </span>
-                        </div>
-                      </td>
-                      <td style={{ padding: '16px 24px', color: '#64748b', fontSize: '0.9rem' }}>
-                        {new Date(b.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}, {new Date(b.created_at).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })}
-                      </td>
-                      <td style={{ padding: '16px 24px', fontWeight: 600, color: '#1e293b', fontSize: '0.95rem' }}>
-                        ${b.price?.totalPrice || b.price?.total_price || '99.00'}
-                      </td>
-                      <td style={{ padding: '16px 24px', color: '#1e293b', fontWeight: 500, fontSize: '0.9rem' }}>
-                        {b.payment?.method || 'Paypal'}
-                      </td>
-                      <td style={{ padding: '16px 24px' }}>
-                        {getStatusBadge(b.status)}
-                      </td>
-                      <td style={{ padding: '16px 24px' }}>
-                        <button style={{ display: 'flex', alignItems: 'center', gap: '6px', background: 'transparent', border: 'none', color: '#6366f1', fontWeight: 600, fontSize: '0.9rem', cursor: 'pointer' }}>
-                          <Eye size={16} /> Details
-                        </button>
-                      </td>
-                    </tr>
+          {/* ---- OVERVIEW / BOOKING TAB ---- */}
+          {(activeTab === 'overview' || activeTab === 'booking') && (
+            <>
+              {activeTab === 'overview' && (
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '24px', marginBottom: '32px' }}>
+                  {stats.map((stat, i) => (
+                    <div key={i} style={{ background: 'white', padding: '24px', borderRadius: '16px', border: '1px solid #e2e8f0', display: 'flex', alignItems: 'center', gap: '20px' }}>
+                      <div style={{ width: '64px', height: '64px', borderRadius: '16px', background: stat.bg, color: stat.color, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                        {stat.icon}
+                      </div>
+                      <div>
+                        <div style={{ color: '#64748b', fontSize: '0.9rem', fontWeight: 500, marginBottom: '6px' }}>{stat.label}</div>
+                        <div style={{ fontSize: '1.6rem', fontWeight: 700, color: '#1e293b' }}>{stat.value}</div>
+                      </div>
+                    </div>
                   ))}
-                </tbody>
-              </table>
-            </div>
-
-            {/* Pagination */}
-            <div style={{ padding: '20px 24px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderTop: '1px solid #e2e8f0' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '12px', color: '#64748b', fontSize: '0.9rem' }}>
-                <div style={{ padding: '6px 12px', border: '1px solid #e2e8f0', borderRadius: '6px', background: 'white' }}>
-                  10 <ChevronDown size={14} style={{ display: 'inline', verticalAlign: 'middle', marginLeft: '4px' }} />
                 </div>
-                Showing 1 - 10 of 100
+              )}
+
+              <div style={{ background: 'white', borderRadius: '16px', border: '1px solid #e2e8f0', overflow: 'hidden' }}>
+                <div style={{ padding: '24px', borderBottom: '1px solid #e2e8f0', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <h2 style={{ fontSize: '1.25rem', fontWeight: 700, color: '#1e293b', margin: 0 }}>All Bookings</h2>
+                </div>
+                <div style={{ overflowX: 'auto' }}>
+                  <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
+                    <thead>
+                      <tr style={{ background: '#f8fafc', borderBottom: '1px solid #e2e8f0' }}>
+                        <th style={{ padding: '16px 24px', fontWeight: 600, color: '#1e293b', fontSize: '0.85rem' }}>Booking ID</th>
+                        <th style={{ padding: '16px 24px', fontWeight: 600, color: '#1e293b', fontSize: '0.85rem' }}>Passenger</th>
+                        <th style={{ padding: '16px 24px', fontWeight: 600, color: '#1e293b', fontSize: '0.85rem' }}>Date</th>
+                        <th style={{ padding: '16px 24px', fontWeight: 600, color: '#1e293b', fontSize: '0.85rem' }}>Amount</th>
+                        <th style={{ padding: '16px 24px', fontWeight: 600, color: '#1e293b', fontSize: '0.85rem' }}>Payment</th>
+                        <th style={{ padding: '16px 24px', fontWeight: 600, color: '#1e293b', fontSize: '0.85rem' }}>Status</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {bookings.length === 0 ? (
+                        <tr><td colSpan={6} style={{ padding: '40px', textAlign: 'center', color: '#94a3b8' }}>No bookings yet.</td></tr>
+                      ) : bookings.map((b: any, index: number) => (
+                        <tr key={b.id || index} style={{ borderBottom: '1px solid #e2e8f0' }}>
+                          <td style={{ padding: '16px 24px', color: '#6366f1', fontWeight: 600, fontSize: '0.9rem' }}>{b.booking_id}</td>
+                          <td style={{ padding: '16px 24px' }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                              <div style={{ width: '36px', height: '36px', borderRadius: '50%', background: '#e0e7ff', color: '#6366f1', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 600 }}>
+                                {(user?.firstName || 'U')[0]}
+                              </div>
+                              <span style={{ fontWeight: 600, color: '#1e293b', fontSize: '0.95rem' }}>{user?.firstName} {user?.lastName}</span>
+                            </div>
+                          </td>
+                          <td style={{ padding: '16px 24px', color: '#64748b', fontSize: '0.9rem' }}>
+                            {new Date(b.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                          </td>
+                          <td style={{ padding: '16px 24px', fontWeight: 600, color: '#1e293b' }}>
+                            ${b.price?.totalPrice || b.price?.total_price || '—'}
+                          </td>
+                          <td style={{ padding: '16px 24px', color: '#1e293b', fontWeight: 500 }}>
+                            {b.payment?.method || 'Stripe'}
+                          </td>
+                          <td style={{ padding: '16px 24px' }}>{getStatusBadge(b.status)}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
               </div>
-              
-              <div style={{ display: 'flex', gap: '4px' }}>
-                <button style={{ width: '32px', height: '32px', display: 'flex', alignItems: 'center', justifyContent: 'center', border: 'none', background: 'transparent', color: '#64748b', cursor: 'pointer' }}><ChevronLeft size={16} /></button>
-                <button style={{ width: '32px', height: '32px', display: 'flex', alignItems: 'center', justifyContent: 'center', border: 'none', background: '#6366f1', color: 'white', borderRadius: '6px', fontWeight: 600, cursor: 'pointer' }}>1</button>
-                <button style={{ width: '32px', height: '32px', display: 'flex', alignItems: 'center', justifyContent: 'center', border: 'none', background: 'transparent', color: '#1e293b', fontWeight: 600, cursor: 'pointer' }}>2</button>
-                <button style={{ width: '32px', height: '32px', display: 'flex', alignItems: 'center', justifyContent: 'center', border: 'none', background: 'transparent', color: '#1e293b', fontWeight: 600, cursor: 'pointer' }}>3</button>
-                <span style={{ width: '32px', height: '32px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#64748b' }}>...</span>
-                <button style={{ width: '32px', height: '32px', display: 'flex', alignItems: 'center', justifyContent: 'center', border: 'none', background: 'transparent', color: '#1e293b', fontWeight: 600, cursor: 'pointer' }}>5</button>
-                <button style={{ width: '32px', height: '32px', display: 'flex', alignItems: 'center', justifyContent: 'center', border: 'none', background: 'transparent', color: '#64748b', cursor: 'pointer' }}><ChevronRight size={16} /></button>
+            </>
+          )}
+
+          {/* ---- SETTINGS TAB ---- */}
+          {activeTab === 'settings' && (
+            <div style={{ maxWidth: '600px' }}>
+              <h2 style={{ fontSize: '1.5rem', fontWeight: 700, color: '#1e293b', marginBottom: '24px' }}>Profile Settings</h2>
+              <div style={{ background: 'white', borderRadius: '16px', border: '1px solid #e2e8f0', padding: '32px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '20px', marginBottom: '32px', paddingBottom: '24px', borderBottom: '1px solid #e2e8f0' }}>
+                  <div style={{ width: '72px', height: '72px', borderRadius: '50%', background: '#e0e7ff', color: '#6366f1', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.8rem', fontWeight: 700 }}>
+                    {user?.firstName?.[0] || 'U'}
+                  </div>
+                  <div>
+                    <div style={{ fontSize: '1.2rem', fontWeight: 700, color: '#1e293b' }}>{user?.firstName} {user?.lastName}</div>
+                    <div style={{ color: '#64748b', fontSize: '0.9rem', marginTop: '4px' }}>{user?.email}</div>
+                  </div>
+                </div>
+                {[{ label: 'First Name', value: user?.firstName }, { label: 'Last Name', value: user?.lastName }, { label: 'Email', value: user?.email }, { label: 'Phone', value: user?.phone || 'Not set' }].map(f => (
+                  <div key={f.label} style={{ marginBottom: '20px' }}>
+                    <label style={{ fontSize: '0.8rem', fontWeight: 700, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.04em', display: 'block', marginBottom: '8px' }}>{f.label}</label>
+                    <div style={{ padding: '12px 16px', background: '#f8fafc', borderRadius: '10px', border: '1px solid #e2e8f0', color: '#1e293b', fontWeight: 500 }}>{f.value}</div>
+                  </div>
+                ))}
+                <div style={{ marginTop: '8px', padding: '12px 16px', background: '#fef3c7', borderRadius: '10px', color: '#92400e', fontSize: '0.875rem' }}>
+                  To update your profile details, please contact support.
+                </div>
               </div>
             </div>
+          )}
 
-          </div>
+          {/* ---- PLACEHOLDER TABS ---- */}
+          {['wallet', 'chat', 'calendar', 'services'].includes(activeTab) && (
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '400px', gap: '16px' }}>
+              <div style={{ fontSize: '4rem' }}>
+                {activeTab === 'wallet' ? '💳' : activeTab === 'chat' ? '💬' : activeTab === 'calendar' ? '📅' : '🧩'}
+              </div>
+              <h2 style={{ fontSize: '1.5rem', fontWeight: 700, color: '#1e293b' }}>
+                {activeTab.charAt(0).toUpperCase() + activeTab.slice(1)}
+              </h2>
+              <p style={{ color: '#64748b', textAlign: 'center', maxWidth: '360px' }}>This feature is coming soon. We're working hard to bring it to you!</p>
+            </div>
+          )}
+
         </div>
       </main>
     </div>
