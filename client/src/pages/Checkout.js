@@ -80,7 +80,7 @@ export default function Checkout() {
         price: b.price,
       });
 
-      const bookingDbId = savedBooking.booking_id || savedBooking.id;
+      const bookingDbId = savedBooking.id;
 
       // 2. Confirm the payment
       await confirmBookingPayment({

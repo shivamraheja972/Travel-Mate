@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, User } from 'lucide-react';
+import { useAuthStore } from '../store/store';
 
 const leftLinks = [
   { to: '/', label: 'Home' },
@@ -16,6 +17,7 @@ const rightLinks = [
 export default function Navbar() {
   const location = useLocation();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const { isAuthenticated, user } = useAuthStore();
 
   let navBg = 'transparent';
   let isDark = false;
@@ -66,7 +68,14 @@ export default function Navbar() {
               {link.label}
             </Link>
           ))}
-          <Link to="/login" className="fs-login-btn">Login</Link>
+          {isAuthenticated ? (
+            <Link to={user?.role === 'admin' ? '/admin' : '/dashboard'} className="fs-login-btn" style={{ background: 'rgba(59, 130, 246, 0.1)', color: 'var(--brand-blue)', display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <User size={16} />
+              {user?.firstName || 'Dashboard'}
+            </Link>
+          ) : (
+            <Link to="/login" className="fs-login-btn">Login</Link>
+          )}
         </div>
 
         <button
@@ -90,7 +99,13 @@ export default function Navbar() {
             {link.label}
           </Link>
         ))}
-        <Link to="/login" className="fs-mobile-login">Login</Link>
+        {isAuthenticated ? (
+          <Link to={user?.role === 'admin' ? '/admin' : '/dashboard'} className="fs-mobile-login" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
+            <User size={18} /> {user?.firstName || 'Dashboard'}
+          </Link>
+        ) : (
+          <Link to="/login" className="fs-mobile-login">Login</Link>
+        )}
       </div>
     </nav>
   );
