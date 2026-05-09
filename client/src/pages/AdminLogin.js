@@ -15,8 +15,8 @@ export default function AdminLogin() {
     setError('');
     setLoading(true);
 
-    const adminEmail = process.env.REACT_APP_ADMIN_EMAIL;
-    const adminPassword = process.env.REACT_APP_ADMIN_PASSWORD;
+    const adminEmail = process.env.REACT_APP_ADMIN_EMAIL || 'admin@travelmate.com';
+    const adminPassword = process.env.REACT_APP_ADMIN_PASSWORD || 'admin123';
 
     try {
       // Simulate network delay

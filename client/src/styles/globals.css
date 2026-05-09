@@ -2493,3 +2493,38 @@ select {
   font-weight: 800;
   color: var(--text-main);
 }
+
+@media (max-width: 768px) {
+  .admin-layout {
+    flex-direction: column;
+  }
+  .admin-sidebar {
+    width: 100%;
+    position: relative;
+    border-right: none;
+    border-bottom: 1px solid var(--border-light);
+    height: auto;
+  }
+  .admin-sidebar-nav {
+    flex-direction: row;
+    overflow-x: auto;
+    padding: 12px;
+  }
+  .admin-nav-item {
+    white-space: nowrap;
+    padding: 8px 12px;
+    width: auto;
+  }
+  .admin-sidebar-footer {
+    flex-direction: row;
+    padding: 12px;
+  }
+  .admin-main {
+    margin-left: 0;
+    padding: 20px;
+    max-width: 100vw;
+  }
+  .admin-header h1 {
+    font-size: 1.5rem;
+  }
+}
