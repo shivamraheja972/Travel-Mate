@@ -2,6 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { PageLoading } from '../components/Loading';
 import { getAdminDashboardData } from '../lib/supabaseData';
 import AdminSidebar from '../components/admin/AdminSidebar';
+import { 
+  Ticket, CheckCircle, Users, DollarSign, 
+  Plane, Hotel, Briefcase, FileText, Settings,
+  Eye, Edit, AlertCircle, Clock
+} from 'lucide-react';
 
 export default function AdminDashboard() {
   const [stats, setStats] = useState(null);
@@ -25,10 +30,10 @@ export default function AdminDashboard() {
 
   const statCards = stats
     ? [
-        { icon: '🎫', label: 'Total Bookings', value: stats.totalBookings, bg: '#eff6ff', color: '#3b82f6' },
-        { icon: '✅', label: 'Confirmed', value: stats.confirmedBookings, bg: '#f0fdf4', color: '#10b981' },
-        { icon: '👥', label: 'Total Users', value: stats.totalUsers, bg: '#f5f3ff', color: '#8b5cf6' },
-        { icon: '💰', label: 'Revenue', value: `$${(stats.totalRevenue || 0).toLocaleString()}`, bg: '#fffbeb', color: '#f59e0b' },
+        { icon: <Ticket size={24} />, label: 'Total Bookings', value: stats.totalBookings, bg: '#eff6ff', color: '#3b82f6' },
+        { icon: <CheckCircle size={24} />, label: 'Confirmed', value: stats.confirmedBookings, bg: '#f0fdf4', color: '#10b981' },
+        { icon: <Users size={24} />, label: 'Total Users', value: stats.totalUsers, bg: '#f5f3ff', color: '#8b5cf6' },
+        { icon: <DollarSign size={24} />, label: 'Revenue', value: `$${(stats.totalRevenue || 0).toLocaleString()}`, bg: '#fffbeb', color: '#f59e0b' },
       ]
     : [];
 
@@ -109,7 +114,12 @@ export default function AdminDashboard() {
                     <tr key={b.id}>
                       <td style={{ fontFamily: 'monospace', color: 'var(--brand-blue)' }}>{b.bookingId}</td>
                       <td>{b.user ? `${b.user.firstName} ${b.user.lastName}` : 'N/A'}</td>
-                      <td>{b.bookingType === 'flight' ? '✈️' : '🏨'} {b.bookingType}</td>
+                      <td>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                          {b.bookingType === 'flight' ? <Plane size={14} /> : <Hotel size={14} />} 
+                          {b.bookingType}
+                        </div>
+                      </td>
                       <td style={{ fontWeight: 600 }}>${b.price?.totalPrice}</td>
                       <td>
                         <span className={`badge badge-${b.status === 'confirmed' ? 'success' : b.status === 'cancelled' ? 'error' : 'warning'}`}>
@@ -190,9 +200,14 @@ export default function AdminDashboard() {
         {['flights', 'hotels', 'deals', 'blog'].includes(activeTab) && (
           <div className="admin-card">
              <div style={{ padding: '40px', textAlign: 'center' }}>
-                <div style={{ fontSize: '3rem', marginBottom: '16px' }}>🚧</div>
+                <div style={{ fontSize: '3rem', marginBottom: '16px', color: 'var(--text-soft)', opacity: 0.5 }}>
+                   {activeTab === 'flights' && <Plane size={48} style={{ margin: '0 auto' }} />}
+                   {activeTab === 'hotels' && <Hotel size={48} style={{ margin: '0 auto' }} />}
+                   {activeTab === 'deals' && <Tag size={48} style={{ margin: '0 auto' }} />}
+                   {activeTab === 'blog' && <FileText size={48} style={{ margin: '0 auto' }} />}
+                </div>
                 <h3 style={{ marginBottom: '8px' }}>Under Construction</h3>
-                <p style={{ color: 'var(--text-soft)' }}>The {activeTab} management interface is being built to use the new mock data API.</p>
+                <p style={{ color: 'var(--text-soft)' }}>The {activeTab} management interface is being built.</p>
              </div>
           </div>
         )}
@@ -200,9 +215,11 @@ export default function AdminDashboard() {
         {activeTab === 'settings' && (
            <div className="admin-card">
              <div style={{ padding: '40px', textAlign: 'center' }}>
-                <div style={{ fontSize: '3rem', marginBottom: '16px' }}>⚙️</div>
+                <div style={{ fontSize: '3rem', marginBottom: '16px', color: 'var(--text-soft)', opacity: 0.5 }}>
+                   <Settings size={48} style={{ margin: '0 auto' }} />
+                </div>
                 <h3 style={{ marginBottom: '8px' }}>Platform Settings</h3>
-                <p style={{ color: 'var(--text-soft)' }}>Coming soon.</p>
+                <p style={{ color: 'var(--text-soft)' }}>Configure your TravelMate platform settings here.</p>
              </div>
           </div>
         )}

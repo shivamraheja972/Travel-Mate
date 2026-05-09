@@ -295,12 +295,15 @@ export async function getAdminDashboardData() {
   today.setHours(0, 0, 0, 0);
   const stats = {
     totalBookings: bookings.length,
-    confirmedBookings: bookings.filter((b) => b.status === 'confirmed').length,
+    confirmedBookings: bookings.filter((b) => ['confirmed', 'completed', 'active'].includes(b.status?.toLowerCase())).length,
     cancelledBookings: bookings.filter((b) => b.status === 'cancelled').length,
-    totalUsers: users.filter((u) => u.role === 'user').length,
+    totalUsers: users.length, // Count all profiles for admin view
     totalRevenue: bookings.reduce((sum, b) => {
-      if (b.payment?.status !== 'completed') return sum;
-      return sum + (b.price?.totalPrice || b.price?.total_price || 0);
+      // If confirmed or completed, count towards revenue
+      if (['confirmed', 'completed', 'active'].includes(b.status?.toLowerCase())) {
+        return sum + (Number(b.price?.totalPrice || b.price?.total_price) || 0);
+      }
+      return sum;
     }, 0),
     todayBookings: bookings.filter((b) => new Date(b.created_at) >= today).length,
   };
