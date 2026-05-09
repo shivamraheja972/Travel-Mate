@@ -14,10 +14,24 @@ export default function FlightDetails() {
 
   if (!selectedFlight) {
     return (
-      <div style={{ textAlign: 'center', padding: '4rem', minHeight: '60vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-        <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>✈️</div>
-        <h2 style={{ marginBottom: '1rem' }}>No flight selected</h2>
-        <button className="btn btn-primary" onClick={() => navigate('/flights')}>Back to Flights</button>
+      <div className="flight-details-page" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '80vh', background: '#f8fafc' }}>
+        <div style={{ background: 'white', padding: '3rem', borderRadius: '24px', boxShadow: '0 20px 40px rgba(0,0,0,0.08)', textAlign: 'center', maxWidth: '440px', width: '90%', border: '1px solid #e2e8f0' }}>
+          <div style={{ width: 80, height: 80, background: '#eef2ff', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 1.5rem auto', boxShadow: 'inset 0 4px 10px rgba(59, 130, 246, 0.1)' }}>
+            <Plane size={40} color="var(--brand-blue)" style={{ transform: 'rotate(45deg)' }} />
+          </div>
+          <h2 style={{ fontFamily: 'var(--font-title)', fontSize: '1.8rem', marginBottom: '0.5rem', color: 'var(--text-main)', fontWeight: 800 }}>No Flight Selected</h2>
+          <p style={{ color: 'var(--text-soft)', marginBottom: '2.5rem', lineHeight: '1.6', fontSize: '1.05rem' }}>
+            Your flight details session may have expired or you navigated here directly. Let's find you a new journey.
+          </p>
+          <button 
+            onClick={() => navigate('/flights')}
+            style={{ width: '100%', padding: '16px', background: 'linear-gradient(to right, var(--brand-blue), #2563eb)', color: 'white', border: 'none', borderRadius: '14px', fontSize: '1.1rem', fontWeight: 700, cursor: 'pointer', boxShadow: '0 8px 20px rgba(37, 99, 235, 0.25)', transition: 'all 0.2s', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}
+            onMouseEnter={(e) => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 12px 25px rgba(37, 99, 235, 0.35)'; }}
+            onMouseLeave={(e) => { e.currentTarget.style.transform = 'none'; e.currentTarget.style.boxShadow = '0 8px 20px rgba(37, 99, 235, 0.25)'; }}
+          >
+            <Plane size={20} /> Search Flights
+          </button>
+        </div>
       </div>
     );
   }
