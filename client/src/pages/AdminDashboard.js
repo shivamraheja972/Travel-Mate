@@ -5,7 +5,7 @@ import AdminSidebar from '../components/admin/AdminSidebar';
 import { 
   Ticket, CheckCircle, Users, DollarSign, 
   Plane, Hotel, Briefcase, FileText, Settings,
-  Eye, Edit, AlertCircle, Clock
+  Eye, Edit, AlertCircle, Clock, Tag
 } from 'lucide-react';
 
 export default function AdminDashboard() {
@@ -14,6 +14,7 @@ export default function AdminDashboard() {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('overview');
+  const [selectedBooking, setSelectedBooking] = useState(null);
 
   useEffect(() => {
     getAdminDashboardData()
@@ -21,6 +22,7 @@ export default function AdminDashboard() {
         setStats(data.stats);
         setBookings(data.bookings || []);
         setUsers(data.users || []);
+        if (data.bookings?.length) setSelectedBooking(data.bookings[0]);
       })
       .catch(console.error)
       .finally(() => setLoading(false));
@@ -36,6 +38,9 @@ export default function AdminDashboard() {
         { icon: <DollarSign size={24} />, label: 'Revenue', value: `$${(stats.totalRevenue || 0).toLocaleString()}`, bg: '#fffbeb', color: '#f59e0b' },
       ]
     : [];
+
+  const getAmount = (booking) => Number(booking?.price?.totalPrice || booking?.price?.total_price || 0);
+  const recentBookings = [...bookings].slice(0, 5);
 
   return (
     <div className="admin-layout">
@@ -83,9 +88,33 @@ export default function AdminDashboard() {
                 <h3 className="admin-card-title">Recent Activity</h3>
               </div>
               <div style={{ padding: '24px' }}>
-                <p style={{ color: 'var(--text-soft)' }}>
+                <p style={{ color: 'var(--text-soft)', marginBottom: '16px' }}>
                   Platform is running normally. {stats?.todayBookings || 0} bookings today.
                 </p>
+                {recentBookings.length === 0 ? (
+                  <p style={{ color: 'var(--text-soft)', margin: 0 }}>No recent bookings yet.</p>
+                ) : (
+                  <div style={{ display: 'grid', gap: '10px' }}>
+                    {recentBookings.map((b) => (
+                      <div key={b.id} style={{ border: '1px solid var(--border)', borderRadius: '10px', padding: '12px 14px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                        <div>
+                          <div style={{ fontWeight: 700, color: 'var(--text-main)', marginBottom: '4px' }}>
+                            {b.bookingId} · {b.user ? `${b.user.firstName || ''} ${b.user.lastName || ''}`.trim() : 'Unknown user'}
+                          </div>
+                          <div style={{ color: 'var(--text-soft)', fontSize: '0.9rem' }}>
+                            {b.bookingType} · {new Date(b.createdAt).toLocaleString()}
+                          </div>
+                        </div>
+                        <div style={{ textAlign: 'right' }}>
+                          <div style={{ fontWeight: 700, color: 'var(--text-main)' }}>${getAmount(b).toLocaleString()}</div>
+                          <span className={`badge badge-${b.status === 'confirmed' ? 'success' : b.status === 'cancelled' ? 'error' : 'warning'}`}>
+                            {b.status}
+                          </span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
             </div>
           </>
@@ -112,7 +141,15 @@ export default function AdminDashboard() {
                 <tbody>
                   {bookings.map((b) => (
                     <tr key={b.id}>
-                      <td style={{ fontFamily: 'monospace', color: 'var(--brand-blue)' }}>{b.bookingId}</td>
+                      <td style={{ fontFamily: 'monospace', color: 'var(--brand-blue)' }}>
+                        <button
+                          type="button"
+                          onClick={() => setSelectedBooking(b)}
+                          style={{ border: 'none', background: 'transparent', color: 'var(--brand-blue)', fontFamily: 'monospace', cursor: 'pointer', padding: 0 }}
+                        >
+                          {b.bookingId}
+                        </button>
+                      </td>
                       <td>{b.user ? `${b.user.firstName} ${b.user.lastName}` : 'N/A'}</td>
                       <td>
                         <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
@@ -120,7 +157,7 @@ export default function AdminDashboard() {
                           {b.bookingType}
                         </div>
                       </td>
-                      <td style={{ fontWeight: 600 }}>${b.price?.totalPrice}</td>
+                      <td style={{ fontWeight: 600 }}>${getAmount(b).toLocaleString()}</td>
                       <td>
                         <span className={`badge badge-${b.status === 'confirmed' ? 'success' : b.status === 'cancelled' ? 'error' : 'warning'}`}>
                           {b.status}
@@ -140,6 +177,32 @@ export default function AdminDashboard() {
                 </tbody>
               </table>
             </div>
+          </div>
+        )}
+
+        {activeTab === 'bookings' && selectedBooking && (
+          <div className="admin-card" style={{ marginTop: '16px' }}>
+            <div className="admin-card-header">
+              <h3 className="admin-card-title">Booking Details · {selectedBooking.bookingId}</h3>
+            </div>
+            <div style={{ padding: '24px', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '16px' }}>
+              <div><strong>User:</strong> {selectedBooking.user ? `${selectedBooking.user.firstName || ''} ${selectedBooking.user.lastName || ''}`.trim() : 'N/A'}</div>
+              <div><strong>Email:</strong> {selectedBooking.user?.email || 'N/A'}</div>
+              <div><strong>Type:</strong> {selectedBooking.bookingType}</div>
+              <div><strong>Status:</strong> {selectedBooking.status}</div>
+              <div><strong>Amount:</strong> ${getAmount(selectedBooking).toLocaleString()}</div>
+              <div><strong>Payment:</strong> {selectedBooking.payment?.method || 'stripe'}</div>
+              <div><strong>Date:</strong> {new Date(selectedBooking.createdAt).toLocaleString()}</div>
+              <div><strong>Route/Hotel:</strong> {selectedBooking.flight_details ? `${selectedBooking.flight_details.from || 'Unknown'} -> ${selectedBooking.flight_details.to || 'Unknown'}` : selectedBooking.hotel_details?.hotelName || 'N/A'}</div>
+            </div>
+            {selectedBooking.special_requests && (
+              <div style={{ padding: '0 24px 24px 24px' }}>
+                <strong>Special Requests:</strong>
+                <div style={{ marginTop: '8px', border: '1px solid var(--border)', borderRadius: '8px', padding: '10px 12px', color: 'var(--text-soft)' }}>
+                  {selectedBooking.special_requests}
+                </div>
+              </div>
+            )}
           </div>
         )}
 
