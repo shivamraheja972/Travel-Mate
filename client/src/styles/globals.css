@@ -2554,13 +2554,13 @@ select {
 }
 
 .fd-container {
-  max-width: 1000px;
+  max-width: 1200px;
   margin: -5rem auto 0 auto;
   padding: 0 1.5rem;
   position: relative;
   z-index: 10;
   display: grid;
-  grid-template-columns: 1fr 320px;
+  grid-template-columns: 1fr 340px;
   gap: 2rem;
   align-items: start;
 }

@@ -26,44 +26,31 @@ export default function FlightDetails() {
   const fmtTime = (d) => d ? new Date(d).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }) : '--';
   const fmtDate = (d) => d ? new Date(d).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' }) : '--';
 
-  const handleBook = async () => {
-    if (!isAuthenticated) { navigate('/login'); return; }
-    try {
-      const bookingData = {
-        bookingType: 'flight',
-        flightDetails: {
-          flightNumber: f.flightNumber,
-          airline: f.airline,
-          from: f.from,
-          to: f.to,
-          departureTime: f.departureTime,
-          arrivalTime: f.arrivalTime,
-          class: f.class,
-        },
-        price: {
-          basePrice: f.price,
-          taxes: Math.round(f.price * 0.12),
-          fees: 15,
-          totalPrice: Math.round(f.price * 1.12 + 15),
-          currency: f.currency || 'USD',
-        },
-      };
-      const booking = await createBooking({
-        userId: user?.id,
-        bookingType: bookingData.bookingType,
-        flightDetails: bookingData.flightDetails,
-        price: bookingData.price,
-      });
-      setCurrentBooking({
-        ...booking,
-        bookingId: booking.booking_id || booking.id,
-        bookingType: booking.booking_type || booking.bookingType,
-        flightDetails: booking.flight_details || booking.flightDetails,
-      });
-      navigate('/checkout');
-    } catch (err) {
-      showError(err.message || 'Failed to create booking');
-    }
+  const handleBook = () => {
+    const bookingData = {
+      id: 'pending-' + Date.now(),
+      bookingId: 'MOCK-' + Math.random().toString(36).substring(2, 8).toUpperCase(),
+      bookingType: 'flight',
+      flightDetails: {
+        flightNumber: f.flightNumber,
+        airline: f.airline,
+        from: f.from,
+        to: f.to,
+        departureTime: f.departureTime,
+        arrivalTime: f.arrivalTime,
+        class: f.class,
+      },
+      price: {
+        basePrice: f.price,
+        taxes: Math.round(f.price * 0.12),
+        fees: 15,
+        totalPrice: Math.round(f.price * 1.12 + 15),
+        currency: f.currency || 'USD',
+      },
+    };
+    
+    setCurrentBooking(bookingData);
+    navigate('/checkout');
   };
 
   const taxes = Math.round(f.price * 0.12);
@@ -168,7 +155,7 @@ export default function FlightDetails() {
             </div>
 
             <button className="fd-book-btn" onClick={handleBook}>
-              {isAuthenticated ? 'Proceed to Checkout' : 'Login to Book'}
+              Proceed to Checkout
             </button>
 
             <div style={{ marginTop: '1.5rem', display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--text-soft)', fontSize: '0.85rem', justifyContent: 'center' }}>
