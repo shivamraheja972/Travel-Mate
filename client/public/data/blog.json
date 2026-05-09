@@ -1,0 +1,24 @@
+[
+  {
+    "id": "blog-001",
+    "title": "Top 10 Destinations for 2026",
+    "author": "Jane Doe",
+    "content": "Discover the most amazing places to visit next year. From the bustling streets of Tokyo to the serene beaches of Bali...",
+    "tags": [
+      "Travel",
+      "Tips"
+    ],
+    "image": "https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=600"
+  },
+  {
+    "id": "blog-002",
+    "title": "How to Pack Like a Pro",
+    "author": "John Smith",
+    "content": "Packing for a long trip can be daunting. Here are some tips to maximize your luggage space...",
+    "tags": [
+      "Packing",
+      "Guide"
+    ],
+    "image": "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=600"
+  }
+]

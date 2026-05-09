@@ -1,9 +1,11 @@
 import React, { useMemo, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import FlightCard from '../components/FlightCard';
 import Loading from '../components/Loading';
 import { useSearchStore } from '../store/store';
 import { useToast } from '../components/Toast';
 import { ChevronLeft, ChevronRight, Zap, Star, Menu, Plane } from 'lucide-react';
+import { fetchOpenSkyStates } from '../lib/liveFlights';
 
 const MOCK_FLIGHTS = [
   {
@@ -64,8 +66,31 @@ const TRAVEL_NOTES = [
   'Carry-on and check-in baggage allowances vary by airline and fare class.',
 ];
 
+const IATA_HINTS = {
+  toronto: 'YTO',
+  mumbai: 'BOM',
+  delhi: 'DEL',
+  dubai: 'DXB',
+  london: 'LON',
+  newyork: 'NYC',
+  'new york': 'NYC',
+  jakarta: 'JKT',
+  paris: 'PAR',
+  sydney: 'SYD',
+  tokyo: 'TYO',
+};
+
+const toIataLike = (input = '') => {
+  const normalized = input.trim().toLowerCase();
+  if (!normalized) return '';
+  if (IATA_HINTS[normalized]) return IATA_HINTS[normalized];
+  if (/^[a-z]{3}$/i.test(normalized)) return normalized.toUpperCase();
+  return normalized.slice(0, 3).toUpperCase();
+};
+
 export default function Flights() {
-  const { flightSearch, setFlightSearch } = useSearchStore();
+  const navigate = useNavigate();
+  const { flightSearch, setFlightSearch, setSelectedFlight } = useSearchStore();
   const { error: showError } = useToast();
   const [flights, setFlights] = useState(MOCK_FLIGHTS);
   const [loading, setLoading] = useState(false);
@@ -93,11 +118,75 @@ export default function Flights() {
     }
     setLoading(true);
     setSearched(true);
-    setTimeout(() => {
+    try {
+      const token = process.env.REACT_APP_TRAVELPAYOUTS_TOKEN;
+      const origin = toIataLike(form.from);
+      const destination = toIataLike(form.to);
+
+      if (!token) throw new Error('Travelpayouts token is missing');
+
+      const params = new URLSearchParams({
+        origin,
+        destination,
+        departure_at: form.departDate,
+        currency: 'usd',
+        page: '1',
+        one_way: 'true',
+        limit: '20',
+        sorting: 'price',
+        direct: 'false',
+        market: 'us',
+      });
+
+      const res = await fetch(`https://api.travelpayouts.com/v1/prices/cheap?${params.toString()}`, {
+        headers: {
+          'X-Access-Token': token,
+        },
+      });
+
+      if (!res.ok) throw new Error(`Travelpayouts request failed (${res.status})`);
+      const payload = await res.json();
+      if (!payload?.success || !payload?.data) throw new Error('No data returned from Travelpayouts');
+
+      const items = Object.values(payload.data).slice(0, 20);
+      const mapped = items.map((item, idx) => {
+        const price = Number(item.price || 0);
+        const depDate = item.departure_at ? new Date(item.departure_at) : new Date(form.departDate);
+        const arrDate = new Date(depDate.getTime() + ((item.flight_number ? 8 : 6) * 60 * 60 * 1000));
+        const dep = depDate.toTimeString().slice(0, 5);
+        const arr = arrDate.toTimeString().slice(0, 5);
+        return {
+          id: `tp-${idx}`,
+          airline: item.airline || 'Airline',
+          logo: 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=50&h=50&fit=crop',
+          code: `${item.airline || 'FL'} ${item.flight_number || ''}`.trim(),
+          class: 'Economy',
+          depart: dep,
+          departCity: form.from,
+          departCode: origin,
+          arrive: arr,
+          arriveCity: form.to,
+          arriveCode: destination,
+          plusDay: '',
+          duration: item.transfers === 0 ? 'Direct' : `${item.transfers || 1} stop`,
+          stops: item.transfers === 0 ? 'Direct' : `${item.transfers || 1} stop`,
+          price: price || 0,
+          oldPrice: undefined,
+          tags: ['Live fare from Travelpayouts'],
+          alternatives: [],
+        };
+      });
+
+      if (mapped.length === 0) throw new Error('No results for this route/date');
+      setFlights(mapped);
+      setFlightSearch(form);
+    } catch (err) {
+      showError(err.message || 'Live search failed. Showing curated flights.');
       setFlights(MOCK_FLIGHTS.map((f) => ({ ...f, departCity: form.from, arriveCity: form.to })));
       setFlightSearch(form);
+    } finally {
       setLoading(false);
-    }, 800);
+    }
   };
 
   const fetchLiveFlightsNearMe = async () => {
@@ -124,15 +213,7 @@ export default function Flights() {
           const lomin = (lng - delta).toFixed(4);
           const lomax = (lng + delta).toFixed(4);
 
-          const res = await fetch(
-            `https://opensky-network.org/api/states/all?lamin=${lamin}&lomin=${lomin}&lamax=${lamax}&lomax=${lomax}`
-          );
-
-          if (!res.ok) {
-            throw new Error(`Live API request failed (${res.status})`);
-          }
-
-          const payload = await res.json();
+          const payload = await fetchOpenSkyStates({ lamin, lomin, lamax, lomax });
           const states = Array.isArray(payload?.states) ? payload.states : [];
 
           const normalized = states
@@ -175,6 +256,33 @@ export default function Flights() {
     if (!liveLocation) return '';
     return `${liveLocation.lat.toFixed(3)}, ${liveLocation.lng.toFixed(3)}`;
   }, [liveLocation]);
+
+  const handleBookNow = (f) => {
+    const baseDate = form.departDate || new Date().toISOString().slice(0, 10);
+    const dep = new Date(`${baseDate}T${f.depart || '08:00'}:00`);
+    const durationHours = f.duration?.includes('18') ? 18 : 8;
+    const arr = new Date(dep.getTime() + durationHours * 60 * 60 * 1000);
+
+    setSelectedFlight({
+      id: String(f.id),
+      flightNumber: f.code || `TM-${f.id}`,
+      airline: f.airline,
+      from: f.departCode || toIataLike(form.from),
+      to: f.arriveCode || toIataLike(form.to),
+      departureTime: dep.toISOString(),
+      arrivalTime: arr.toISOString(),
+      duration: f.duration || '8h',
+      stops: typeof f.stops === 'string' ? (f.stops.toLowerCase().includes('direct') ? 0 : 1) : Number(f.stops || 0),
+      class: f.class || 'Economy',
+      baggage: '23kg baggage',
+      refundable: true,
+      amenities: ['Meal', 'Cabin baggage'],
+      price: Number(f.price || 0),
+      currency: 'USD',
+      logo: '✈️',
+    });
+    navigate(`/flights/${f.id}`);
+  };
 
   return (
     <div className="flights-page">
@@ -293,7 +401,7 @@ export default function Flights() {
                       <img src={f.logo} alt="" />
                       <h4>Flights with similar prices</h4>
                     </div>
-                    <FlightCard flight={f} />
+                    <FlightCard flight={f} onBookNow={handleBookNow} />
                   </div>
                 ))}
               </div>

@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSearchStore } from '../store/store';
 import { Plane, ArrowRightLeft, Calendar, User, Search, ChevronDown, CheckCircle2 } from 'lucide-react';
+import { fetchOpenSkyStates } from '../lib/liveFlights';
 
 const destinations = [
   { city: 'Tokyo', date: '24 Dec 2025 - 07 Jan 2026', price: 'USD $450', img: '/images/tokyo.png' },
@@ -43,6 +44,10 @@ export default function Home() {
     passengers: 2,
     children: 1,
   });
+  const [trackerLoading, setTrackerLoading] = useState(false);
+  const [trackerError, setTrackerError] = useState('');
+  const [liveFlights, setLiveFlights] = useState([]);
+  const [trackerLocation, setTrackerLocation] = useState(null);
 
   const handleSearch = (e) => {
     e.preventDefault();
@@ -55,6 +60,69 @@ export default function Home() {
     });
     navigate('/flights');
   };
+
+  const handleTrackNearbyFlights = () => {
+    if (!navigator.geolocation) {
+      setTrackerError('Geolocation is not supported by this browser.');
+      return;
+    }
+
+    setTrackerLoading(true);
+    setTrackerError('');
+    setLiveFlights([]);
+
+    navigator.geolocation.getCurrentPosition(
+      async (position) => {
+        try {
+          const lat = position.coords.latitude;
+          const lng = position.coords.longitude;
+          setTrackerLocation({ lat, lng });
+
+          const delta = 1.6;
+          const lamin = (lat - delta).toFixed(4);
+          const lamax = (lat + delta).toFixed(4);
+          const lomin = (lng - delta).toFixed(4);
+          const lomax = (lng + delta).toFixed(4);
+
+          const payload = await fetchOpenSkyStates({ lamin, lomin, lamax, lomax });
+          const states = Array.isArray(payload?.states) ? payload.states : [];
+          const normalized = states
+            .filter((s) => s && s[5] && s[6])
+            .slice(0, 12)
+            .map((s, i) => ({
+              id: `${s[0]}-${i}`,
+              callsign: (s[1] || 'Unknown').trim(),
+              country: s[2] || 'Unknown',
+              longitude: Number(s[5]).toFixed(4),
+              latitude: Number(s[6]).toFixed(4),
+              altitude: s[7] ? `${Math.round(s[7])} m` : 'N/A',
+              velocity: s[9] ? `${Math.round(s[9] * 3.6)} km/h` : 'N/A',
+              onGround: !!s[8],
+            }));
+
+          setLiveFlights(normalized);
+          if (normalized.length === 0) {
+            setTrackerError('No live aircraft found near your current location.');
+          }
+        } catch (err) {
+          setTrackerError(err.message || 'Unable to fetch live flights right now.');
+        } finally {
+          setTrackerLoading(false);
+        }
+      },
+      (err) => {
+        setTrackerLoading(false);
+        if (err.code === 1) setTrackerError('Location access denied. Please allow permission and try again.');
+        else setTrackerError('Unable to get your location. Please try again.');
+      },
+      { enableHighAccuracy: true, timeout: 10000, maximumAge: 60000 }
+    );
+  };
+
+  const trackerPoint = useMemo(() => {
+    if (!trackerLocation) return '';
+    return `${trackerLocation.lat.toFixed(3)}, ${trackerLocation.lng.toFixed(3)}`;
+  }, [trackerLocation]);
 
   return (
     <main className="home-page">
@@ -296,6 +364,58 @@ export default function Home() {
             <p>Discover exclusive deals and hassle-free booking for every journey.</p>
             <button className="banner-btn banner-btn-primary" style={{ marginTop: 'auto' }}>Explore Deals</button>
           </div>
+        </div>
+      </section>
+
+      <section className="container live-tracker-section">
+        <div className="section-header">
+          <h2 className="section-title">Live Flight Tracker Near You</h2>
+          <p className="section-subtitle">
+            Real-time nearby aircraft positions powered by OpenSky Network.
+            {trackerPoint ? ` Current location: ${trackerPoint}` : ''}
+          </p>
+        </div>
+
+        <div className="live-tracker-card">
+          <div className="live-tracker-top">
+            <p>Use your location to discover flights currently overhead or nearby.</p>
+            <button type="button" className="search-btn" onClick={handleTrackNearbyFlights} disabled={trackerLoading}>
+              {trackerLoading ? 'Locating...' : 'Track Flights Near Me'}
+            </button>
+          </div>
+
+          {trackerError ? <div className="live-tracker-error">{trackerError}</div> : null}
+
+          {!trackerError && liveFlights.length > 0 ? (
+            <div className="live-tracker-table-wrap">
+              <table className="live-tracker-table">
+                <thead>
+                  <tr>
+                    {['Callsign', 'Country', 'Latitude', 'Longitude', 'Altitude', 'Speed', 'Status'].map((h) => (
+                      <th key={h}>{h}</th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {liveFlights.map((f) => (
+                    <tr key={f.id}>
+                      <td>{f.callsign}</td>
+                      <td>{f.country}</td>
+                      <td>{f.latitude}</td>
+                      <td>{f.longitude}</td>
+                      <td>{f.altitude}</td>
+                      <td>{f.velocity}</td>
+                      <td>
+                        <span className={`live-status ${f.onGround ? 'ground' : 'air'}`}>
+                          {f.onGround ? 'On Ground' : 'Airborne'}
+                        </span>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          ) : null}
         </div>
       </section>
 

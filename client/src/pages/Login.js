@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { supabase } from '../config/supabase';
 import { useAuthStore } from '../store/store';
 import { useToast } from '../components/Toast';
-import { getProfileById } from '../lib/supabaseData';
+import { loginUser } from '../lib/supabaseData';
 import { Mail, Lock, Eye, EyeOff, Plane } from 'lucide-react';
 
 export default function Login() {
@@ -25,10 +24,6 @@ export default function Login() {
 
     if (verifiedFromQuery || verifiedFromHash) {
       setShowVerifiedDialog(true);
-      if (verifiedFromHash) {
-        // Sign them out immediately so they have to manually type credentials as requested
-        supabase.auth.signOut().catch(console.error);
-      }
       if (!verifiedFromQuery) {
         window.history.replaceState({}, document.title, '/login?verified=1');
       }
@@ -40,31 +35,10 @@ export default function Login() {
     setLoading(true);
     setAuthError('');
     try {
-      if (
-        !process.env.REACT_APP_SUPABASE_URL ||
-        !process.env.REACT_APP_SUPABASE_ANON_KEY ||
-        process.env.REACT_APP_SUPABASE_URL.includes('placeholder') ||
-        process.env.REACT_APP_SUPABASE_ANON_KEY.includes('placeholder')
-      ) {
-        throw new Error('Supabase is not configured. Add REACT_APP_SUPABASE_URL and REACT_APP_SUPABASE_ANON_KEY in client/.env and restart the app.');
-      }
-
-      const { data, error } = await supabase.auth.signInWithPassword({
+      const userObj = await loginUser({
         email: form.email.trim().toLowerCase(),
         password: form.password,
       });
-
-      if (error) throw error;
-
-      const profile = await getProfileById(data.user.id).catch(() => null);
-      const userObj = {
-        id: data.user.id,
-        email: data.user.email,
-        firstName: profile?.first_name || data.user.user_metadata?.first_name || '',
-        lastName: profile?.last_name || data.user.user_metadata?.last_name || '',
-        phone: profile?.phone || data.user.user_metadata?.phone || '',
-        role: profile?.role || 'user',
-      };
 
       login(userObj);
       success(`Welcome back, ${userObj.firstName || 'Traveler'}!`);

@@ -1,0 +1,55 @@
+[
+  {
+    "id": "hotel-001",
+    "name": "The Grand Palace Hotel",
+    "address": "123 Main Blvd, Tokyo",
+    "city": "Tokyo",
+    "rating": 4.8,
+    "reviewCount": 2341,
+    "stars": 5,
+    "pricePerNight": 280,
+    "currency": "USD",
+    "image": "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=600",
+    "amenities": [
+      "WiFi",
+      "Pool",
+      "Spa",
+      "Gym"
+    ],
+    "roomTypes": [
+      "Deluxe King",
+      "Suite"
+    ],
+    "breakfast": true,
+    "refundable": true,
+    "description": "Luxury 5-star hotel in the heart of the city.",
+    "checkIn": "15:00",
+    "checkOut": "11:00"
+  },
+  {
+    "id": "hotel-002",
+    "name": "Comfort Inn & Suites",
+    "address": "456 Park Ave, New York",
+    "city": "New York",
+    "rating": 4.3,
+    "reviewCount": 876,
+    "stars": 4,
+    "pricePerNight": 120,
+    "currency": "USD",
+    "image": "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=600",
+    "amenities": [
+      "WiFi",
+      "Gym",
+      "Parking"
+    ],
+    "roomTypes": [
+      "Standard Queen",
+      "Deluxe Double"
+    ],
+    "breakfast": false,
+    "refundable": true,
+    "description": "Modern 4-star hotel with excellent value.",
+    "checkIn": "14:00",
+    "checkOut": "12:00"
+  }
+]

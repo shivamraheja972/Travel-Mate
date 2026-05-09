@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { supabase } from '../config/supabase';
 import { useAuthStore } from '../store/store';
 import { useToast } from '../components/Toast';
-import { getProfileById } from '../lib/supabaseData';
+import { registerUser } from '../lib/supabaseData';
 import { Mail, Lock, Eye, EyeOff, Plane, User, Phone } from 'lucide-react';
 
 export default function Register() {
@@ -28,46 +27,27 @@ export default function Register() {
     }
     setLoading(true);
     try {
-      if (
-        !process.env.REACT_APP_SUPABASE_URL ||
-        !process.env.REACT_APP_SUPABASE_ANON_KEY ||
-        process.env.REACT_APP_SUPABASE_URL.includes('placeholder') ||
-        process.env.REACT_APP_SUPABASE_ANON_KEY.includes('placeholder')
-      ) {
-        throw new Error('Supabase is not configured. Add REACT_APP_SUPABASE_URL and REACT_APP_SUPABASE_ANON_KEY in client/.env and restart the app.');
-      }
-
-      const { data, error } = await supabase.auth.signUp({
+      const { requiresEmailVerification, user } = await registerUser({
+        firstName: form.firstName,
+        lastName: form.lastName,
         email: form.email,
+        phone: form.phone,
         password: form.password,
-        options: {
-          emailRedirectTo: `${window.location.origin}/login`,
-          data: {
-            first_name: form.firstName,
-            last_name: form.lastName,
-            phone: form.phone
-          }
-        }
       });
 
-      if (error) throw error;
-
-      if (!data.session) {
+      if (requiresEmailVerification) {
         success('Account created! Please check your email to verify your account before logging in.');
         navigate('/login');
         return;
       }
 
-      const userId = data.user.id;
-
-      const profile = await getProfileById(userId).catch(() => null);
       const userObj = {
-        id: userId,
-        email: data.user.email,
-        firstName: profile?.first_name || form.firstName,
-        lastName: profile?.last_name || form.lastName,
-        phone: profile?.phone || form.phone,
-        role: profile?.role || 'user',
+        id: user.id,
+        email: user.email,
+        firstName: user.firstName || form.firstName,
+        lastName: user.lastName || form.lastName,
+        phone: user.phone || form.phone,
+        role: user.role || 'user',
       };
 
       login(userObj);

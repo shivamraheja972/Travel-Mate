@@ -1,0 +1,18 @@
+[
+  {
+    "id": "deal-001",
+    "title": "Summer in Paris",
+    "discount": "20%",
+    "destination": "Paris",
+    "validUntil": "2026-06-30",
+    "image": "/images/paris.png"
+  },
+  {
+    "id": "deal-002",
+    "title": "Escape to Dubai",
+    "discount": "15%",
+    "destination": "Dubai",
+    "validUntil": "2025-12-31",
+    "image": "/images/dubai.png"
+  }
+]

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { PageLoading } from '../components/Loading';
 import { getAdminDashboardData } from '../lib/supabaseData';
+import AdminSidebar from '../components/admin/AdminSidebar';
 
 export default function AdminDashboard() {
   const [stats, setStats] = useState(null);
@@ -10,164 +11,203 @@ export default function AdminDashboard() {
   const [activeTab, setActiveTab] = useState('overview');
 
   useEffect(() => {
-    getAdminDashboardData().then((data) => {
-      setStats(data.stats);
-      setBookings(data.bookings || []);
-      setUsers(data.users || []);
-    }).catch(console.error).finally(() => setLoading(false));
+    getAdminDashboardData()
+      .then((data) => {
+        setStats(data.stats);
+        setBookings(data.bookings || []);
+        setUsers(data.users || []);
+      })
+      .catch(console.error)
+      .finally(() => setLoading(false));
   }, []);
 
   if (loading) return <PageLoading />;
 
-  const statCards = stats ? [
-    { icon: '🎫', label: 'Total Bookings', value: stats.totalBookings, color: '#3b82f6' },
-    { icon: '✅', label: 'Confirmed', value: stats.confirmedBookings, color: '#10b981' },
-    { icon: '👥', label: 'Total Users', value: stats.totalUsers, color: '#8b5cf6' },
-    { icon: '💰', label: 'Revenue', value: `$${(stats.totalRevenue || 0).toLocaleString()}`, color: '#f59e0b' },
-    { icon: '📅', label: 'Today', value: stats.todayBookings, color: '#06b6d4' },
-    { icon: '❌', label: 'Cancelled', value: stats.cancelledBookings, color: '#ef4444' },
-  ] : [];
+  const statCards = stats
+    ? [
+        { icon: '🎫', label: 'Total Bookings', value: stats.totalBookings, bg: '#eff6ff', color: '#3b82f6' },
+        { icon: '✅', label: 'Confirmed', value: stats.confirmedBookings, bg: '#f0fdf4', color: '#10b981' },
+        { icon: '👥', label: 'Total Users', value: stats.totalUsers, bg: '#f5f3ff', color: '#8b5cf6' },
+        { icon: '💰', label: 'Revenue', value: `$${(stats.totalRevenue || 0).toLocaleString()}`, bg: '#fffbeb', color: '#f59e0b' },
+      ]
+    : [];
 
   return (
-    <div style={{ background: 'var(--bg)', minHeight: '100vh', padding: '2rem 0' }}>
-      <div className="container">
-        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '2rem' }}>
-          <div style={{ fontSize: '2rem' }}>⚙️</div>
-          <div>
-            <h1 style={{ fontFamily: 'var(--font-display)', fontSize: '1.5rem' }}>Admin Dashboard</h1>
-            <p style={{ color: 'var(--text-muted)' }}>Manage bookings, users, and platform settings</p>
+    <div className="admin-layout">
+      <AdminSidebar activeTab={activeTab} setActiveTab={setActiveTab} />
+      
+      <main className="admin-main">
+        <div className="admin-header">
+          <h1>
+            {activeTab === 'overview' && 'Dashboard Overview'}
+            {activeTab === 'bookings' && 'Manage Bookings'}
+            {activeTab === 'users' && 'Manage Users'}
+            {activeTab === 'flights' && 'Flight Inventory'}
+            {activeTab === 'hotels' && 'Hotel Inventory'}
+            {activeTab === 'deals' && 'Special Deals'}
+            {activeTab === 'blog' && 'Blog Posts'}
+            {activeTab === 'settings' && 'Platform Settings'}
+          </h1>
+          <div style={{ display: 'flex', gap: '12px' }}>
+            {['flights', 'hotels', 'deals', 'blog'].includes(activeTab) && (
+              <button className="search-btn" style={{ padding: '0 24px', minHeight: '44px', fontSize: '0.9rem' }}>
+                + Add New
+              </button>
+            )}
           </div>
         </div>
 
-        {/* Stats */}
-        <div className="grid-3" style={{ marginBottom: '2rem' }}>
-          {statCards.map(({ icon, label, value, color }) => (
-            <div key={label} className="card" style={{ padding: '1.5rem', borderLeft: `4px solid ${color}` }}>
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                <div>
-                  <div style={{ color: 'var(--text-muted)', fontSize: '0.85rem', marginBottom: '0.25rem' }}>{label}</div>
-                  <div style={{ fontFamily: 'var(--font-display)', fontSize: '1.8rem', fontWeight: 800 }}>{value}</div>
+        {activeTab === 'overview' && (
+          <>
+            <div className="admin-stats-grid">
+              {statCards.map((stat, i) => (
+                <div key={i} className="stat-card">
+                  <div className="stat-icon" style={{ background: stat.bg, color: stat.color }}>
+                    {stat.icon}
+                  </div>
+                  <div className="stat-info">
+                    <h4>{stat.label}</h4>
+                    <p>{stat.value}</p>
+                  </div>
                 </div>
-                <span style={{ fontSize: '2rem' }}>{icon}</span>
+              ))}
+            </div>
+
+            <div className="admin-card">
+              <div className="admin-card-header">
+                <h3 className="admin-card-title">Recent Activity</h3>
+              </div>
+              <div style={{ padding: '24px' }}>
+                <p style={{ color: 'var(--text-soft)' }}>
+                  Platform is running normally. {stats?.todayBookings || 0} bookings today.
+                </p>
               </div>
             </div>
-          ))}
-        </div>
-
-        {/* Tabs */}
-        <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '1.5rem' }}>
-          {[['overview', '📊 Overview'], ['bookings', '🎫 Bookings'], ['users', '👥 Users']].map(([key, label]) => (
-            <button key={key} onClick={() => setActiveTab(key)}
-              className="btn" style={{
-                background: activeTab === key ? 'var(--gradient)' : 'rgba(255,255,255,0.05)',
-                color: activeTab === key ? 'white' : 'var(--text-muted)',
-                border: 'none',
-              }}>
-              {label}
-            </button>
-          ))}
-        </div>
-
-        {/* Overview tab */}
-        {activeTab === 'overview' && (
-          <div className="card" style={{ padding: '1.5rem' }}>
-            <h3 style={{ fontFamily: 'var(--font-display)', marginBottom: '1rem' }}>Recent Activity</h3>
-            <p style={{ color: 'var(--text-muted)' }}>📈 Platform is running normally. {stats?.todayBookings || 0} bookings today.</p>
-          </div>
+          </>
         )}
 
-        {/* Bookings tab */}
         {activeTab === 'bookings' && (
-          <div className="card" style={{ overflow: 'hidden' }}>
-            <div style={{ padding: '1.25rem 1.5rem', borderBottom: '1px solid var(--border)', fontFamily: 'var(--font-display)', fontWeight: 600 }}>
-              All Bookings ({bookings.length})
+          <div className="admin-card">
+            <div className="admin-card-header">
+              <h3 className="admin-card-title">All Bookings ({bookings.length})</h3>
             </div>
-            <div style={{ overflowX: 'auto' }}>
-              <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+            <div className="admin-table-container">
+              <table className="admin-table">
                 <thead>
-                  <tr style={{ background: 'var(--bg-elevated)' }}>
-                    {['Booking ID', 'User', 'Type', 'Amount', 'Status', 'Date'].map(h => (
-                      <th key={h} style={{ padding: '0.75rem 1rem', textAlign: 'left', fontSize: '0.8rem', color: 'var(--text-muted)', fontWeight: 600 }}>{h}</th>
-                    ))}
+                  <tr>
+                    <th>Booking ID</th>
+                    <th>User</th>
+                    <th>Type</th>
+                    <th>Amount</th>
+                    <th>Status</th>
+                    <th>Date</th>
+                    <th>Action</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {bookings.map(b => (
-                    <tr key={b.id} style={{ borderBottom: '1px solid var(--border)' }}>
-                      <td style={{ padding: '0.875rem 1rem', fontSize: '0.85rem', fontFamily: 'monospace', color: 'var(--accent)' }}>{b.bookingId}</td>
-                      <td style={{ padding: '0.875rem 1rem', fontSize: '0.85rem' }}>
-                        {b.user ? `${b.user.firstName} ${b.user.lastName}` : 'N/A'}
-                      </td>
-                      <td style={{ padding: '0.875rem 1rem', fontSize: '0.85rem' }}>{b.bookingType === 'flight' ? '✈️' : '🏨'} {b.bookingType}</td>
-                      <td style={{ padding: '0.875rem 1rem', fontSize: '0.85rem', fontWeight: 600, color: 'var(--accent)' }}>${b.price?.totalPrice}</td>
-                      <td style={{ padding: '0.875rem 1rem' }}>
+                  {bookings.map((b) => (
+                    <tr key={b.id}>
+                      <td style={{ fontFamily: 'monospace', color: 'var(--brand-blue)' }}>{b.bookingId}</td>
+                      <td>{b.user ? `${b.user.firstName} ${b.user.lastName}` : 'N/A'}</td>
+                      <td>{b.bookingType === 'flight' ? '✈️' : '🏨'} {b.bookingType}</td>
+                      <td style={{ fontWeight: 600 }}>${b.price?.totalPrice}</td>
+                      <td>
                         <span className={`badge badge-${b.status === 'confirmed' ? 'success' : b.status === 'cancelled' ? 'error' : 'warning'}`}>
                           {b.status}
                         </span>
                       </td>
-                      <td style={{ padding: '0.875rem 1rem', fontSize: '0.8rem', color: 'var(--text-muted)' }}>
-                        {new Date(b.createdAt).toLocaleDateString()}
+                      <td style={{ color: 'var(--text-soft)' }}>{new Date(b.createdAt).toLocaleDateString()}</td>
+                      <td>
+                         <button className="btn" style={{ padding: '4px 8px', fontSize: '0.8rem' }}>Edit</button>
                       </td>
                     </tr>
                   ))}
+                  {bookings.length === 0 && (
+                    <tr>
+                      <td colSpan="7" style={{ textAlign: 'center', color: 'var(--text-soft)' }}>No bookings yet</td>
+                    </tr>
+                  )}
                 </tbody>
               </table>
-              {bookings.length === 0 && (
-                <div style={{ padding: '2rem', textAlign: 'center', color: 'var(--text-muted)' }}>No bookings yet</div>
-              )}
             </div>
           </div>
         )}
 
-        {/* Users tab */}
         {activeTab === 'users' && (
-          <div className="card" style={{ overflow: 'hidden' }}>
-            <div style={{ padding: '1.25rem 1.5rem', borderBottom: '1px solid var(--border)', fontFamily: 'var(--font-display)', fontWeight: 600 }}>
-              All Users ({users.length})
+          <div className="admin-card">
+            <div className="admin-card-header">
+              <h3 className="admin-card-title">All Users ({users.length})</h3>
             </div>
-            <div style={{ overflowX: 'auto' }}>
-              <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+            <div className="admin-table-container">
+              <table className="admin-table">
                 <thead>
-                  <tr style={{ background: 'var(--bg-elevated)' }}>
-                    {['Name', 'Email', 'Role', 'Status', 'Joined'].map(h => (
-                      <th key={h} style={{ padding: '0.75rem 1rem', textAlign: 'left', fontSize: '0.8rem', color: 'var(--text-muted)', fontWeight: 600 }}>{h}</th>
-                    ))}
+                  <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Role</th>
+                    <th>Status</th>
+                    <th>Joined</th>
+                    <th>Action</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {users.map(u => (
-                    <tr key={u.id} style={{ borderBottom: '1px solid var(--border)' }}>
-                      <td style={{ padding: '0.875rem 1rem' }}>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                          <div style={{ width: 28, height: 28, borderRadius: '50%', background: 'var(--gradient)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.7rem', color: 'white', fontWeight: 700 }}>
+                  {users.map((u) => (
+                    <tr key={u.id}>
+                      <td>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                          <div style={{ width: 32, height: 32, borderRadius: '50%', background: 'var(--brand-blue)', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.8rem', fontWeight: 700 }}>
                             {u.firstName?.[0] || u.email?.[0]}
                           </div>
                           {u.firstName} {u.lastName}
                         </div>
                       </td>
-                      <td style={{ padding: '0.875rem 1rem', fontSize: '0.85rem', color: 'var(--text-muted)' }}>{u.email}</td>
-                      <td style={{ padding: '0.875rem 1rem' }}>
+                      <td style={{ color: 'var(--text-soft)' }}>{u.email}</td>
+                      <td>
                         <span className={`badge ${u.role === 'admin' ? 'badge-error' : 'badge-info'}`}>{u.role}</span>
                       </td>
-                      <td style={{ padding: '0.875rem 1rem' }}>
+                      <td>
                         <span className={`badge ${u.isActive ? 'badge-success' : 'badge-warning'}`}>
                           {u.isActive ? 'Active' : 'Inactive'}
                         </span>
                       </td>
-                      <td style={{ padding: '0.875rem 1rem', fontSize: '0.8rem', color: 'var(--text-muted)' }}>
-                        {new Date(u.createdAt).toLocaleDateString()}
+                      <td style={{ color: 'var(--text-soft)' }}>{new Date(u.createdAt).toLocaleDateString()}</td>
+                      <td>
+                         <button className="btn" style={{ padding: '4px 8px', fontSize: '0.8rem' }}>Edit</button>
                       </td>
                     </tr>
                   ))}
+                  {users.length === 0 && (
+                    <tr>
+                      <td colSpan="6" style={{ textAlign: 'center', color: 'var(--text-soft)' }}>No users yet</td>
+                    </tr>
+                  )}
                 </tbody>
               </table>
-              {users.length === 0 && (
-                <div style={{ padding: '2rem', textAlign: 'center', color: 'var(--text-muted)' }}>No users yet</div>
-              )}
             </div>
           </div>
         )}
-      </div>
+
+        {['flights', 'hotels', 'deals', 'blog'].includes(activeTab) && (
+          <div className="admin-card">
+             <div style={{ padding: '40px', textAlign: 'center' }}>
+                <div style={{ fontSize: '3rem', marginBottom: '16px' }}>🚧</div>
+                <h3 style={{ marginBottom: '8px' }}>Under Construction</h3>
+                <p style={{ color: 'var(--text-soft)' }}>The {activeTab} management interface is being built to use the new mock data API.</p>
+             </div>
+          </div>
+        )}
+
+        {activeTab === 'settings' && (
+           <div className="admin-card">
+             <div style={{ padding: '40px', textAlign: 'center' }}>
+                <div style={{ fontSize: '3rem', marginBottom: '16px' }}>⚙️</div>
+                <h3 style={{ marginBottom: '8px' }}>Platform Settings</h3>
+                <p style={{ color: 'var(--text-soft)' }}>Coming soon.</p>
+             </div>
+          </div>
+        )}
+
+      </main>
     </div>
   );
 }

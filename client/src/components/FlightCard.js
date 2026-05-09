@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { ChevronDown, Info, Lock } from 'lucide-react';
 
-export default function FlightCard({ flight }) {
+export default function FlightCard({ flight, onBookNow }) {
   const [expanded, setExpanded] = useState(false);
 
   return (
@@ -45,7 +45,7 @@ export default function FlightCard({ flight }) {
         <div className="flight-price-action">
           {flight.oldPrice && <s>CAD {flight.oldPrice}</s>}
           <h3><span>CAD</span> {flight.price}</h3>
-          <button className="book-now-btn">BOOK NOW</button>
+          <button className="book-now-btn" onClick={() => onBookNow && onBookNow(flight)}>BOOK NOW</button>
         </div>
       </div>
 

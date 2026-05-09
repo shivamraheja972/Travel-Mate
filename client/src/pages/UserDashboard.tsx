@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 // @ts-ignore
-import { supabase } from '../config/supabase';
-// @ts-ignore
 import { useAuthStore } from '../store/store';
 // @ts-ignore
 import { PageLoading } from '../components/Loading';
 // @ts-ignore
 import { useToast } from '../components/Toast';
+// @ts-ignore
+import { getUserBookings } from '../lib/supabaseData';
 import { 
   Search, Bell, MessageSquare, ChevronDown, 
   LayoutDashboard, Calendar, Wallet, MessageCircle, 
@@ -46,20 +46,11 @@ export default function UserDashboard() {
     const fetchDashboardData = async () => {
       try {
         setLoading(true);
-        const { data, error } = await supabase
-          .from('bookings')
-          .select('*')
-          .eq('user_id', user.id || user._id)
-          .order('created_at', { ascending: false });
-
-        if (error) {
-          console.warn('Supabase fetch failed:', error.message);
-          setBookings([]);
-        } else {
-          setBookings(data || []);
-        }
+        const data = await getUserBookings(user.id || user._id);
+        setBookings(data || []);
       } catch (err) {
-        console.error('Error fetching data:', err);
+        console.warn('Dashboard data fetch failed:', err);
+        setBookings([]);
       } finally {
         setLoading(false);
       }

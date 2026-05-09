@@ -39,14 +39,16 @@ const AdminRoute = ({ children }) => {
 const MainLayout = ({ children }) => {
   const location = useLocation();
   const isDashboard = location.pathname === '/dashboard';
+  const isAdmin = location.pathname.startsWith('/admin');
+  const hideNavFooter = isDashboard || isAdmin;
 
   return (
     <div className="app-wrapper" style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
-      {!isDashboard && <Navbar />}
+      {!hideNavFooter && <Navbar />}
       <main style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
         {children}
       </main>
-      {!isDashboard && <Footer />}
+      {!hideNavFooter && <Footer />}
     </div>
   );
 };
