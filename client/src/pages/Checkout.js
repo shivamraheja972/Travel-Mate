@@ -23,9 +23,22 @@ export default function Checkout() {
 
   if (!currentBooking) {
     return (
-      <div style={{ textAlign: 'center', padding: '4rem', background: 'var(--bg)', minHeight: '60vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-        <h2 style={{ marginBottom: '1rem' }}>No booking found</h2>
-        <button className="btn btn-primary" onClick={() => navigate('/')}>Go Home</button>
+      <div className="checkout-page" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '80vh', background: '#f8fafc' }}>
+        <div style={{ background: 'white', padding: '3rem', borderRadius: '24px', boxShadow: '0 20px 40px rgba(0,0,0,0.08)', textAlign: 'center', maxWidth: '440px', width: '90%', border: '1px solid #e2e8f0' }}>
+          <div style={{ width: 80, height: 80, background: '#fef2f2', border: '4px solid #fee2e2', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 1.5rem auto', fontSize: '2rem' }}>
+            🛒
+          </div>
+          <h2 style={{ fontFamily: 'var(--font-title)', fontSize: '1.8rem', marginBottom: '0.5rem', color: 'var(--text-main)', fontWeight: 800 }}>Your Cart is Empty</h2>
+          <p style={{ color: 'var(--text-soft)', marginBottom: '2.5rem', lineHeight: '1.6', fontSize: '1.05rem' }}>
+            It looks like you haven't started a booking yet, or your session expired.
+          </p>
+          <button 
+            onClick={() => navigate('/')}
+            style={{ width: '100%', padding: '16px', background: 'linear-gradient(to right, var(--brand-blue), #2563eb)', color: 'white', border: 'none', borderRadius: '14px', fontSize: '1.1rem', fontWeight: 700, cursor: 'pointer', boxShadow: '0 8px 20px rgba(37, 99, 235, 0.25)', transition: 'all 0.2s', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}
+          >
+            Go to Homepage
+          </button>
+        </div>
       </div>
     );
   }
