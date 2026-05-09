@@ -2645,6 +2645,21 @@ select {
   margin-bottom: 3rem;
 }
 
+@media (max-width: 600px) {
+  .fd-route-display {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  .fd-flight-path {
+    width: 100%;
+    transform: rotate(90deg);
+    margin: 2rem 0;
+  }
+  .fd-time-box h1 {
+    font-size: 2.2rem;
+  }
+}
+
 .fd-time-box {
   text-align: center;
 }
@@ -2947,6 +2962,12 @@ select {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1.25rem;
+}
+
+@media (max-width: 600px) {
+  .checkout-form-row {
+    grid-template-columns: 1fr;
+  }
 }
 
 .checkout-form-group {

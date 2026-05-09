@@ -1,16 +1,21 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Plane, ArrowLeft, Check, X, ShieldCheck } from 'lucide-react';
+import { Plane, ArrowLeft, Check, X, ShieldCheck, Mail, Lock, Eye, EyeOff } from 'lucide-react';
 import { useSearchStore, useAuthStore, useBookingStore } from '../store/store';
-import { createBooking } from '../lib/supabaseData';
+import { loginUser } from '../lib/supabaseData';
 import { useToast } from '../components/Toast';
 
 export default function FlightDetails() {
   const navigate = useNavigate();
   const { selectedFlight } = useSearchStore();
-  const { isAuthenticated, user } = useAuthStore();
+  const { isAuthenticated, user, login } = useAuthStore();
   const { setCurrentBooking } = useBookingStore();
-  const { error: showError } = useToast();
+  const { success, error: showError } = useToast();
+
+  const [showAuthModal, setShowAuthModal] = React.useState(false);
+  const [authForm, setAuthForm] = React.useState({ email: '', password: '' });
+  const [showPass, setShowPass] = React.useState(false);
+  const [authLoading, setAuthLoading] = React.useState(false);
 
   if (!selectedFlight) {
     return (
@@ -40,7 +45,7 @@ export default function FlightDetails() {
   const fmtTime = (d) => d ? new Date(d).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }) : '--';
   const fmtDate = (d) => d ? new Date(d).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' }) : '--';
 
-  const handleBook = () => {
+  const continueBooking = () => {
     const bookingData = {
       id: 'pending-' + Date.now(),
       bookingId: 'MOCK-' + Math.random().toString(36).substring(2, 8).toUpperCase(),
@@ -65,6 +70,33 @@ export default function FlightDetails() {
     
     setCurrentBooking(bookingData);
     navigate('/checkout');
+  };
+
+  const handleBook = () => {
+    if (!isAuthenticated) {
+      setShowAuthModal(true);
+      return;
+    }
+    continueBooking();
+  };
+
+  const handleInlineLogin = async (e) => {
+    e.preventDefault();
+    setAuthLoading(true);
+    try {
+      const userObj = await loginUser({
+        email: authForm.email.trim().toLowerCase(),
+        password: authForm.password,
+      });
+      login(userObj);
+      success(`Welcome back, ${userObj.firstName || 'Traveler'}!`);
+      setShowAuthModal(false);
+      continueBooking();
+    } catch (err) {
+      showError(err.message || 'Login failed. Please check your credentials.');
+    } finally {
+      setAuthLoading(false);
+    }
   };
 
   const taxes = Math.round(f.price * 0.12);
@@ -179,6 +211,64 @@ export default function FlightDetails() {
           </div>
         </div>
       </div>
+
+      {showAuthModal && (
+        <div style={{
+          position: 'fixed', inset: 0, background: 'rgba(15, 23, 42, 0.6)', backdropFilter: 'blur(4px)',
+          display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 9999, padding: '1rem'
+        }}>
+          <div style={{
+            background: 'white', borderRadius: '24px', padding: '2.5rem', width: '100%', maxWidth: '440px',
+            boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)', position: 'relative'
+          }}>
+            <button 
+              onClick={() => setShowAuthModal(false)}
+              style={{ position: 'absolute', top: '1.5rem', right: '1.5rem', background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-soft)' }}
+            >
+              <X size={24} />
+            </button>
+            
+            <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
+              <div style={{ width: 60, height: 60, background: '#eef2ff', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 1rem', color: 'var(--brand-blue)' }}>
+                <Lock size={30} />
+              </div>
+              <h2 style={{ fontFamily: 'var(--font-title)', fontSize: '1.8rem', fontWeight: 800, color: 'var(--text-main)', marginBottom: '0.5rem' }}>Sign in to book</h2>
+              <p style={{ color: 'var(--text-soft)', fontSize: '0.95rem' }}>Please sign in to your TravelMate account to secure this flight.</p>
+            </div>
+
+            <form onSubmit={handleInlineLogin} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+              <div style={{ position: 'relative' }}>
+                <div style={{ position: 'absolute', left: '14px', top: '50%', transform: 'translateY(-50%)', color: '#94a3b8' }}><Mail size={18} /></div>
+                <input type="email" placeholder="Email address" value={authForm.email}
+                  onChange={e => setAuthForm(f => ({ ...f, email: e.target.value }))} required
+                  style={{ width: '100%', padding: '14px 14px 14px 44px', borderRadius: '12px', border: '1px solid #cbd5e1', fontSize: '1rem', outline: 'none' }} />
+              </div>
+
+              <div style={{ position: 'relative' }}>
+                <div style={{ position: 'absolute', left: '14px', top: '50%', transform: 'translateY(-50%)', color: '#94a3b8' }}><Lock size={18} /></div>
+                <input type={showPass ? 'text' : 'password'} placeholder="Password" value={authForm.password}
+                  onChange={e => setAuthForm(f => ({ ...f, password: e.target.value }))} required
+                  style={{ width: '100%', padding: '14px 44px 14px 44px', borderRadius: '12px', border: '1px solid #cbd5e1', fontSize: '1rem', outline: 'none' }} />
+                <button type="button" onClick={() => setShowPass(!showPass)}
+                  style={{ position: 'absolute', right: '14px', top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', cursor: 'pointer', color: '#94a3b8' }}>
+                  {showPass ? <EyeOff size={18} /> : <Eye size={18} />}
+                </button>
+              </div>
+
+              <button type="submit" disabled={authLoading} style={{ 
+                width: '100%', padding: '16px', borderRadius: '12px', background: 'linear-gradient(135deg, var(--brand-blue) 0%, #1f58c4 100%)', 
+                color: 'white', fontWeight: 800, fontSize: '1.1rem', border: 'none', cursor: 'pointer', marginTop: '0.5rem', boxShadow: '0 8px 16px rgba(31, 88, 196, 0.25)'
+              }}>
+                {authLoading ? 'Signing in...' : 'Sign In & Continue'}
+              </button>
+            </form>
+
+            <div style={{ textAlign: 'center', marginTop: '1.5rem', color: 'var(--text-soft)', fontSize: '0.95rem' }}>
+              Don't have an account? <a href="/register" target="_blank" rel="noreferrer" style={{ color: 'var(--brand-blue)', fontWeight: 700, textDecoration: 'none' }}>Register here</a>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
