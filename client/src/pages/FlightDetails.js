@@ -1,21 +1,20 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useSearchStore } from '../store/store';
-import { useAuthStore } from '../store/store';
-import { useBookingStore } from '../store/store';
+import { Plane, ArrowLeft, Check, X, ShieldCheck } from 'lucide-react';
+import { useSearchStore, useAuthStore, useBookingStore } from '../store/store';
 import { createBooking } from '../lib/supabaseData';
 import { useToast } from '../components/Toast';
 
 export default function FlightDetails() {
   const navigate = useNavigate();
-  const { selectedFlight, flightSearch } = useSearchStore();
+  const { selectedFlight } = useSearchStore();
   const { isAuthenticated, user } = useAuthStore();
   const { setCurrentBooking } = useBookingStore();
-  const { success, error: showError } = useToast();
+  const { error: showError } = useToast();
 
   if (!selectedFlight) {
     return (
-      <div style={{ textAlign: 'center', padding: '4rem', background: 'var(--bg)', minHeight: '60vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+      <div style={{ textAlign: 'center', padding: '4rem', minHeight: '60vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
         <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>✈️</div>
         <h2 style={{ marginBottom: '1rem' }}>No flight selected</h2>
         <button className="btn btn-primary" onClick={() => navigate('/flights')}>Back to Flights</button>
@@ -24,8 +23,8 @@ export default function FlightDetails() {
   }
 
   const f = selectedFlight;
-  const fmtTime = (d) => d ? new Date(d).toLocaleTimeString('en', { hour: '2-digit', minute: '2-digit' }) : '--';
-  const fmtDate = (d) => d ? new Date(d).toLocaleDateString('en', { weekday: 'short', month: 'short', day: 'numeric' }) : '--';
+  const fmtTime = (d) => d ? new Date(d).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }) : '--';
+  const fmtDate = (d) => d ? new Date(d).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' }) : '--';
 
   const handleBook = async () => {
     if (!isAuthenticated) { navigate('/login'); return; }
@@ -57,10 +56,9 @@ export default function FlightDetails() {
       });
       setCurrentBooking({
         ...booking,
-        bookingId: booking.booking_id,
-        bookingType: booking.booking_type,
-        flightDetails: booking.flight_details,
-        hotelDetails: booking.hotel_details,
+        bookingId: booking.booking_id || booking.id,
+        bookingType: booking.booking_type || booking.bookingType,
+        flightDetails: booking.flight_details || booking.flightDetails,
       });
       navigate('/checkout');
     } catch (err) {
@@ -72,86 +70,111 @@ export default function FlightDetails() {
   const fees = 15;
   const total = f.price + taxes + fees;
 
-  return (
-    <div style={{ background: 'var(--bg)', minHeight: '100vh', padding: '2rem 0' }}>
-      <div className="container" style={{ maxWidth: 900 }}>
-        <button className="btn btn-ghost btn-sm" style={{ marginBottom: '1.5rem' }} onClick={() => navigate('/flights')}>
-          ← Back to Results
-        </button>
+  const amenitiesList = [
+    { icon: '🧳', label: f.baggage || '23kg Baggage' },
+    { icon: '💺', label: 'Seat Selection' },
+    { icon: f.refundable ? <Check size={16} color="var(--success)"/> : <X size={16} color="var(--error)"/>, label: f.refundable ? 'Fully Refundable' : 'Non-refundable' },
+    ...(f.amenities || []).map(a => ({ icon: <Check size={16} color="var(--brand-blue)"/>, label: a })),
+  ];
 
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr auto', gap: '1.5rem', alignItems: 'start' }}>
-          {/* Flight Details */}
-          <div>
-            <div className="card" style={{ padding: '2rem', marginBottom: '1.5rem' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '2rem' }}>
-                <div style={{ fontSize: '2.5rem' }}>{f.logo || '✈️'}</div>
+  return (
+    <div className="flight-details-page">
+      <div className="flight-details-hero">
+        <div className="container" style={{ position: 'relative', zIndex: 10 }}>
+          <button className="fd-back-btn" onClick={() => navigate('/flights')}>
+            <ArrowLeft size={18} /> Back to Results
+          </button>
+          <h1 style={{ fontSize: '2.5rem', fontFamily: 'var(--font-title)', fontWeight: 800, marginBottom: '0.5rem' }}>Review your trip</h1>
+          <p style={{ opacity: 0.9, fontSize: '1.1rem' }}>Please review your flight details before proceeding to checkout.</p>
+        </div>
+      </div>
+
+      <div className="fd-container">
+        <div className="fd-main-col">
+          <div className="fd-boarding-pass">
+            <div className="fd-bp-header">
+              <div className="fd-airline-info">
+                {f.logo && f.logo.startsWith('http') ? (
+                  <img src={f.logo} alt={f.airline} />
+                ) : (
+                  <div style={{ width: 48, height: 48, background: '#f1f5f9', borderRadius: 12, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.5rem' }}>✈️</div>
+                )}
                 <div>
-                  <h1 style={{ fontFamily: 'var(--font-display)', fontSize: '1.4rem' }}>{f.airline}</h1>
-                  <p style={{ color: 'var(--text-muted)' }}>{f.flightNumber} · {f.class}</p>
+                  <h2>{f.airline}</h2>
+                  <p style={{ color: 'var(--text-soft)', fontSize: '0.9rem', fontWeight: 500 }}>Flight {f.flightNumber}</p>
                 </div>
               </div>
-
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr auto 1fr', alignItems: 'center', gap: '1rem', padding: '1.5rem', background: 'var(--bg-elevated)', borderRadius: 'var(--radius-sm)' }}>
-                <div>
-                  <div style={{ fontFamily: 'var(--font-display)', fontSize: '2rem', fontWeight: 800 }}>{fmtTime(f.departureTime)}</div>
-                  <div style={{ fontFamily: 'var(--font-display)', fontSize: '1.3rem', fontWeight: 700, color: 'var(--accent)' }}>{f.from}</div>
-                  <div style={{ color: 'var(--text-muted)', fontSize: '0.85rem' }}>{fmtDate(f.departureTime)}</div>
-                </div>
-                <div style={{ textAlign: 'center' }}>
-                  <div style={{ color: 'var(--text-muted)', fontSize: '0.8rem', marginBottom: '0.5rem' }}>{f.duration}</div>
-                  <div style={{ color: f.stops === 0 ? 'var(--success)' : 'var(--warning)', fontSize: '0.8rem' }}>
-                    {f.stops === 0 ? '✅ Nonstop' : `🔄 ${f.stops} Stop(s)`}
-                  </div>
-                </div>
-                <div style={{ textAlign: 'right' }}>
-                  <div style={{ fontFamily: 'var(--font-display)', fontSize: '2rem', fontWeight: 800 }}>{fmtTime(f.arrivalTime)}</div>
-                  <div style={{ fontFamily: 'var(--font-display)', fontSize: '1.3rem', fontWeight: 700, color: 'var(--accent)' }}>{f.to}</div>
-                  <div style={{ color: 'var(--text-muted)', fontSize: '0.85rem' }}>{fmtDate(f.arrivalTime)}</div>
-                </div>
+              <div>
+                <span>{f.class}</span>
               </div>
             </div>
 
-            {/* Amenities */}
-            <div className="card" style={{ padding: '1.5rem' }}>
-              <h3 style={{ fontFamily: 'var(--font-display)', marginBottom: '1rem' }}>Included</h3>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '0.75rem' }}>
-                {[
-                  { icon: '🧳', label: f.baggage || '23kg baggage' },
-                  { icon: '💺', label: 'Seat selection' },
-                  { icon: f.refundable ? '✅' : '❌', label: f.refundable ? 'Refundable' : 'Non-refundable' },
-                  ...(f.amenities || []).map(a => ({ icon: '✓', label: a })),
-                ].map((item, i) => (
-                  <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--text-muted)', fontSize: '0.9rem' }}>
-                    <span>{item.icon}</span><span>{item.label}</span>
+            <div className="fd-bp-body">
+              <div className="fd-route-display">
+                <div className="fd-time-box">
+                  <h1>{f.from}</h1>
+                  <h3>{fmtTime(f.departureTime)}</h3>
+                  <p>{fmtDate(f.departureTime)}</p>
+                </div>
+
+                <div className="fd-flight-path">
+                  <div className="fd-flight-path-line">
+                    <div className="fd-flight-path-plane"><Plane size={24} /></div>
                   </div>
-                ))}
+                  <div className="fd-flight-duration">{f.duration}</div>
+                  <div className="fd-flight-stops">{f.stops === 0 ? 'Nonstop' : `${f.stops} Stop(s)`}</div>
+                </div>
+
+                <div className="fd-time-box">
+                  <h1>{f.to}</h1>
+                  <h3>{fmtTime(f.arrivalTime)}</h3>
+                  <p>{fmtDate(f.arrivalTime)}</p>
+                </div>
+              </div>
+
+              <div style={{ borderTop: '1px solid #f1f5f9', paddingTop: '2rem', marginTop: '2rem' }}>
+                <h3 style={{ fontFamily: 'var(--font-title)', fontSize: '1.25rem', marginBottom: '1rem' }}>Included with your ticket</h3>
+                <div className="fd-amenities">
+                  {amenitiesList.map((item, i) => (
+                    <div key={i} className="fd-amenity-pill">
+                      {item.icon} {item.label}
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
           </div>
+        </div>
 
-          {/* Booking summary */}
-          <div className="card" style={{ padding: '1.5rem', minWidth: 260, position: 'sticky', top: 84 }}>
-            <h3 style={{ fontFamily: 'var(--font-display)', marginBottom: '1.25rem' }}>Price Summary</h3>
-            {[
-              { label: 'Base fare', value: `$${f.price}` },
-              { label: 'Taxes (12%)', value: `$${taxes}` },
-              { label: 'Service fee', value: `$${fees}` },
-            ].map(({ label, value }) => (
-              <div key={label} style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.6rem', fontSize: '0.9rem', color: 'var(--text-muted)' }}>
-                <span>{label}</span><span>{value}</span>
-              </div>
-            ))}
-            <div style={{ borderTop: '1px solid var(--border)', paddingTop: '0.75rem', marginTop: '0.25rem', display: 'flex', justifyContent: 'space-between', fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '1.2rem' }}>
-              <span>Total</span>
-              <span style={{ color: 'var(--accent)' }}>${total}</span>
+        <div className="fd-sidebar-col">
+          <div className="fd-summary-card">
+            <h3>Price Summary</h3>
+            <div className="fd-price-row">
+              <span>Base fare (1x Adult)</span>
+              <span>${f.price}</span>
+            </div>
+            <div className="fd-price-row">
+              <span>Taxes (12%)</span>
+              <span>${taxes}</span>
+            </div>
+            <div className="fd-price-row">
+              <span>Service fee</span>
+              <span>${fees}</span>
             </div>
 
-            <button className="btn btn-accent" style={{ width: '100%', marginTop: '1.25rem' }} onClick={handleBook}>
-              {isAuthenticated ? '🎫 Book Now' : '🔑 Login to Book'}
+            <div className="fd-price-total">
+              <span>Total</span>
+              <span className="amount">${total}</span>
+            </div>
+
+            <button className="fd-book-btn" onClick={handleBook}>
+              {isAuthenticated ? 'Proceed to Checkout' : 'Login to Book'}
             </button>
-            <p style={{ textAlign: 'center', color: 'var(--text-subtle)', fontSize: '0.78rem', marginTop: '0.75rem' }}>
-              Free cancellation within 24 hours
-            </p>
+
+            <div style={{ marginTop: '1.5rem', display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--text-soft)', fontSize: '0.85rem', justifyContent: 'center' }}>
+              <ShieldCheck size={16} color="var(--success)" />
+              Secure transaction via Stripe
+            </div>
           </div>
         </div>
       </div>
