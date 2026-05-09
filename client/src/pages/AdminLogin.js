@@ -49,7 +49,8 @@ export default function AdminLogin() {
       alignItems: 'center',
       justifyContent: 'center',
       background: '#0f172a',
-      fontFamily: 'var(--font-main)'
+      fontFamily: 'var(--font-main)',
+      padding: '20px'
     }}>
       <div style={{
         background: '#1e293b',
