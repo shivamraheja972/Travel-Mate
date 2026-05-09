@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect, useState, useRef } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
 // @ts-ignore
 import { useAuthStore } from '../store/store';
 // @ts-ignore
@@ -8,13 +8,287 @@ import { PageLoading } from '../components/Loading';
 import { useToast } from '../components/Toast';
 // @ts-ignore
 import { getUserBookings } from '../lib/supabaseData';
-import { 
-  Search, Bell, MessageSquare, ChevronDown, 
-  LayoutDashboard, Calendar, Wallet, MessageCircle, 
+import {
+  Search, Bell, MessageSquare, ChevronDown,
+  LayoutDashboard, Calendar, Wallet, MessageCircle,
   Grid, Globe, FileText, Settings, HelpCircle, LogOut,
   CalendarCheck, CheckCircle2, FileClock, XOctagon,
-  Eye, Plane, ChevronLeft, ChevronRight
+  Eye, Plane, ChevronLeft, ChevronRight,
+  Send, Tag, Hotel, CreditCard, TrendingUp, ArrowRight,
+  MapPin, Clock, Star
 } from 'lucide-react';
+
+/* ── Wallet Tab ─────────────────────────────────────────── */
+const WalletTab = ({ bookings, user }: any) => {
+  const transactions = bookings.length > 0
+    ? bookings.map((b: any) => ({
+        id: b.booking_id,
+        date: new Date(b.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
+        desc: b.flight_details ? `✈️ ${b.flight_details.from || '?'} → ${b.flight_details.to || '?'}` : b.hotel_details ? `🏨 ${b.hotel_details.hotelName || 'Hotel'}` : '✈️ Flight Booking',
+        amount: b.price?.totalPrice || b.price?.total_price || 0,
+        method: b.payment?.method || 'Stripe',
+        status: b.status,
+      }))
+    : [
+        { id: 'TM001', date: 'May 9, 2026', desc: '✈️ Toronto → Dubai', amount: 2052, method: 'Stripe', status: 'confirmed' },
+        { id: 'TM002', date: 'Apr 20, 2026', desc: '🏨 Burj Al Arab, Dubai', amount: 880, method: 'Paypal', status: 'confirmed' },
+        { id: 'TM003', date: 'Mar 15, 2026', desc: '✈️ Dubai → London', amount: 1140, method: 'Stripe', status: 'completed' },
+      ];
+
+  const total = transactions.reduce((s: number, t: any) => s + t.amount, 0);
+
+  return (
+    <div>
+      <h2 style={{ fontSize: '1.5rem', fontWeight: 700, color: '#1e293b', marginBottom: 24 }}>Wallet & Payments</h2>
+
+      {/* Balance cards */}
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginBottom: 28 }}>
+        <div style={{ background: 'linear-gradient(135deg,#6366f1,#818cf8)', borderRadius: 16, padding: '24px 28px', color: 'white' }}>
+          <div style={{ fontSize: '0.85rem', opacity: 0.85, marginBottom: 8 }}>Total Spent</div>
+          <div style={{ fontSize: '2rem', fontWeight: 800 }}>${total.toLocaleString()}</div>
+          <div style={{ fontSize: '0.8rem', opacity: 0.75, marginTop: 6 }}>{transactions.length} transactions</div>
+        </div>
+        <div style={{ background: 'white', borderRadius: 16, padding: '24px 28px', border: '1px solid #e2e8f0' }}>
+          <div style={{ fontSize: '0.85rem', color: '#64748b', marginBottom: 8 }}>Last Payment</div>
+          <div style={{ fontSize: '1.6rem', fontWeight: 800, color: '#1e293b' }}>${transactions[0]?.amount?.toLocaleString() || 0}</div>
+          <div style={{ fontSize: '0.8rem', color: '#94a3b8', marginTop: 6 }}>{transactions[0]?.date}</div>
+        </div>
+      </div>
+
+      {/* Transaction list */}
+      <div style={{ background: 'white', borderRadius: 16, border: '1px solid #e2e8f0', overflow: 'hidden' }}>
+        <div style={{ padding: '18px 24px', borderBottom: '1px solid #e2e8f0', fontWeight: 700, fontSize: '1rem', color: '#1e293b' }}>Transaction History</div>
+        {transactions.map((t: any, i: number) => (
+          <div key={i} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '16px 24px', borderBottom: i < transactions.length - 1 ? '1px solid #f1f5f9' : 'none' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
+              <div style={{ width: 42, height: 42, borderRadius: 10, background: '#e0e7ff', color: '#6366f1', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.1rem' }}>
+                {t.desc.startsWith('✈️') ? '✈️' : '🏨'}
+              </div>
+              <div>
+                <div style={{ fontWeight: 600, color: '#1e293b', fontSize: '0.95rem' }}>{t.desc.replace(/✈️|🏨/g, '').trim()}</div>
+                <div style={{ fontSize: '0.8rem', color: '#94a3b8', marginTop: 2 }}>{t.date} · {t.method}</div>
+              </div>
+            </div>
+            <div style={{ textAlign: 'right' }}>
+              <div style={{ fontWeight: 700, color: '#1e293b', fontSize: '1rem' }}>-${t.amount?.toLocaleString()}</div>
+              <div style={{ marginTop: 4 }}>
+                <span style={{ padding: '3px 10px', background: t.status === 'confirmed' || t.status === 'completed' ? '#d1fae5' : '#fef3c7', color: t.status === 'confirmed' || t.status === 'completed' ? '#059669' : '#d97706', borderRadius: 6, fontSize: '0.75rem', fontWeight: 600 }}>{t.status}</span>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+/* ── Chat Tab ───────────────────────────────────────────── */
+const ChatTab = ({ user }: any) => {
+  const [messages, setMessages] = useState([
+    { from: 'support', text: `Hi ${user?.firstName || 'there'}! 👋 Welcome to TravelMate Support. How can I help you today?`, time: '10:30 AM' },
+    { from: 'support', text: 'You can ask me about your bookings, flight changes, refund policies, or anything else travel-related.', time: '10:30 AM' },
+  ]);
+  const [input, setInput] = useState('');
+  const bottomRef = useRef<HTMLDivElement>(null);
+
+  const botReplies: Record<string, string> = {
+    refund: 'Refund requests are processed within 5–7 business days. Please share your Booking ID and we\'ll get that started for you.',
+    cancel: 'To cancel a booking, go to the Booking tab, find your trip, and tap "Details". Cancellations made 24+ hours before departure are eligible for a full refund.',
+    change: 'Flight date/seat changes can be requested up to 6 hours before departure. Fees may apply depending on the airline.',
+    baggage: 'Baggage allowances vary by airline. Economy typically includes 7kg cabin + 23kg check-in. Check your booking confirmation for specifics.',
+    default: 'Thanks for reaching out! Our team will follow up within 2 hours. In the meantime, check your booking details under the Booking tab.',
+  };
+
+  const send = () => {
+    if (!input.trim()) return;
+    const userMsg = { from: 'user', text: input.trim(), time: new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' }) };
+    const lower = input.toLowerCase();
+    const replyKey = Object.keys(botReplies).find(k => lower.includes(k)) || 'default';
+    const botMsg = { from: 'support', text: botReplies[replyKey], time: new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' }) };
+    setMessages(prev => [...prev, userMsg, botMsg]);
+    setInput('');
+    setTimeout(() => bottomRef.current?.scrollIntoView({ behavior: 'smooth' }), 100);
+  };
+
+  return (
+    <div>
+      <h2 style={{ fontSize: '1.5rem', fontWeight: 700, color: '#1e293b', marginBottom: 24 }}>Support Chat</h2>
+      <div style={{ background: 'white', borderRadius: 16, border: '1px solid #e2e8f0', overflow: 'hidden', display: 'flex', flexDirection: 'column', height: 520 }}>
+        {/* Chat header */}
+        <div style={{ padding: '16px 20px', borderBottom: '1px solid #e2e8f0', display: 'flex', alignItems: 'center', gap: 12, background: '#f8fafc' }}>
+          <div style={{ width: 40, height: 40, borderRadius: '50%', background: '#6366f1', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700 }}>TM</div>
+          <div>
+            <div style={{ fontWeight: 700, color: '#1e293b' }}>TravelMate Support</div>
+            <div style={{ fontSize: '0.8rem', color: '#22c55e', fontWeight: 600 }}>● Online</div>
+          </div>
+        </div>
+
+        {/* Messages */}
+        <div style={{ flex: 1, overflowY: 'auto', padding: '20px', display: 'flex', flexDirection: 'column', gap: 12 }}>
+          {messages.map((m, i) => (
+            <div key={i} style={{ display: 'flex', justifyContent: m.from === 'user' ? 'flex-end' : 'flex-start' }}>
+              <div style={{ maxWidth: '75%' }}>
+                <div style={{
+                  padding: '10px 14px', borderRadius: m.from === 'user' ? '16px 16px 4px 16px' : '16px 16px 16px 4px',
+                  background: m.from === 'user' ? '#6366f1' : '#f1f5f9',
+                  color: m.from === 'user' ? 'white' : '#1e293b',
+                  fontSize: '0.9rem', lineHeight: 1.5,
+                }}>
+                  {m.text}
+                </div>
+                <div style={{ fontSize: '0.72rem', color: '#94a3b8', marginTop: 4, textAlign: m.from === 'user' ? 'right' : 'left' }}>{m.time}</div>
+              </div>
+            </div>
+          ))}
+          <div ref={bottomRef} />
+        </div>
+
+        {/* Input */}
+        <div style={{ padding: '12px 16px', borderTop: '1px solid #e2e8f0', display: 'flex', gap: 10 }}>
+          <input
+            value={input}
+            onChange={e => setInput(e.target.value)}
+            onKeyDown={e => e.key === 'Enter' && send()}
+            placeholder="Type a message... (try 'refund', 'cancel', 'baggage')"
+            style={{ flex: 1, padding: '10px 14px', borderRadius: 10, border: '1px solid #e2e8f0', outline: 'none', fontSize: '0.9rem', color: '#1e293b' }}
+          />
+          <button onClick={send} style={{ width: 42, height: 42, borderRadius: 10, background: '#6366f1', border: 'none', color: 'white', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <Send size={18} />
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+/* ── Calendar Tab ───────────────────────────────────────── */
+const CalendarTab = ({ bookings }: any) => {
+  const today = new Date();
+  const [month, setMonth] = useState(today.getMonth());
+  const [year, setYear] = useState(today.getFullYear());
+
+  const bookingDates = new Set(bookings.map((b: any) => new Date(b.created_at).toDateString()));
+  const bookingByDate: Record<string, any[]> = {};
+  bookings.forEach((b: any) => {
+    const key = new Date(b.created_at).toDateString();
+    if (!bookingByDate[key]) bookingByDate[key] = [];
+    bookingByDate[key].push(b);
+  });
+
+  const firstDay = new Date(year, month, 1).getDay();
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+  const monthName = new Date(year, month).toLocaleString('en-US', { month: 'long' });
+
+  const prevMonth = () => { if (month === 0) { setMonth(11); setYear(y => y - 1); } else setMonth(m => m - 1); };
+  const nextMonth = () => { if (month === 11) { setMonth(0); setYear(y => y + 1); } else setMonth(m => m + 1); };
+
+  return (
+    <div>
+      <h2 style={{ fontSize: '1.5rem', fontWeight: 700, color: '#1e293b', marginBottom: 24 }}>Booking Calendar</h2>
+      <div style={{ background: 'white', borderRadius: 16, border: '1px solid #e2e8f0', overflow: 'hidden' }}>
+        {/* Header */}
+        <div style={{ padding: '20px 24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '1px solid #e2e8f0' }}>
+          <button onClick={prevMonth} style={{ width: 36, height: 36, borderRadius: 8, border: '1px solid #e2e8f0', background: 'white', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><ChevronLeft size={16} /></button>
+          <div style={{ fontWeight: 700, fontSize: '1.1rem', color: '#1e293b' }}>{monthName} {year}</div>
+          <button onClick={nextMonth} style={{ width: 36, height: 36, borderRadius: 8, border: '1px solid #e2e8f0', background: 'white', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><ChevronRight size={16} /></button>
+        </div>
+
+        {/* Day headers */}
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7,1fr)', borderBottom: '1px solid #e2e8f0' }}>
+          {['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].map(d => (
+            <div key={d} style={{ padding: '10px 0', textAlign: 'center', fontSize: '0.8rem', fontWeight: 700, color: '#94a3b8' }}>{d}</div>
+          ))}
+        </div>
+
+        {/* Dates */}
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7,1fr)' }}>
+          {Array.from({ length: firstDay }, (_, i) => <div key={`e${i}`} style={{ minHeight: 56 }} />)}
+          {Array.from({ length: daysInMonth }, (_, i) => {
+            const d = i + 1;
+            const dateStr = new Date(year, month, d).toDateString();
+            const isToday = dateStr === today.toDateString();
+            const hasBooking = bookingDates.has(dateStr);
+            return (
+              <div key={d} style={{ minHeight: 56, padding: 6, borderTop: '1px solid #f1f5f9', position: 'relative' }}>
+                <div style={{
+                  width: 30, height: 30, borderRadius: '50%',
+                  background: isToday ? '#6366f1' : hasBooking ? '#e0e7ff' : 'transparent',
+                  color: isToday ? 'white' : hasBooking ? '#6366f1' : '#1e293b',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  fontSize: '0.85rem', fontWeight: isToday || hasBooking ? 700 : 400,
+                  margin: '0 auto',
+                }}>
+                  {d}
+                </div>
+                {hasBooking && !isToday && (
+                  <div style={{ width: 6, height: 6, borderRadius: '50%', background: '#6366f1', margin: '3px auto 0' }} />
+                )}
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* Upcoming */}
+      <div style={{ marginTop: 20, background: 'white', borderRadius: 16, border: '1px solid #e2e8f0', overflow: 'hidden' }}>
+        <div style={{ padding: '16px 24px', borderBottom: '1px solid #e2e8f0', fontWeight: 700, color: '#1e293b' }}>Your Bookings</div>
+        {bookings.length === 0 ? (
+          <div style={{ padding: '32px', textAlign: 'center', color: '#94a3b8' }}>No bookings to display yet.</div>
+        ) : bookings.map((b: any, i: number) => (
+          <div key={i} style={{ padding: '14px 24px', borderBottom: i < bookings.length - 1 ? '1px solid #f1f5f9' : 'none', display: 'flex', alignItems: 'center', gap: 14 }}>
+            <div style={{ width: 40, height: 40, borderRadius: 10, background: '#e0e7ff', color: '#6366f1', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <Plane size={18} style={{ transform: 'rotate(45deg)' }} />
+            </div>
+            <div style={{ flex: 1 }}>
+              <div style={{ fontWeight: 600, color: '#1e293b', fontSize: '0.95rem' }}>{b.booking_id}</div>
+              <div style={{ fontSize: '0.8rem', color: '#94a3b8', marginTop: 2 }}>
+                {new Date(b.created_at).toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}
+              </div>
+            </div>
+            <span style={{ padding: '4px 12px', background: '#d1fae5', color: '#059669', borderRadius: 6, fontSize: '0.8rem', fontWeight: 600 }}>{b.status}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+/* ── Services Tab ───────────────────────────────────────── */
+const ServicesTab = () => {
+  const services = [
+    { icon: '✈️', title: 'Flights', desc: 'Search and book flights worldwide with the best prices and flexible dates.', link: '/flights', color: '#e0e7ff', accent: '#6366f1' },
+    { icon: '🏨', title: 'Hotels', desc: 'Find the perfect stay from budget-friendly to luxury 5-star hotels.', link: '/hotels', color: '#d1fae5', accent: '#10b981' },
+    { icon: '🎫', title: 'Exclusive Deals', desc: 'Handpicked travel packages at deeply discounted prices for a limited time.', link: '/deals', color: '#fef3c7', accent: '#f59e0b' },
+    { icon: '📖', title: 'Travel Blog', desc: 'Expert tips, destination guides, and travel hacks from our writers.', link: '/blog', color: '#fce7f3', accent: '#ec4899' },
+    { icon: '🤝', title: 'Partnerships', desc: 'Airlines, hotels, and agencies — grow your reach with TravelMate.', link: '/partnership', color: '#e0f2fe', accent: '#0ea5e9' },
+    { icon: '💬', title: '24/7 Support', desc: 'Get help anytime with our always-online support team and chat.', link: '/contact', color: '#f3e8ff', accent: '#a855f7' },
+  ];
+
+  return (
+    <div>
+      <h2 style={{ fontSize: '1.5rem', fontWeight: 700, color: '#1e293b', marginBottom: 8 }}>Services</h2>
+      <p style={{ color: '#64748b', marginBottom: 28 }}>Everything TravelMate offers — all in one place.</p>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 20 }}>
+        {services.map((s, i) => (
+          <a key={i} href={s.link} style={{ textDecoration: 'none' }}>
+            <div style={{ background: 'white', borderRadius: 16, border: '1px solid #e2e8f0', padding: '24px', cursor: 'pointer', transition: 'all 0.2s', height: '100%' }}
+              onMouseEnter={e => { (e.currentTarget as HTMLElement).style.boxShadow = '0 8px 24px rgba(0,0,0,0.08)'; (e.currentTarget as HTMLElement).style.transform = 'translateY(-3px)'; }}
+              onMouseLeave={e => { (e.currentTarget as HTMLElement).style.boxShadow = 'none'; (e.currentTarget as HTMLElement).style.transform = 'none'; }}>
+              <div style={{ width: 52, height: 52, borderRadius: 14, background: s.color, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.6rem', marginBottom: 16 }}>
+                {s.icon}
+              </div>
+              <div style={{ fontWeight: 700, fontSize: '1.1rem', color: '#1e293b', marginBottom: 8 }}>{s.title}</div>
+              <div style={{ fontSize: '0.9rem', color: '#64748b', lineHeight: 1.6, marginBottom: 16 }}>{s.desc}</div>
+              <div style={{ color: s.accent, fontWeight: 600, fontSize: '0.9rem', display: 'flex', alignItems: 'center', gap: 6 }}>
+                Explore <ArrowRight size={14} />
+              </div>
+            </div>
+          </a>
+        ))}
+      </div>
+    </div>
+  );
+};
 
 interface Booking {
   id: string;
@@ -240,7 +514,7 @@ export default function UserDashboard() {
 
           {/* ---- SETTINGS TAB ---- */}
           {activeTab === 'settings' && (
-            <div style={{ maxWidth: '600px' }}>
+            <div>
               <h2 style={{ fontSize: '1.5rem', fontWeight: 700, color: '#1e293b', marginBottom: '24px' }}>Profile Settings</h2>
               <div style={{ background: 'white', borderRadius: '16px', border: '1px solid #e2e8f0', padding: '32px' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '20px', marginBottom: '32px', paddingBottom: '24px', borderBottom: '1px solid #e2e8f0' }}>
@@ -265,18 +539,11 @@ export default function UserDashboard() {
             </div>
           )}
 
-          {/* ---- PLACEHOLDER TABS ---- */}
-          {['wallet', 'chat', 'calendar', 'services'].includes(activeTab) && (
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '400px', gap: '16px' }}>
-              <div style={{ fontSize: '4rem' }}>
-                {activeTab === 'wallet' ? '💳' : activeTab === 'chat' ? '💬' : activeTab === 'calendar' ? '📅' : '🧩'}
-              </div>
-              <h2 style={{ fontSize: '1.5rem', fontWeight: 700, color: '#1e293b' }}>
-                {activeTab.charAt(0).toUpperCase() + activeTab.slice(1)}
-              </h2>
-              <p style={{ color: '#64748b', textAlign: 'center', maxWidth: '360px' }}>This feature is coming soon. We're working hard to bring it to you!</p>
-            </div>
-          )}
+          {/* ---- FEATURE TABS ---- */}
+          {activeTab === 'wallet' && <WalletTab bookings={bookings} user={user} />}
+          {activeTab === 'chat' && <ChatTab user={user} />}
+          {activeTab === 'calendar' && <CalendarTab bookings={bookings} />}
+          {activeTab === 'services' && <ServicesTab />}
 
         </div>
       </main>
