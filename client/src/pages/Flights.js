@@ -6,6 +6,7 @@ import { useSearchStore } from '../store/store';
 import { useToast } from '../components/Toast';
 import { ChevronLeft, ChevronRight, Zap, Star, Menu, Plane } from 'lucide-react';
 import { fetchOpenSkyStates } from '../lib/liveFlights';
+import { fetchFlights } from '../lib/mockApi';
 
 const MOCK_FLIGHTS = [
   {
@@ -92,8 +93,8 @@ export default function Flights() {
   const navigate = useNavigate();
   const { flightSearch, setFlightSearch, setSelectedFlight } = useSearchStore();
   const { error: showError } = useToast();
-  const [flights, setFlights] = useState(MOCK_FLIGHTS);
-  const [loading, setLoading] = useState(false);
+  const [flights, setFlights] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [liveLoading, setLiveLoading] = useState(false);
   const [searched, setSearched] = useState(true);
   const [activeSort, setActiveSort] = useState('YOU MAY PREFER');
@@ -110,6 +111,12 @@ export default function Flights() {
 
   const handleChange = (e) => setForm((f) => ({ ...f, [e.target.name]: e.target.value }));
 
+  React.useEffect(() => {
+    // Initial load
+    handleSearch();
+    // eslint-disable-next-line
+  }, []);
+
   const handleSearch = async (e) => {
     if (e) e.preventDefault();
     if (!form.from || !form.to || !form.departDate) {
@@ -119,71 +126,37 @@ export default function Flights() {
     setLoading(true);
     setSearched(true);
     try {
-      const token = process.env.REACT_APP_TRAVELPAYOUTS_TOKEN;
-      const origin = toIataLike(form.from);
-      const destination = toIataLike(form.to);
-
-      if (!token) throw new Error('Travelpayouts token is missing');
-
-      const params = new URLSearchParams({
-        origin,
-        destination,
-        departure_at: form.departDate,
-        currency: 'usd',
-        page: '1',
-        one_way: 'true',
-        limit: '20',
-        sorting: 'price',
-        direct: 'false',
-        market: 'us',
-      });
-
-      const res = await fetch(`https://api.travelpayouts.com/v1/prices/cheap?${params.toString()}`, {
-        headers: {
-          'X-Access-Token': token,
-        },
-      });
-
-      if (!res.ok) throw new Error(`Travelpayouts request failed (${res.status})`);
-      const payload = await res.json();
-      if (!payload?.success || !payload?.data) throw new Error('No data returned from Travelpayouts');
-
-      const items = Object.values(payload.data).slice(0, 20);
-      const mapped = items.map((item, idx) => {
-        const price = Number(item.price || 0);
-        const depDate = item.departure_at ? new Date(item.departure_at) : new Date(form.departDate);
-        const arrDate = new Date(depDate.getTime() + ((item.flight_number ? 8 : 6) * 60 * 60 * 1000));
-        const dep = depDate.toTimeString().slice(0, 5);
-        const arr = arrDate.toTimeString().slice(0, 5);
-        return {
-          id: `tp-${idx}`,
-          airline: item.airline || 'Airline',
-          logo: 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=50&h=50&fit=crop',
-          code: `${item.airline || 'FL'} ${item.flight_number || ''}`.trim(),
-          class: 'Economy',
-          depart: dep,
-          departCity: form.from,
-          departCode: origin,
-          arrive: arr,
-          arriveCity: form.to,
-          arriveCode: destination,
-          plusDay: '',
-          duration: item.transfers === 0 ? 'Direct' : `${item.transfers || 1} stop`,
-          stops: item.transfers === 0 ? 'Direct' : `${item.transfers || 1} stop`,
-          price: price || 0,
-          oldPrice: undefined,
-          tags: ['Live fare from Travelpayouts'],
-          alternatives: [],
-        };
-      });
-
-      if (mapped.length === 0) throw new Error('No results for this route/date');
-      setFlights(mapped);
+      const allFlights = await fetchFlights();
+      
+      // Filter by origin and destination (case-insensitive partial match)
+      const filtered = allFlights.filter(f => 
+        (f.from.toLowerCase().includes(form.from.toLowerCase()) || f.fromCode.toLowerCase().includes(form.from.toLowerCase())) &&
+        (f.to.toLowerCase().includes(form.to.toLowerCase()) || f.toCode.toLowerCase().includes(form.to.toLowerCase()))
+      );
+      
+      let finalFlights = filtered;
+      
+      // If we don't find exact routes in our 250 mocks, fallback to 10 random flights and rename their endpoints
+      // so the user always sees a full UI for their specific search.
+      if (filtered.length === 0) {
+        const shuffled = [...allFlights].sort(() => 0.5 - Math.random()).slice(0, 10);
+        finalFlights = shuffled.map(f => ({
+          ...f,
+          from: form.from,
+          fromCode: toIataLike(form.from),
+          to: form.to,
+          toCode: toIataLike(form.to),
+          date: form.departDate
+        }));
+      } else {
+        finalFlights = finalFlights.map(f => ({ ...f, date: form.departDate }));
+      }
+      
+      setFlights(finalFlights);
       setFlightSearch(form);
     } catch (err) {
-      showError(err.message || 'Live search failed. Showing curated flights.');
-      setFlights(MOCK_FLIGHTS.map((f) => ({ ...f, departCity: form.from, arriveCity: form.to })));
-      setFlightSearch(form);
+      showError(err.message || 'Failed to load flights.');
+      setFlights([]);
     } finally {
       setLoading(false);
     }

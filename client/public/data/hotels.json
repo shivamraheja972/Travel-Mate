@@ -1,55 +1,2922 @@
 [
   {
-    "id": "hotel-001",
-    "name": "The Grand Palace Hotel",
-    "address": "123 Main Blvd, Tokyo",
-    "city": "Tokyo",
-    "rating": 4.8,
-    "reviewCount": 2341,
-    "stars": 5,
-    "pricePerNight": 280,
+    "id": "hotel-1000",
+    "name": "The Plaza Resort Singapore",
+    "address": "828 Park Ave, Singapore",
+    "city": "Singapore",
+    "rating": 4.1,
+    "reviewCount": 722,
+    "stars": 4,
+    "pricePerNight": 336,
     "currency": "USD",
-    "image": "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=600",
+    "image": "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=600",
     "amenities": [
-      "WiFi",
       "Pool",
       "Spa",
-      "Gym"
+      "Gym",
+      "Restaurant",
+      "Room Service"
     ],
     "roomTypes": [
-      "Deluxe King",
-      "Suite"
+      "Ocean View",
+      "Club Level"
     ],
     "breakfast": true,
-    "refundable": true,
-    "description": "Luxury 5-star hotel in the heart of the city.",
+    "refundable": false,
+    "description": "Experience the best of Singapore at this beautiful 4-star property. Centrally located with premium amenities.",
     "checkIn": "15:00",
     "checkOut": "11:00"
   },
   {
-    "id": "hotel-002",
-    "name": "Comfort Inn & Suites",
-    "address": "456 Park Ave, New York",
+    "id": "hotel-1001",
+    "name": "The Imperial Inn Bangkok",
+    "address": "243 Market Ave, Bangkok",
+    "city": "Bangkok",
+    "rating": 4.8,
+    "reviewCount": 2757,
+    "stars": 4,
+    "pricePerNight": 327,
+    "currency": "USD",
+    "image": "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=600",
+    "amenities": [
+      "Spa",
+      "Gym",
+      "Restaurant",
+      "Parking",
+      "Room Service",
+      "Bar",
+      "WiFi"
+    ],
+    "roomTypes": [
+      "Suite",
+      "Ocean View",
+      "Standard",
+      "Club Level"
+    ],
+    "breakfast": true,
+    "refundable": true,
+    "description": "Experience the best of Bangkok at this beautiful 4-star property. Centrally located with premium amenities.",
+    "checkIn": "15:00",
+    "checkOut": "11:00"
+  },
+  {
+    "id": "hotel-1002",
+    "name": "The Royal Palace Dubai",
+    "address": "611 Main Ave, Dubai",
+    "city": "Dubai",
+    "rating": 4.7,
+    "reviewCount": 4747,
+    "stars": 4,
+    "pricePerNight": 172,
+    "currency": "USD",
+    "image": "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=600",
+    "amenities": [
+      "Restaurant",
+      "Spa",
+      "Gym",
+      "Room Service",
+      "Bar",
+      "Parking",
+      "Pool"
+    ],
+    "roomTypes": [
+      "Standard",
+      "Club Level"
+    ],
+    "breakfast": false,
+    "refundable": false,
+    "description": "Experience the best of Dubai at this beautiful 4-star property. Centrally located with premium amenities.",
+    "checkIn": "15:00",
+    "checkOut": "11:00"
+  },
+  {
+    "id": "hotel-1003",
+    "name": "The Luxury Lodge New York",
+    "address": "333 Market Ave, New York",
+    "city": "New York",
+    "rating": 3.8,
+    "reviewCount": 2225,
+    "stars": 4,
+    "pricePerNight": 301,
+    "currency": "USD",
+    "image": "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=600",
+    "amenities": [
+      "Spa",
+      "Parking",
+      "Bar",
+      "Pool"
+    ],
+    "roomTypes": [
+      "Ocean View",
+      "Deluxe",
+      "Suite"
+    ],
+    "breakfast": true,
+    "refundable": true,
+    "description": "Experience the best of New York at this beautiful 4-star property. Centrally located with premium amenities.",
+    "checkIn": "15:00",
+    "checkOut": "11:00"
+  },
+  {
+    "id": "hotel-1004",
+    "name": "The Central Resort Tokyo",
+    "address": "55 Main Ave, Tokyo",
+    "city": "Tokyo",
+    "rating": 4.8,
+    "reviewCount": 2562,
+    "stars": 4,
+    "pricePerNight": 388,
+    "currency": "USD",
+    "image": "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=600",
+    "amenities": [
+      "Parking",
+      "Spa",
+      "Pool",
+      "Restaurant",
+      "Room Service"
+    ],
+    "roomTypes": [
+      "Suite",
+      "Club Level",
+      "Standard"
+    ],
+    "breakfast": true,
+    "refundable": true,
+    "description": "Experience the best of Tokyo at this beautiful 4-star property. Centrally located with premium amenities.",
+    "checkIn": "15:00",
+    "checkOut": "11:00"
+  },
+  {
+    "id": "hotel-1005",
+    "name": "The Sunset Inn Los Angeles",
+    "address": "168 Market Ave, Los Angeles",
+    "city": "Los Angeles",
+    "rating": 4.1,
+    "reviewCount": 1909,
+    "stars": 4,
+    "pricePerNight": 379,
+    "currency": "USD",
+    "image": "https://images.unsplash.com/photo-1551882547-ff40c0d5b9af?w=600",
+    "amenities": [
+      "Spa",
+      "Gym",
+      "Room Service",
+      "Parking",
+      "WiFi",
+      "Pool"
+    ],
+    "roomTypes": [
+      "Ocean View",
+      "Club Level",
+      "Deluxe"
+    ],
+    "breakfast": true,
+    "refundable": true,
+    "description": "Experience the best of Los Angeles at this beautiful 4-star property. Centrally located with premium amenities.",
+    "checkIn": "15:00",
+    "checkOut": "11:00"
+  },
+  {
+    "id": "hotel-1006",
+    "name": "The Riverside Inn Sydney",
+    "address": "170 Ocean Ave, Sydney",
+    "city": "Sydney",
+    "rating": 3.6,
+    "reviewCount": 1137,
+    "stars": 5,
+    "pricePerNight": 802,
+    "currency": "USD",
+    "image": "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=600",
+    "amenities": [
+      "WiFi",
+      "Restaurant",
+      "Bar",
+      "Gym",
+      "Spa",
+      "Room Service",
+      "Parking"
+    ],
+    "roomTypes": [
+      "Ocean View",
+      "Deluxe",
+      "Club Level"
+    ],
+    "breakfast": false,
+    "refundable": false,
+    "description": "Experience the best of Sydney at this beautiful 5-star property. Centrally located with premium amenities.",
+    "checkIn": "15:00",
+    "checkOut": "11:00"
+  },
+  {
+    "id": "hotel-1007",
+    "name": "The Luxury Lodge Frankfurt",
+    "address": "203 Market Ave, Frankfurt",
+    "city": "Frankfurt",
+    "rating": 4.2,
+    "reviewCount": 1444,
+    "stars": 4,
+    "pricePerNight": 202,
+    "currency": "USD",
+    "image": "https://images.unsplash.com/photo-1551882547-ff40c0d5b9af?w=600",
+    "amenities": [
+      "Bar",
+      "Pool",
+      "Spa",
+      "Parking",
+      "Room Service",
+      "Restaurant",
+      "WiFi"
+    ],
+    "roomTypes": [
+      "Club Level",
+      "Suite",
+      "Ocean View"
+    ],
+    "breakfast": true,
+    "refundable": true,
+    "description": "Experience the best of Frankfurt at this beautiful 4-star property. Centrally located with premium amenities.",
+    "checkIn": "15:00",
+    "checkOut": "11:00"
+  },
+  {
+    "id": "hotel-1008",
+    "name": "The Riverside Palace Istanbul",
+    "address": "574 Main Ave, Istanbul",
+    "city": "Istanbul",
+    "rating": 3.7,
+    "reviewCount": 2659,
+    "stars": 4,
+    "pricePerNight": 161,
+    "currency": "USD",
+    "image": "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=600",
+    "amenities": [
+      "Pool",
+      "WiFi",
+      "Restaurant",
+      "Bar",
+      "Parking"
+    ],
+    "roomTypes": [
+      "Deluxe",
+      "Ocean View",
+      "Club Level",
+      "Standard"
+    ],
+    "breakfast": true,
+    "refundable": true,
+    "description": "Experience the best of Istanbul at this beautiful 4-star property. Centrally located with premium amenities.",
+    "checkIn": "15:00",
+    "checkOut": "11:00"
+  },
+  {
+    "id": "hotel-1009",
+    "name": "The Boutique Resort Bangkok",
+    "address": "872 Park Ave, Bangkok",
+    "city": "Bangkok",
+    "rating": 3.7,
+    "reviewCount": 3477,
+    "stars": 4,
+    "pricePerNight": 373,
+    "currency": "USD",
+    "image": "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=600",
+    "amenities": [
+      "Gym",
+      "Bar",
+      "Room Service"
+    ],
+    "roomTypes": [
+      "Suite",
+      "Ocean View"
+    ],
+    "breakfast": false,
+    "refundable": true,
+    "description": "Experience the best of Bangkok at this beautiful 4-star property. Centrally located with premium amenities.",
+    "checkIn": "15:00",
+    "checkOut": "11:00"
+  },
+  {
+    "id": "hotel-1010",
+    "name": "The Riverside Resort Hong Kong",
+    "address": "959 Main Ave, Hong Kong",
+    "city": "Hong Kong",
+    "rating": 3.9,
+    "reviewCount": 4255,
+    "stars": 4,
+    "pricePerNight": 355,
+    "currency": "USD",
+    "image": "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=600",
+    "amenities": [
+      "Spa",
+      "Bar",
+      "Pool",
+      "Room Service",
+      "Gym"
+    ],
+    "roomTypes": [
+      "Suite",
+      "Club Level"
+    ],
+    "breakfast": false,
+    "refundable": false,
+    "description": "Experience the best of Hong Kong at this beautiful 4-star property. Centrally located with premium amenities.",
+    "checkIn": "15:00",
+    "checkOut": "11:00"
+  },
+  {
+    "id": "hotel-1011",
+    "name": "The Boutique Resort Seoul",
+    "address": "896 Park Ave, Seoul",
+    "city": "Seoul",
+    "rating": 4.2,
+    "reviewCount": 1818,
+    "stars": 3,
+    "pricePerNight": 161,
+    "currency": "USD",
+    "image": "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=600",
+    "amenities": [
+      "Gym",
+      "Room Service",
+      "WiFi",
+      "Spa"
+    ],
+    "roomTypes": [
+      "Ocean View",
+      "Deluxe",
+      "Standard",
+      "Club Level"
+    ],
+    "breakfast": false,
+    "refundable": true,
+    "description": "Experience the best of Seoul at this beautiful 3-star property. Centrally located with premium amenities.",
+    "checkIn": "15:00",
+    "checkOut": "11:00"
+  },
+  {
+    "id": "hotel-1012",
+    "name": "The Central Suites Sydney",
+    "address": "478 Market Ave, Sydney",
+    "city": "Sydney",
+    "rating": 4.6,
+    "reviewCount": 876,
+    "stars": 3,
+    "pricePerNight": 230,
+    "currency": "USD",
+    "image": "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=600",
+    "amenities": [
+      "Room Service",
+      "Gym",
+      "Bar",
+      "Restaurant",
+      "Spa",
+      "WiFi"
+    ],
+    "roomTypes": [
+      "Club Level",
+      "Standard",
+      "Ocean View",
+      "Suite"
+    ],
+    "breakfast": true,
+    "refundable": true,
+    "description": "Experience the best of Sydney at this beautiful 3-star property. Centrally located with premium amenities.",
+    "checkIn": "15:00",
+    "checkOut": "11:00"
+  },
+  {
+    "id": "hotel-1013",
+    "name": "The Royal Suites Istanbul",
+    "address": "955 Market Ave, Istanbul",
+    "city": "Istanbul",
+    "rating": 4.2,
+    "reviewCount": 2305,
+    "stars": 4,
+    "pricePerNight": 224,
+    "currency": "USD",
+    "image": "https://images.unsplash.com/photo-1551882547-ff40c0d5b9af?w=600",
+    "amenities": [
+      "Parking",
+      "Spa",
+      "Room Service",
+      "Gym",
+      "Restaurant"
+    ],
+    "roomTypes": [
+      "Club Level",
+      "Deluxe",
+      "Ocean View"
+    ],
+    "breakfast": true,
+    "refundable": true,
+    "description": "Experience the best of Istanbul at this beautiful 4-star property. Centrally located with premium amenities.",
+    "checkIn": "15:00",
+    "checkOut": "11:00"
+  },
+  {
+    "id": "hotel-1014",
+    "name": "The Boutique Resort Tokyo",
+    "address": "324 Ocean Ave, Tokyo",
+    "city": "Tokyo",
+    "rating": 3.5,
+    "reviewCount": 2027,
+    "stars": 4,
+    "pricePerNight": 313,
+    "currency": "USD",
+    "image": "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=600",
+    "amenities": [
+      "Spa",
+      "Room Service",
+      "Bar"
+    ],
+    "roomTypes": [
+      "Suite",
+      "Deluxe",
+      "Standard",
+      "Ocean View"
+    ],
+    "breakfast": false,
+    "refundable": true,
+    "description": "Experience the best of Tokyo at this beautiful 4-star property. Centrally located with premium amenities.",
+    "checkIn": "15:00",
+    "checkOut": "11:00"
+  },
+  {
+    "id": "hotel-1015",
+    "name": "The Royal Lodge Paris",
+    "address": "803 Park Ave, Paris",
+    "city": "Paris",
+    "rating": 4.8,
+    "reviewCount": 3310,
+    "stars": 4,
+    "pricePerNight": 394,
+    "currency": "USD",
+    "image": "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=600",
+    "amenities": [
+      "Restaurant",
+      "Parking",
+      "Room Service"
+    ],
+    "roomTypes": [
+      "Suite",
+      "Club Level",
+      "Deluxe",
+      "Ocean View"
+    ],
+    "breakfast": true,
+    "refundable": true,
+    "description": "Experience the best of Paris at this beautiful 4-star property. Centrally located with premium amenities.",
+    "checkIn": "15:00",
+    "checkOut": "11:00"
+  },
+  {
+    "id": "hotel-1016",
+    "name": "The Central Suites London",
+    "address": "396 Park Ave, London",
+    "city": "London",
+    "rating": 4.3,
+    "reviewCount": 369,
+    "stars": 3,
+    "pricePerNight": 207,
+    "currency": "USD",
+    "image": "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=600",
+    "amenities": [
+      "Pool",
+      "WiFi",
+      "Bar",
+      "Gym",
+      "Room Service",
+      "Parking",
+      "Spa"
+    ],
+    "roomTypes": [
+      "Standard",
+      "Club Level"
+    ],
+    "breakfast": false,
+    "refundable": true,
+    "description": "Experience the best of London at this beautiful 3-star property. Centrally located with premium amenities.",
+    "checkIn": "15:00",
+    "checkOut": "11:00"
+  },
+  {
+    "id": "hotel-1017",
+    "name": "The Sunset Lodge New York",
+    "address": "460 Market Ave, New York",
+    "city": "New York",
+    "rating": 4.7,
+    "reviewCount": 2373,
+    "stars": 4,
+    "pricePerNight": 292,
+    "currency": "USD",
+    "image": "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=600",
+    "amenities": [
+      "Parking",
+      "WiFi",
+      "Room Service",
+      "Gym",
+      "Spa"
+    ],
+    "roomTypes": [
+      "Standard",
+      "Deluxe",
+      "Ocean View"
+    ],
+    "breakfast": true,
+    "refundable": true,
+    "description": "Experience the best of New York at this beautiful 4-star property. Centrally located with premium amenities.",
+    "checkIn": "15:00",
+    "checkOut": "11:00"
+  },
+  {
+    "id": "hotel-1018",
+    "name": "The Royal Palace Sydney",
+    "address": "721 Park Ave, Sydney",
+    "city": "Sydney",
+    "rating": 4.7,
+    "reviewCount": 423,
+    "stars": 3,
+    "pricePerNight": 178,
+    "currency": "USD",
+    "image": "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=600",
+    "amenities": [
+      "WiFi",
+      "Room Service",
+      "Parking",
+      "Restaurant",
+      "Bar"
+    ],
+    "roomTypes": [
+      "Club Level",
+      "Suite",
+      "Ocean View",
+      "Deluxe"
+    ],
+    "breakfast": true,
+    "refundable": true,
+    "description": "Experience the best of Sydney at this beautiful 3-star property. Centrally located with premium amenities.",
+    "checkIn": "15:00",
+    "checkOut": "11:00"
+  },
+  {
+    "id": "hotel-1019",
+    "name": "The Luxury Inn Hong Kong",
+    "address": "443 Ocean Ave, Hong Kong",
+    "city": "Hong Kong",
+    "rating": 4.6,
+    "reviewCount": 993,
+    "stars": 4,
+    "pricePerNight": 285,
+    "currency": "USD",
+    "image": "https://images.unsplash.com/photo-1551882547-ff40c0d5b9af?w=600",
+    "amenities": [
+      "Gym",
+      "Bar",
+      "WiFi"
+    ],
+    "roomTypes": [
+      "Deluxe",
+      "Club Level"
+    ],
+    "breakfast": true,
+    "refundable": true,
+    "description": "Experience the best of Hong Kong at this beautiful 4-star property. Centrally located with premium amenities.",
+    "checkIn": "15:00",
+    "checkOut": "11:00"
+  },
+  {
+    "id": "hotel-1020",
+    "name": "The Boutique Palace Hong Kong",
+    "address": "196 Main Ave, Hong Kong",
+    "city": "Hong Kong",
+    "rating": 4.1,
+    "reviewCount": 4931,
+    "stars": 4,
+    "pricePerNight": 260,
+    "currency": "USD",
+    "image": "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=600",
+    "amenities": [
+      "Bar",
+      "Spa",
+      "Gym",
+      "Room Service",
+      "Parking"
+    ],
+    "roomTypes": [
+      "Club Level",
+      "Ocean View",
+      "Suite"
+    ],
+    "breakfast": true,
+    "refundable": true,
+    "description": "Experience the best of Hong Kong at this beautiful 4-star property. Centrally located with premium amenities.",
+    "checkIn": "15:00",
+    "checkOut": "11:00"
+  },
+  {
+    "id": "hotel-1021",
+    "name": "The Imperial Lodge Seoul",
+    "address": "883 Ocean Ave, Seoul",
+    "city": "Seoul",
+    "rating": 4.3,
+    "reviewCount": 3257,
+    "stars": 5,
+    "pricePerNight": 413,
+    "currency": "USD",
+    "image": "https://images.unsplash.com/photo-1551882547-ff40c0d5b9af?w=600",
+    "amenities": [
+      "WiFi",
+      "Room Service",
+      "Spa",
+      "Restaurant",
+      "Parking"
+    ],
+    "roomTypes": [
+      "Standard",
+      "Club Level"
+    ],
+    "breakfast": false,
+    "refundable": true,
+    "description": "Experience the best of Seoul at this beautiful 5-star property. Centrally located with premium amenities.",
+    "checkIn": "15:00",
+    "checkOut": "11:00"
+  },
+  {
+    "id": "hotel-1022",
+    "name": "The Royal Lodge Paris",
+    "address": "791 Main Ave, Paris",
+    "city": "Paris",
+    "rating": 4.5,
+    "reviewCount": 4106,
+    "stars": 5,
+    "pricePerNight": 1081,
+    "currency": "USD",
+    "image": "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=600",
+    "amenities": [
+      "Pool",
+      "Bar",
+      "Gym",
+      "WiFi",
+      "Parking",
+      "Room Service",
+      "Spa"
+    ],
+    "roomTypes": [
+      "Ocean View",
+      "Club Level"
+    ],
+    "breakfast": true,
+    "refundable": true,
+    "description": "Experience the best of Paris at this beautiful 5-star property. Centrally located with premium amenities.",
+    "checkIn": "15:00",
+    "checkOut": "11:00"
+  },
+  {
+    "id": "hotel-1023",
+    "name": "The Plaza Palace Sydney",
+    "address": "662 Main Ave, Sydney",
+    "city": "Sydney",
+    "rating": 4.8,
+    "reviewCount": 1445,
+    "stars": 4,
+    "pricePerNight": 247,
+    "currency": "USD",
+    "image": "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=600",
+    "amenities": [
+      "Restaurant",
+      "Pool",
+      "Spa",
+      "Room Service",
+      "WiFi",
+      "Bar",
+      "Gym"
+    ],
+    "roomTypes": [
+      "Deluxe",
+      "Suite"
+    ],
+    "breakfast": true,
+    "refundable": true,
+    "description": "Experience the best of Sydney at this beautiful 4-star property. Centrally located with premium amenities.",
+    "checkIn": "15:00",
+    "checkOut": "11:00"
+  },
+  {
+    "id": "hotel-1024",
+    "name": "The Riverside Inn Amsterdam",
+    "address": "774 Ocean Ave, Amsterdam",
+    "city": "Amsterdam",
+    "rating": 3.9,
+    "reviewCount": 1541,
+    "stars": 5,
+    "pricePerNight": 886,
+    "currency": "USD",
+    "image": "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=600",
+    "amenities": [
+      "Bar",
+      "Pool",
+      "Parking"
+    ],
+    "roomTypes": [
+      "Suite",
+      "Deluxe",
+      "Club Level"
+    ],
+    "breakfast": true,
+    "refundable": true,
+    "description": "Experience the best of Amsterdam at this beautiful 5-star property. Centrally located with premium amenities.",
+    "checkIn": "15:00",
+    "checkOut": "11:00"
+  },
+  {
+    "id": "hotel-1025",
+    "name": "The Central Suites Tokyo",
+    "address": "242 Park Ave, Tokyo",
+    "city": "Tokyo",
+    "rating": 3.9,
+    "reviewCount": 3108,
+    "stars": 3,
+    "pricePerNight": 91,
+    "currency": "USD",
+    "image": "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=600",
+    "amenities": [
+      "Bar",
+      "Pool",
+      "WiFi",
+      "Spa",
+      "Room Service",
+      "Parking",
+      "Restaurant"
+    ],
+    "roomTypes": [
+      "Ocean View",
+      "Suite"
+    ],
+    "breakfast": false,
+    "refundable": true,
+    "description": "Experience the best of Tokyo at this beautiful 3-star property. Centrally located with premium amenities.",
+    "checkIn": "15:00",
+    "checkOut": "11:00"
+  },
+  {
+    "id": "hotel-1026",
+    "name": "The Oasis Lodge Sydney",
+    "address": "339 Main Ave, Sydney",
+    "city": "Sydney",
+    "rating": 4.4,
+    "reviewCount": 2481,
+    "stars": 3,
+    "pricePerNight": 149,
+    "currency": "USD",
+    "image": "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=600",
+    "amenities": [
+      "Bar",
+      "Parking",
+      "Gym",
+      "WiFi",
+      "Room Service",
+      "Pool"
+    ],
+    "roomTypes": [
+      "Standard",
+      "Suite"
+    ],
+    "breakfast": false,
+    "refundable": false,
+    "description": "Experience the best of Sydney at this beautiful 3-star property. Centrally located with premium amenities.",
+    "checkIn": "15:00",
+    "checkOut": "11:00"
+  },
+  {
+    "id": "hotel-1027",
+    "name": "The Imperial Inn Amsterdam",
+    "address": "350 Main Ave, Amsterdam",
+    "city": "Amsterdam",
+    "rating": 3.5,
+    "reviewCount": 1151,
+    "stars": 4,
+    "pricePerNight": 225,
+    "currency": "USD",
+    "image": "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=600",
+    "amenities": [
+      "WiFi",
+      "Spa",
+      "Restaurant",
+      "Pool"
+    ],
+    "roomTypes": [
+      "Deluxe",
+      "Suite"
+    ],
+    "breakfast": true,
+    "refundable": false,
+    "description": "Experience the best of Amsterdam at this beautiful 4-star property. Centrally located with premium amenities.",
+    "checkIn": "15:00",
+    "checkOut": "11:00"
+  },
+  {
+    "id": "hotel-1028",
+    "name": "The Oasis Lodge Hong Kong",
+    "address": "446 Park Ave, Hong Kong",
+    "city": "Hong Kong",
+    "rating": 4.9,
+    "reviewCount": 4357,
+    "stars": 5,
+    "pricePerNight": 810,
+    "currency": "USD",
+    "image": "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=600",
+    "amenities": [
+      "Parking",
+      "Spa",
+      "WiFi",
+      "Pool",
+      "Gym",
+      "Restaurant"
+    ],
+    "roomTypes": [
+      "Club Level",
+      "Deluxe",
+      "Suite",
+      "Standard"
+    ],
+    "breakfast": true,
+    "refundable": false,
+    "description": "Experience the best of Hong Kong at this beautiful 5-star property. Centrally located with premium amenities.",
+    "checkIn": "15:00",
+    "checkOut": "11:00"
+  },
+  {
+    "id": "hotel-1029",
+    "name": "The Grand Palace Istanbul",
+    "address": "594 Ocean Ave, Istanbul",
+    "city": "Istanbul",
+    "rating": 3.5,
+    "reviewCount": 4883,
+    "stars": 4,
+    "pricePerNight": 260,
+    "currency": "USD",
+    "image": "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=600",
+    "amenities": [
+      "Gym",
+      "Bar",
+      "Restaurant",
+      "Pool",
+      "WiFi",
+      "Spa"
+    ],
+    "roomTypes": [
+      "Ocean View",
+      "Club Level",
+      "Deluxe"
+    ],
+    "breakfast": false,
+    "refundable": false,
+    "description": "Experience the best of Istanbul at this beautiful 4-star property. Centrally located with premium amenities.",
+    "checkIn": "15:00",
+    "checkOut": "11:00"
+  },
+  {
+    "id": "hotel-1030",
+    "name": "The Luxury Resort Frankfurt",
+    "address": "145 Park Ave, Frankfurt",
+    "city": "Frankfurt",
+    "rating": 4.8,
+    "reviewCount": 2177,
+    "stars": 4,
+    "pricePerNight": 289,
+    "currency": "USD",
+    "image": "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=600",
+    "amenities": [
+      "WiFi",
+      "Bar",
+      "Room Service",
+      "Parking",
+      "Pool",
+      "Restaurant",
+      "Gym"
+    ],
+    "roomTypes": [
+      "Deluxe",
+      "Ocean View",
+      "Club Level"
+    ],
+    "breakfast": false,
+    "refundable": false,
+    "description": "Experience the best of Frankfurt at this beautiful 4-star property. Centrally located with premium amenities.",
+    "checkIn": "15:00",
+    "checkOut": "11:00"
+  },
+  {
+    "id": "hotel-1031",
+    "name": "The Central Inn Amsterdam",
+    "address": "941 Ocean Ave, Amsterdam",
+    "city": "Amsterdam",
+    "rating": 4.0,
+    "reviewCount": 3345,
+    "stars": 4,
+    "pricePerNight": 297,
+    "currency": "USD",
+    "image": "https://images.unsplash.com/photo-1551882547-ff40c0d5b9af?w=600",
+    "amenities": [
+      "Restaurant",
+      "Bar",
+      "Parking",
+      "Gym"
+    ],
+    "roomTypes": [
+      "Ocean View",
+      "Standard",
+      "Suite"
+    ],
+    "breakfast": false,
+    "refundable": false,
+    "description": "Experience the best of Amsterdam at this beautiful 4-star property. Centrally located with premium amenities.",
+    "checkIn": "15:00",
+    "checkOut": "11:00"
+  },
+  {
+    "id": "hotel-1032",
+    "name": "The Riverside Lodge London",
+    "address": "226 Park Ave, London",
+    "city": "London",
+    "rating": 3.5,
+    "reviewCount": 339,
+    "stars": 4,
+    "pricePerNight": 196,
+    "currency": "USD",
+    "image": "https://images.unsplash.com/photo-1551882547-ff40c0d5b9af?w=600",
+    "amenities": [
+      "Bar",
+      "Spa",
+      "Room Service"
+    ],
+    "roomTypes": [
+      "Suite",
+      "Ocean View",
+      "Deluxe",
+      "Club Level"
+    ],
+    "breakfast": true,
+    "refundable": false,
+    "description": "Experience the best of London at this beautiful 4-star property. Centrally located with premium amenities.",
+    "checkIn": "15:00",
+    "checkOut": "11:00"
+  },
+  {
+    "id": "hotel-1033",
+    "name": "The Plaza Suites Dubai",
+    "address": "767 Market Ave, Dubai",
+    "city": "Dubai",
+    "rating": 4.4,
+    "reviewCount": 1617,
+    "stars": 4,
+    "pricePerNight": 259,
+    "currency": "USD",
+    "image": "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=600",
+    "amenities": [
+      "Bar",
+      "Pool",
+      "WiFi",
+      "Room Service",
+      "Spa",
+      "Parking"
+    ],
+    "roomTypes": [
+      "Suite",
+      "Ocean View"
+    ],
+    "breakfast": true,
+    "refundable": true,
+    "description": "Experience the best of Dubai at this beautiful 4-star property. Centrally located with premium amenities.",
+    "checkIn": "15:00",
+    "checkOut": "11:00"
+  },
+  {
+    "id": "hotel-1034",
+    "name": "The Imperial Hotel Bangkok",
+    "address": "691 Park Ave, Bangkok",
+    "city": "Bangkok",
+    "rating": 4.1,
+    "reviewCount": 1975,
+    "stars": 5,
+    "pricePerNight": 483,
+    "currency": "USD",
+    "image": "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=600",
+    "amenities": [
+      "Gym",
+      "Parking",
+      "Room Service",
+      "WiFi",
+      "Spa",
+      "Pool"
+    ],
+    "roomTypes": [
+      "Standard",
+      "Deluxe",
+      "Suite"
+    ],
+    "breakfast": false,
+    "refundable": false,
+    "description": "Experience the best of Bangkok at this beautiful 5-star property. Centrally located with premium amenities.",
+    "checkIn": "15:00",
+    "checkOut": "11:00"
+  },
+  {
+    "id": "hotel-1035",
+    "name": "The Central Lodge Bangkok",
+    "address": "708 Park Ave, Bangkok",
+    "city": "Bangkok",
+    "rating": 4.0,
+    "reviewCount": 1866,
+    "stars": 5,
+    "pricePerNight": 553,
+    "currency": "USD",
+    "image": "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=600",
+    "amenities": [
+      "Parking",
+      "Restaurant",
+      "WiFi",
+      "Bar",
+      "Spa",
+      "Gym",
+      "Pool"
+    ],
+    "roomTypes": [
+      "Deluxe",
+      "Standard",
+      "Ocean View",
+      "Club Level"
+    ],
+    "breakfast": true,
+    "refundable": true,
+    "description": "Experience the best of Bangkok at this beautiful 5-star property. Centrally located with premium amenities.",
+    "checkIn": "15:00",
+    "checkOut": "11:00"
+  },
+  {
+    "id": "hotel-1036",
+    "name": "The Sunset Inn New York",
+    "address": "309 Main Ave, New York",
+    "city": "New York",
+    "rating": 4.2,
+    "reviewCount": 4858,
+    "stars": 3,
+    "pricePerNight": 145,
+    "currency": "USD",
+    "image": "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=600",
+    "amenities": [
+      "Parking",
+      "Bar",
+      "Restaurant",
+      "Spa",
+      "Gym",
+      "Room Service"
+    ],
+    "roomTypes": [
+      "Club Level",
+      "Deluxe",
+      "Standard",
+      "Ocean View"
+    ],
+    "breakfast": true,
+    "refundable": true,
+    "description": "Experience the best of New York at this beautiful 3-star property. Centrally located with premium amenities.",
+    "checkIn": "15:00",
+    "checkOut": "11:00"
+  },
+  {
+    "id": "hotel-1037",
+    "name": "The Oasis Hotel Dubai",
+    "address": "443 Main Ave, Dubai",
+    "city": "Dubai",
+    "rating": 4.3,
+    "reviewCount": 4183,
+    "stars": 3,
+    "pricePerNight": 88,
+    "currency": "USD",
+    "image": "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=600",
+    "amenities": [
+      "Restaurant",
+      "Parking",
+      "Gym",
+      "Bar",
+      "Pool",
+      "Room Service",
+      "Spa"
+    ],
+    "roomTypes": [
+      "Deluxe",
+      "Suite",
+      "Club Level",
+      "Standard"
+    ],
+    "breakfast": true,
+    "refundable": true,
+    "description": "Experience the best of Dubai at this beautiful 3-star property. Centrally located with premium amenities.",
+    "checkIn": "15:00",
+    "checkOut": "11:00"
+  },
+  {
+    "id": "hotel-1038",
+    "name": "The Boutique Resort Toronto",
+    "address": "149 Ocean Ave, Toronto",
+    "city": "Toronto",
+    "rating": 4.3,
+    "reviewCount": 1860,
+    "stars": 4,
+    "pricePerNight": 335,
+    "currency": "USD",
+    "image": "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=600",
+    "amenities": [
+      "Spa",
+      "Gym",
+      "Parking",
+      "Bar"
+    ],
+    "roomTypes": [
+      "Club Level",
+      "Standard"
+    ],
+    "breakfast": false,
+    "refundable": true,
+    "description": "Experience the best of Toronto at this beautiful 4-star property. Centrally located with premium amenities.",
+    "checkIn": "15:00",
+    "checkOut": "11:00"
+  },
+  {
+    "id": "hotel-1039",
+    "name": "The Riverside Resort London",
+    "address": "236 Market Ave, London",
+    "city": "London",
+    "rating": 4.1,
+    "reviewCount": 3660,
+    "stars": 4,
+    "pricePerNight": 307,
+    "currency": "USD",
+    "image": "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=600",
+    "amenities": [
+      "Restaurant",
+      "Room Service",
+      "Parking"
+    ],
+    "roomTypes": [
+      "Deluxe",
+      "Standard"
+    ],
+    "breakfast": true,
+    "refundable": true,
+    "description": "Experience the best of London at this beautiful 4-star property. Centrally located with premium amenities.",
+    "checkIn": "15:00",
+    "checkOut": "11:00"
+  },
+  {
+    "id": "hotel-1040",
+    "name": "The Imperial Palace Tokyo",
+    "address": "107 Market Ave, Tokyo",
+    "city": "Tokyo",
+    "rating": 4.8,
+    "reviewCount": 2678,
+    "stars": 5,
+    "pricePerNight": 444,
+    "currency": "USD",
+    "image": "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=600",
+    "amenities": [
+      "Room Service",
+      "Restaurant",
+      "Bar",
+      "Parking",
+      "Spa",
+      "Pool",
+      "WiFi"
+    ],
+    "roomTypes": [
+      "Club Level",
+      "Standard"
+    ],
+    "breakfast": false,
+    "refundable": false,
+    "description": "Experience the best of Tokyo at this beautiful 5-star property. Centrally located with premium amenities.",
+    "checkIn": "15:00",
+    "checkOut": "11:00"
+  },
+  {
+    "id": "hotel-1041",
+    "name": "The Central Inn Paris",
+    "address": "468 Ocean Ave, Paris",
+    "city": "Paris",
+    "rating": 3.8,
+    "reviewCount": 3378,
+    "stars": 3,
+    "pricePerNight": 175,
+    "currency": "USD",
+    "image": "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=600",
+    "amenities": [
+      "Gym",
+      "Parking",
+      "Bar",
+      "Restaurant",
+      "Room Service"
+    ],
+    "roomTypes": [
+      "Ocean View",
+      "Standard",
+      "Suite"
+    ],
+    "breakfast": true,
+    "refundable": true,
+    "description": "Experience the best of Paris at this beautiful 3-star property. Centrally located with premium amenities.",
+    "checkIn": "15:00",
+    "checkOut": "11:00"
+  },
+  {
+    "id": "hotel-1042",
+    "name": "The Sunset Lodge Bangkok",
+    "address": "662 Main Ave, Bangkok",
+    "city": "Bangkok",
+    "rating": 3.9,
+    "reviewCount": 3165,
+    "stars": 4,
+    "pricePerNight": 377,
+    "currency": "USD",
+    "image": "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=600",
+    "amenities": [
+      "Bar",
+      "Room Service",
+      "Restaurant",
+      "Gym",
+      "Parking"
+    ],
+    "roomTypes": [
+      "Club Level",
+      "Deluxe"
+    ],
+    "breakfast": true,
+    "refundable": true,
+    "description": "Experience the best of Bangkok at this beautiful 4-star property. Centrally located with premium amenities.",
+    "checkIn": "15:00",
+    "checkOut": "11:00"
+  },
+  {
+    "id": "hotel-1043",
+    "name": "The Oasis Palace New York",
+    "address": "21 Park Ave, New York",
+    "city": "New York",
+    "rating": 4.2,
+    "reviewCount": 2587,
+    "stars": 5,
+    "pricePerNight": 1049,
+    "currency": "USD",
+    "image": "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=600",
+    "amenities": [
+      "Spa",
+      "Pool",
+      "Room Service",
+      "Restaurant",
+      "WiFi",
+      "Bar",
+      "Gym"
+    ],
+    "roomTypes": [
+      "Club Level",
+      "Suite",
+      "Ocean View"
+    ],
+    "breakfast": true,
+    "refundable": true,
+    "description": "Experience the best of New York at this beautiful 5-star property. Centrally located with premium amenities.",
+    "checkIn": "15:00",
+    "checkOut": "11:00"
+  },
+  {
+    "id": "hotel-1044",
+    "name": "The Luxury Suites New York",
+    "address": "826 Ocean Ave, New York",
+    "city": "New York",
+    "rating": 4.0,
+    "reviewCount": 3965,
+    "stars": 4,
+    "pricePerNight": 216,
+    "currency": "USD",
+    "image": "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=600",
+    "amenities": [
+      "Room Service",
+      "Bar",
+      "Spa"
+    ],
+    "roomTypes": [
+      "Suite",
+      "Deluxe",
+      "Ocean View",
+      "Standard"
+    ],
+    "breakfast": true,
+    "refundable": true,
+    "description": "Experience the best of New York at this beautiful 4-star property. Centrally located with premium amenities.",
+    "checkIn": "15:00",
+    "checkOut": "11:00"
+  },
+  {
+    "id": "hotel-1045",
+    "name": "The Oasis Hotel Amsterdam",
+    "address": "523 Main Ave, Amsterdam",
+    "city": "Amsterdam",
+    "rating": 3.8,
+    "reviewCount": 3833,
+    "stars": 3,
+    "pricePerNight": 236,
+    "currency": "USD",
+    "image": "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=600",
+    "amenities": [
+      "Restaurant",
+      "Pool",
+      "Room Service",
+      "Spa",
+      "WiFi",
+      "Bar"
+    ],
+    "roomTypes": [
+      "Suite",
+      "Deluxe",
+      "Ocean View",
+      "Standard"
+    ],
+    "breakfast": true,
+    "refundable": true,
+    "description": "Experience the best of Amsterdam at this beautiful 3-star property. Centrally located with premium amenities.",
+    "checkIn": "15:00",
+    "checkOut": "11:00"
+  },
+  {
+    "id": "hotel-1046",
+    "name": "The Royal Suites Los Angeles",
+    "address": "675 Main Ave, Los Angeles",
+    "city": "Los Angeles",
+    "rating": 3.6,
+    "reviewCount": 4097,
+    "stars": 4,
+    "pricePerNight": 202,
+    "currency": "USD",
+    "image": "https://images.unsplash.com/photo-1551882547-ff40c0d5b9af?w=600",
+    "amenities": [
+      "Parking",
+      "WiFi",
+      "Room Service",
+      "Gym",
+      "Bar",
+      "Spa"
+    ],
+    "roomTypes": [
+      "Ocean View",
+      "Suite",
+      "Club Level",
+      "Deluxe"
+    ],
+    "breakfast": true,
+    "refundable": false,
+    "description": "Experience the best of Los Angeles at this beautiful 4-star property. Centrally located with premium amenities.",
+    "checkIn": "15:00",
+    "checkOut": "11:00"
+  },
+  {
+    "id": "hotel-1047",
+    "name": "The Plaza Resort Toronto",
+    "address": "89 Park Ave, Toronto",
+    "city": "Toronto",
+    "rating": 3.7,
+    "reviewCount": 1432,
+    "stars": 3,
+    "pricePerNight": 162,
+    "currency": "USD",
+    "image": "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=600",
+    "amenities": [
+      "Gym",
+      "Room Service",
+      "Pool",
+      "Bar",
+      "Spa",
+      "Restaurant"
+    ],
+    "roomTypes": [
+      "Suite",
+      "Ocean View",
+      "Club Level"
+    ],
+    "breakfast": true,
+    "refundable": true,
+    "description": "Experience the best of Toronto at this beautiful 3-star property. Centrally located with premium amenities.",
+    "checkIn": "15:00",
+    "checkOut": "11:00"
+  },
+  {
+    "id": "hotel-1048",
+    "name": "The Sunset Resort Sydney",
+    "address": "248 Park Ave, Sydney",
+    "city": "Sydney",
+    "rating": 4.6,
+    "reviewCount": 1290,
+    "stars": 4,
+    "pricePerNight": 276,
+    "currency": "USD",
+    "image": "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=600",
+    "amenities": [
+      "Room Service",
+      "Bar",
+      "Gym",
+      "Pool",
+      "Spa"
+    ],
+    "roomTypes": [
+      "Club Level",
+      "Ocean View",
+      "Deluxe"
+    ],
+    "breakfast": false,
+    "refundable": false,
+    "description": "Experience the best of Sydney at this beautiful 4-star property. Centrally located with premium amenities.",
+    "checkIn": "15:00",
+    "checkOut": "11:00"
+  },
+  {
+    "id": "hotel-1049",
+    "name": "The Riverside Lodge Toronto",
+    "address": "590 Market Ave, Toronto",
+    "city": "Toronto",
+    "rating": 5.0,
+    "reviewCount": 2980,
+    "stars": 4,
+    "pricePerNight": 280,
+    "currency": "USD",
+    "image": "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=600",
+    "amenities": [
+      "Spa",
+      "Restaurant",
+      "Bar",
+      "Pool",
+      "Gym",
+      "Room Service",
+      "Parking"
+    ],
+    "roomTypes": [
+      "Ocean View",
+      "Suite",
+      "Club Level",
+      "Deluxe"
+    ],
+    "breakfast": true,
+    "refundable": false,
+    "description": "Experience the best of Toronto at this beautiful 4-star property. Centrally located with premium amenities.",
+    "checkIn": "15:00",
+    "checkOut": "11:00"
+  },
+  {
+    "id": "hotel-1050",
+    "name": "The Grand Resort Tokyo",
+    "address": "458 Market Ave, Tokyo",
+    "city": "Tokyo",
+    "rating": 3.9,
+    "reviewCount": 2505,
+    "stars": 3,
+    "pricePerNight": 250,
+    "currency": "USD",
+    "image": "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=600",
+    "amenities": [
+      "Bar",
+      "Pool",
+      "Restaurant"
+    ],
+    "roomTypes": [
+      "Ocean View",
+      "Standard",
+      "Deluxe"
+    ],
+    "breakfast": false,
+    "refundable": true,
+    "description": "Experience the best of Tokyo at this beautiful 3-star property. Centrally located with premium amenities.",
+    "checkIn": "15:00",
+    "checkOut": "11:00"
+  },
+  {
+    "id": "hotel-1051",
+    "name": "The Imperial Lodge Singapore",
+    "address": "246 Ocean Ave, Singapore",
+    "city": "Singapore",
+    "rating": 4.8,
+    "reviewCount": 2824,
+    "stars": 4,
+    "pricePerNight": 264,
+    "currency": "USD",
+    "image": "https://images.unsplash.com/photo-1551882547-ff40c0d5b9af?w=600",
+    "amenities": [
+      "Gym",
+      "Spa",
+      "Room Service",
+      "Pool",
+      "WiFi"
+    ],
+    "roomTypes": [
+      "Standard",
+      "Club Level",
+      "Suite",
+      "Ocean View"
+    ],
+    "breakfast": true,
+    "refundable": true,
+    "description": "Experience the best of Singapore at this beautiful 4-star property. Centrally located with premium amenities.",
+    "checkIn": "15:00",
+    "checkOut": "11:00"
+  },
+  {
+    "id": "hotel-1052",
+    "name": "The Oasis Palace Istanbul",
+    "address": "355 Main Ave, Istanbul",
+    "city": "Istanbul",
+    "rating": 4.4,
+    "reviewCount": 2736,
+    "stars": 4,
+    "pricePerNight": 180,
+    "currency": "USD",
+    "image": "https://images.unsplash.com/photo-1551882547-ff40c0d5b9af?w=600",
+    "amenities": [
+      "Gym",
+      "Restaurant",
+      "Room Service"
+    ],
+    "roomTypes": [
+      "Deluxe",
+      "Standard"
+    ],
+    "breakfast": true,
+    "refundable": true,
+    "description": "Experience the best of Istanbul at this beautiful 4-star property. Centrally located with premium amenities.",
+    "checkIn": "15:00",
+    "checkOut": "11:00"
+  },
+  {
+    "id": "hotel-1053",
+    "name": "The Sunset Hotel Paris",
+    "address": "166 Main Ave, Paris",
+    "city": "Paris",
+    "rating": 4.7,
+    "reviewCount": 1459,
+    "stars": 5,
+    "pricePerNight": 408,
+    "currency": "USD",
+    "image": "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=600",
+    "amenities": [
+      "Gym",
+      "Restaurant",
+      "Parking",
+      "Pool",
+      "Room Service",
+      "Bar",
+      "WiFi"
+    ],
+    "roomTypes": [
+      "Standard",
+      "Suite"
+    ],
+    "breakfast": false,
+    "refundable": false,
+    "description": "Experience the best of Paris at this beautiful 5-star property. Centrally located with premium amenities.",
+    "checkIn": "15:00",
+    "checkOut": "11:00"
+  },
+  {
+    "id": "hotel-1054",
+    "name": "The Luxury Suites Seoul",
+    "address": "948 Market Ave, Seoul",
+    "city": "Seoul",
+    "rating": 4.0,
+    "reviewCount": 2530,
+    "stars": 4,
+    "pricePerNight": 195,
+    "currency": "USD",
+    "image": "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=600",
+    "amenities": [
+      "Restaurant",
+      "Pool",
+      "Parking",
+      "Bar",
+      "WiFi",
+      "Gym",
+      "Room Service"
+    ],
+    "roomTypes": [
+      "Standard",
+      "Club Level",
+      "Suite"
+    ],
+    "breakfast": true,
+    "refundable": true,
+    "description": "Experience the best of Seoul at this beautiful 4-star property. Centrally located with premium amenities.",
+    "checkIn": "15:00",
+    "checkOut": "11:00"
+  },
+  {
+    "id": "hotel-1055",
+    "name": "The Luxury Lodge Toronto",
+    "address": "160 Park Ave, Toronto",
+    "city": "Toronto",
+    "rating": 4.7,
+    "reviewCount": 1890,
+    "stars": 3,
+    "pricePerNight": 219,
+    "currency": "USD",
+    "image": "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=600",
+    "amenities": [
+      "Parking",
+      "WiFi",
+      "Spa",
+      "Room Service",
+      "Bar",
+      "Pool",
+      "Gym"
+    ],
+    "roomTypes": [
+      "Club Level",
+      "Ocean View",
+      "Standard",
+      "Deluxe"
+    ],
+    "breakfast": true,
+    "refundable": true,
+    "description": "Experience the best of Toronto at this beautiful 3-star property. Centrally located with premium amenities.",
+    "checkIn": "15:00",
+    "checkOut": "11:00"
+  },
+  {
+    "id": "hotel-1056",
+    "name": "The Sunset Palace Dubai",
+    "address": "528 Main Ave, Dubai",
+    "city": "Dubai",
+    "rating": 3.6,
+    "reviewCount": 271,
+    "stars": 4,
+    "pricePerNight": 357,
+    "currency": "USD",
+    "image": "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=600",
+    "amenities": [
+      "Gym",
+      "Restaurant",
+      "Room Service",
+      "Bar"
+    ],
+    "roomTypes": [
+      "Ocean View",
+      "Club Level"
+    ],
+    "breakfast": false,
+    "refundable": false,
+    "description": "Experience the best of Dubai at this beautiful 4-star property. Centrally located with premium amenities.",
+    "checkIn": "15:00",
+    "checkOut": "11:00"
+  },
+  {
+    "id": "hotel-1057",
+    "name": "The Imperial Inn Tokyo",
+    "address": "243 Ocean Ave, Tokyo",
+    "city": "Tokyo",
+    "rating": 4.9,
+    "reviewCount": 4849,
+    "stars": 4,
+    "pricePerNight": 201,
+    "currency": "USD",
+    "image": "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=600",
+    "amenities": [
+      "Pool",
+      "Parking",
+      "Restaurant"
+    ],
+    "roomTypes": [
+      "Ocean View",
+      "Club Level",
+      "Suite"
+    ],
+    "breakfast": true,
+    "refundable": true,
+    "description": "Experience the best of Tokyo at this beautiful 4-star property. Centrally located with premium amenities.",
+    "checkIn": "15:00",
+    "checkOut": "11:00"
+  },
+  {
+    "id": "hotel-1058",
+    "name": "The Oasis Hotel Amsterdam",
+    "address": "646 Market Ave, Amsterdam",
+    "city": "Amsterdam",
+    "rating": 3.6,
+    "reviewCount": 1777,
+    "stars": 4,
+    "pricePerNight": 154,
+    "currency": "USD",
+    "image": "https://images.unsplash.com/photo-1551882547-ff40c0d5b9af?w=600",
+    "amenities": [
+      "WiFi",
+      "Parking",
+      "Pool"
+    ],
+    "roomTypes": [
+      "Ocean View",
+      "Club Level",
+      "Suite",
+      "Standard"
+    ],
+    "breakfast": true,
+    "refundable": true,
+    "description": "Experience the best of Amsterdam at this beautiful 4-star property. Centrally located with premium amenities.",
+    "checkIn": "15:00",
+    "checkOut": "11:00"
+  },
+  {
+    "id": "hotel-1059",
+    "name": "The Central Suites Dubai",
+    "address": "607 Main Ave, Dubai",
+    "city": "Dubai",
+    "rating": 3.8,
+    "reviewCount": 1772,
+    "stars": 5,
+    "pricePerNight": 500,
+    "currency": "USD",
+    "image": "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=600",
+    "amenities": [
+      "Restaurant",
+      "Pool",
+      "Gym",
+      "WiFi",
+      "Bar",
+      "Room Service",
+      "Parking"
+    ],
+    "roomTypes": [
+      "Standard",
+      "Club Level",
+      "Ocean View"
+    ],
+    "breakfast": true,
+    "refundable": true,
+    "description": "Experience the best of Dubai at this beautiful 5-star property. Centrally located with premium amenities.",
+    "checkIn": "15:00",
+    "checkOut": "11:00"
+  },
+  {
+    "id": "hotel-1060",
+    "name": "The Grand Lodge Istanbul",
+    "address": "794 Main Ave, Istanbul",
+    "city": "Istanbul",
+    "rating": 4.4,
+    "reviewCount": 959,
+    "stars": 4,
+    "pricePerNight": 249,
+    "currency": "USD",
+    "image": "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=600",
+    "amenities": [
+      "WiFi",
+      "Room Service",
+      "Pool",
+      "Spa"
+    ],
+    "roomTypes": [
+      "Club Level",
+      "Standard",
+      "Ocean View",
+      "Deluxe"
+    ],
+    "breakfast": false,
+    "refundable": true,
+    "description": "Experience the best of Istanbul at this beautiful 4-star property. Centrally located with premium amenities.",
+    "checkIn": "15:00",
+    "checkOut": "11:00"
+  },
+  {
+    "id": "hotel-1061",
+    "name": "The Imperial Inn Toronto",
+    "address": "193 Market Ave, Toronto",
+    "city": "Toronto",
+    "rating": 5.0,
+    "reviewCount": 1911,
+    "stars": 4,
+    "pricePerNight": 377,
+    "currency": "USD",
+    "image": "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=600",
+    "amenities": [
+      "Bar",
+      "Gym",
+      "Spa",
+      "WiFi",
+      "Restaurant",
+      "Parking"
+    ],
+    "roomTypes": [
+      "Standard",
+      "Suite",
+      "Club Level",
+      "Deluxe"
+    ],
+    "breakfast": false,
+    "refundable": true,
+    "description": "Experience the best of Toronto at this beautiful 4-star property. Centrally located with premium amenities.",
+    "checkIn": "15:00",
+    "checkOut": "11:00"
+  },
+  {
+    "id": "hotel-1062",
+    "name": "The Luxury Hotel New York",
+    "address": "980 Park Ave, New York",
     "city": "New York",
     "rating": 4.3,
-    "reviewCount": 876,
+    "reviewCount": 2985,
     "stars": 4,
-    "pricePerNight": 120,
+    "pricePerNight": 158,
+    "currency": "USD",
+    "image": "https://images.unsplash.com/photo-1551882547-ff40c0d5b9af?w=600",
+    "amenities": [
+      "Room Service",
+      "Bar",
+      "Pool",
+      "Gym",
+      "Restaurant",
+      "WiFi"
+    ],
+    "roomTypes": [
+      "Suite",
+      "Standard",
+      "Ocean View"
+    ],
+    "breakfast": true,
+    "refundable": true,
+    "description": "Experience the best of New York at this beautiful 4-star property. Centrally located with premium amenities.",
+    "checkIn": "15:00",
+    "checkOut": "11:00"
+  },
+  {
+    "id": "hotel-1063",
+    "name": "The Grand Palace Singapore",
+    "address": "540 Market Ave, Singapore",
+    "city": "Singapore",
+    "rating": 4.5,
+    "reviewCount": 657,
+    "stars": 3,
+    "pricePerNight": 112,
+    "currency": "USD",
+    "image": "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=600",
+    "amenities": [
+      "Gym",
+      "Parking",
+      "WiFi",
+      "Restaurant",
+      "Pool"
+    ],
+    "roomTypes": [
+      "Deluxe",
+      "Suite"
+    ],
+    "breakfast": true,
+    "refundable": true,
+    "description": "Experience the best of Singapore at this beautiful 3-star property. Centrally located with premium amenities.",
+    "checkIn": "15:00",
+    "checkOut": "11:00"
+  },
+  {
+    "id": "hotel-1064",
+    "name": "The Riverside Inn Hong Kong",
+    "address": "384 Park Ave, Hong Kong",
+    "city": "Hong Kong",
+    "rating": 4.6,
+    "reviewCount": 3479,
+    "stars": 4,
+    "pricePerNight": 227,
+    "currency": "USD",
+    "image": "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=600",
+    "amenities": [
+      "Restaurant",
+      "Room Service",
+      "Pool",
+      "Bar"
+    ],
+    "roomTypes": [
+      "Club Level",
+      "Ocean View",
+      "Standard"
+    ],
+    "breakfast": false,
+    "refundable": true,
+    "description": "Experience the best of Hong Kong at this beautiful 4-star property. Centrally located with premium amenities.",
+    "checkIn": "15:00",
+    "checkOut": "11:00"
+  },
+  {
+    "id": "hotel-1065",
+    "name": "The Luxury Lodge New York",
+    "address": "293 Market Ave, New York",
+    "city": "New York",
+    "rating": 4.1,
+    "reviewCount": 4062,
+    "stars": 3,
+    "pricePerNight": 83,
+    "currency": "USD",
+    "image": "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=600",
+    "amenities": [
+      "Spa",
+      "Gym",
+      "Room Service",
+      "Parking",
+      "Restaurant"
+    ],
+    "roomTypes": [
+      "Ocean View",
+      "Suite",
+      "Club Level",
+      "Standard"
+    ],
+    "breakfast": true,
+    "refundable": true,
+    "description": "Experience the best of New York at this beautiful 3-star property. Centrally located with premium amenities.",
+    "checkIn": "15:00",
+    "checkOut": "11:00"
+  },
+  {
+    "id": "hotel-1066",
+    "name": "The Grand Suites Dubai",
+    "address": "26 Main Ave, Dubai",
+    "city": "Dubai",
+    "rating": 4.2,
+    "reviewCount": 4590,
+    "stars": 5,
+    "pricePerNight": 999,
+    "currency": "USD",
+    "image": "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=600",
+    "amenities": [
+      "Parking",
+      "WiFi",
+      "Spa",
+      "Pool",
+      "Restaurant"
+    ],
+    "roomTypes": [
+      "Deluxe",
+      "Club Level",
+      "Ocean View"
+    ],
+    "breakfast": false,
+    "refundable": true,
+    "description": "Experience the best of Dubai at this beautiful 5-star property. Centrally located with premium amenities.",
+    "checkIn": "15:00",
+    "checkOut": "11:00"
+  },
+  {
+    "id": "hotel-1067",
+    "name": "The Imperial Palace Bangkok",
+    "address": "212 Park Ave, Bangkok",
+    "city": "Bangkok",
+    "rating": 4.1,
+    "reviewCount": 2873,
+    "stars": 3,
+    "pricePerNight": 99,
+    "currency": "USD",
+    "image": "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=600",
+    "amenities": [
+      "Restaurant",
+      "Pool",
+      "Gym",
+      "Spa",
+      "Room Service",
+      "WiFi"
+    ],
+    "roomTypes": [
+      "Ocean View",
+      "Suite",
+      "Deluxe"
+    ],
+    "breakfast": true,
+    "refundable": false,
+    "description": "Experience the best of Bangkok at this beautiful 3-star property. Centrally located with premium amenities.",
+    "checkIn": "15:00",
+    "checkOut": "11:00"
+  },
+  {
+    "id": "hotel-1068",
+    "name": "The Luxury Palace Los Angeles",
+    "address": "427 Main Ave, Los Angeles",
+    "city": "Los Angeles",
+    "rating": 3.8,
+    "reviewCount": 1506,
+    "stars": 5,
+    "pricePerNight": 474,
+    "currency": "USD",
+    "image": "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=600",
+    "amenities": [
+      "Pool",
+      "Parking",
+      "Room Service"
+    ],
+    "roomTypes": [
+      "Club Level",
+      "Deluxe",
+      "Standard"
+    ],
+    "breakfast": true,
+    "refundable": true,
+    "description": "Experience the best of Los Angeles at this beautiful 5-star property. Centrally located with premium amenities.",
+    "checkIn": "15:00",
+    "checkOut": "11:00"
+  },
+  {
+    "id": "hotel-1069",
+    "name": "The Central Resort Los Angeles",
+    "address": "347 Park Ave, Los Angeles",
+    "city": "Los Angeles",
+    "rating": 3.7,
+    "reviewCount": 476,
+    "stars": 5,
+    "pricePerNight": 835,
+    "currency": "USD",
+    "image": "https://images.unsplash.com/photo-1551882547-ff40c0d5b9af?w=600",
+    "amenities": [
+      "Bar",
+      "Parking",
+      "WiFi",
+      "Spa",
+      "Pool",
+      "Restaurant",
+      "Room Service"
+    ],
+    "roomTypes": [
+      "Deluxe",
+      "Club Level"
+    ],
+    "breakfast": true,
+    "refundable": true,
+    "description": "Experience the best of Los Angeles at this beautiful 5-star property. Centrally located with premium amenities.",
+    "checkIn": "15:00",
+    "checkOut": "11:00"
+  },
+  {
+    "id": "hotel-1070",
+    "name": "The Central Palace Sydney",
+    "address": "896 Main Ave, Sydney",
+    "city": "Sydney",
+    "rating": 4.0,
+    "reviewCount": 912,
+    "stars": 4,
+    "pricePerNight": 372,
+    "currency": "USD",
+    "image": "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=600",
+    "amenities": [
+      "Room Service",
+      "WiFi",
+      "Parking",
+      "Bar",
+      "Pool",
+      "Gym"
+    ],
+    "roomTypes": [
+      "Deluxe",
+      "Standard",
+      "Ocean View",
+      "Suite"
+    ],
+    "breakfast": false,
+    "refundable": true,
+    "description": "Experience the best of Sydney at this beautiful 4-star property. Centrally located with premium amenities.",
+    "checkIn": "15:00",
+    "checkOut": "11:00"
+  },
+  {
+    "id": "hotel-1071",
+    "name": "The Boutique Inn Singapore",
+    "address": "480 Main Ave, Singapore",
+    "city": "Singapore",
+    "rating": 4.2,
+    "reviewCount": 1923,
+    "stars": 5,
+    "pricePerNight": 1193,
+    "currency": "USD",
+    "image": "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=600",
+    "amenities": [
+      "Pool",
+      "Parking",
+      "Gym",
+      "Restaurant",
+      "Spa"
+    ],
+    "roomTypes": [
+      "Deluxe",
+      "Suite",
+      "Club Level",
+      "Standard"
+    ],
+    "breakfast": false,
+    "refundable": true,
+    "description": "Experience the best of Singapore at this beautiful 5-star property. Centrally located with premium amenities.",
+    "checkIn": "15:00",
+    "checkOut": "11:00"
+  },
+  {
+    "id": "hotel-1072",
+    "name": "The Boutique Palace Hong Kong",
+    "address": "965 Park Ave, Hong Kong",
+    "city": "Hong Kong",
+    "rating": 3.7,
+    "reviewCount": 2972,
+    "stars": 4,
+    "pricePerNight": 195,
+    "currency": "USD",
+    "image": "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=600",
+    "amenities": [
+      "Room Service",
+      "Spa",
+      "Gym",
+      "Pool",
+      "WiFi"
+    ],
+    "roomTypes": [
+      "Ocean View",
+      "Club Level",
+      "Standard"
+    ],
+    "breakfast": false,
+    "refundable": false,
+    "description": "Experience the best of Hong Kong at this beautiful 4-star property. Centrally located with premium amenities.",
+    "checkIn": "15:00",
+    "checkOut": "11:00"
+  },
+  {
+    "id": "hotel-1073",
+    "name": "The Riverside Palace Amsterdam",
+    "address": "316 Main Ave, Amsterdam",
+    "city": "Amsterdam",
+    "rating": 4.1,
+    "reviewCount": 4512,
+    "stars": 4,
+    "pricePerNight": 221,
+    "currency": "USD",
+    "image": "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=600",
+    "amenities": [
+      "Bar",
+      "Room Service",
+      "Spa",
+      "Pool"
+    ],
+    "roomTypes": [
+      "Club Level",
+      "Deluxe",
+      "Standard",
+      "Ocean View"
+    ],
+    "breakfast": false,
+    "refundable": true,
+    "description": "Experience the best of Amsterdam at this beautiful 4-star property. Centrally located with premium amenities.",
+    "checkIn": "15:00",
+    "checkOut": "11:00"
+  },
+  {
+    "id": "hotel-1074",
+    "name": "The Grand Lodge Seoul",
+    "address": "617 Park Ave, Seoul",
+    "city": "Seoul",
+    "rating": 4.8,
+    "reviewCount": 3311,
+    "stars": 3,
+    "pricePerNight": 97,
+    "currency": "USD",
+    "image": "https://images.unsplash.com/photo-1551882547-ff40c0d5b9af?w=600",
+    "amenities": [
+      "Pool",
+      "Bar",
+      "Gym",
+      "Spa",
+      "Room Service",
+      "Restaurant",
+      "Parking"
+    ],
+    "roomTypes": [
+      "Standard",
+      "Suite",
+      "Ocean View",
+      "Deluxe"
+    ],
+    "breakfast": false,
+    "refundable": true,
+    "description": "Experience the best of Seoul at this beautiful 3-star property. Centrally located with premium amenities.",
+    "checkIn": "15:00",
+    "checkOut": "11:00"
+  },
+  {
+    "id": "hotel-1075",
+    "name": "The Oasis Palace New York",
+    "address": "465 Ocean Ave, New York",
+    "city": "New York",
+    "rating": 3.8,
+    "reviewCount": 4151,
+    "stars": 3,
+    "pricePerNight": 89,
+    "currency": "USD",
+    "image": "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=600",
+    "amenities": [
+      "Restaurant",
+      "Pool",
+      "Parking",
+      "Spa"
+    ],
+    "roomTypes": [
+      "Club Level",
+      "Ocean View"
+    ],
+    "breakfast": false,
+    "refundable": false,
+    "description": "Experience the best of New York at this beautiful 3-star property. Centrally located with premium amenities.",
+    "checkIn": "15:00",
+    "checkOut": "11:00"
+  },
+  {
+    "id": "hotel-1076",
+    "name": "The Grand Palace Dubai",
+    "address": "139 Ocean Ave, Dubai",
+    "city": "Dubai",
+    "rating": 4.0,
+    "reviewCount": 2363,
+    "stars": 4,
+    "pricePerNight": 302,
+    "currency": "USD",
+    "image": "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=600",
+    "amenities": [
+      "Bar",
+      "Spa",
+      "Restaurant",
+      "Pool"
+    ],
+    "roomTypes": [
+      "Deluxe",
+      "Standard",
+      "Club Level"
+    ],
+    "breakfast": false,
+    "refundable": true,
+    "description": "Experience the best of Dubai at this beautiful 4-star property. Centrally located with premium amenities.",
+    "checkIn": "15:00",
+    "checkOut": "11:00"
+  },
+  {
+    "id": "hotel-1077",
+    "name": "The Royal Palace Bangkok",
+    "address": "36 Main Ave, Bangkok",
+    "city": "Bangkok",
+    "rating": 3.9,
+    "reviewCount": 1191,
+    "stars": 4,
+    "pricePerNight": 166,
+    "currency": "USD",
+    "image": "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=600",
+    "amenities": [
+      "WiFi",
+      "Room Service",
+      "Bar",
+      "Parking"
+    ],
+    "roomTypes": [
+      "Suite",
+      "Standard",
+      "Ocean View"
+    ],
+    "breakfast": true,
+    "refundable": true,
+    "description": "Experience the best of Bangkok at this beautiful 4-star property. Centrally located with premium amenities.",
+    "checkIn": "15:00",
+    "checkOut": "11:00"
+  },
+  {
+    "id": "hotel-1078",
+    "name": "The Imperial Inn Frankfurt",
+    "address": "442 Main Ave, Frankfurt",
+    "city": "Frankfurt",
+    "rating": 4.0,
+    "reviewCount": 4173,
+    "stars": 4,
+    "pricePerNight": 238,
+    "currency": "USD",
+    "image": "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=600",
+    "amenities": [
+      "Parking",
+      "Bar",
+      "WiFi"
+    ],
+    "roomTypes": [
+      "Suite",
+      "Standard",
+      "Deluxe",
+      "Ocean View"
+    ],
+    "breakfast": true,
+    "refundable": false,
+    "description": "Experience the best of Frankfurt at this beautiful 4-star property. Centrally located with premium amenities.",
+    "checkIn": "15:00",
+    "checkOut": "11:00"
+  },
+  {
+    "id": "hotel-1079",
+    "name": "The Luxury Lodge Hong Kong",
+    "address": "708 Ocean Ave, Hong Kong",
+    "city": "Hong Kong",
+    "rating": 3.9,
+    "reviewCount": 3288,
+    "stars": 4,
+    "pricePerNight": 287,
+    "currency": "USD",
+    "image": "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=600",
+    "amenities": [
+      "Pool",
+      "Parking",
+      "Room Service",
+      "Spa"
+    ],
+    "roomTypes": [
+      "Standard",
+      "Ocean View"
+    ],
+    "breakfast": true,
+    "refundable": false,
+    "description": "Experience the best of Hong Kong at this beautiful 4-star property. Centrally located with premium amenities.",
+    "checkIn": "15:00",
+    "checkOut": "11:00"
+  },
+  {
+    "id": "hotel-1080",
+    "name": "The Central Suites Paris",
+    "address": "692 Ocean Ave, Paris",
+    "city": "Paris",
+    "rating": 4.4,
+    "reviewCount": 4698,
+    "stars": 4,
+    "pricePerNight": 295,
+    "currency": "USD",
+    "image": "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=600",
+    "amenities": [
+      "Gym",
+      "Restaurant",
+      "Room Service",
+      "Spa",
+      "Pool",
+      "WiFi",
+      "Parking"
+    ],
+    "roomTypes": [
+      "Ocean View",
+      "Deluxe"
+    ],
+    "breakfast": false,
+    "refundable": false,
+    "description": "Experience the best of Paris at this beautiful 4-star property. Centrally located with premium amenities.",
+    "checkIn": "15:00",
+    "checkOut": "11:00"
+  },
+  {
+    "id": "hotel-1081",
+    "name": "The Riverside Hotel Istanbul",
+    "address": "945 Park Ave, Istanbul",
+    "city": "Istanbul",
+    "rating": 4.2,
+    "reviewCount": 413,
+    "stars": 3,
+    "pricePerNight": 222,
+    "currency": "USD",
+    "image": "https://images.unsplash.com/photo-1551882547-ff40c0d5b9af?w=600",
+    "amenities": [
+      "Restaurant",
+      "Spa",
+      "Gym",
+      "Bar",
+      "Pool",
+      "Parking"
+    ],
+    "roomTypes": [
+      "Suite",
+      "Ocean View",
+      "Deluxe",
+      "Club Level"
+    ],
+    "breakfast": true,
+    "refundable": false,
+    "description": "Experience the best of Istanbul at this beautiful 3-star property. Centrally located with premium amenities.",
+    "checkIn": "15:00",
+    "checkOut": "11:00"
+  },
+  {
+    "id": "hotel-1082",
+    "name": "The Sunset Suites Paris",
+    "address": "293 Main Ave, Paris",
+    "city": "Paris",
+    "rating": 4.5,
+    "reviewCount": 3201,
+    "stars": 4,
+    "pricePerNight": 171,
+    "currency": "USD",
+    "image": "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=600",
+    "amenities": [
+      "Pool",
+      "Bar",
+      "Restaurant",
+      "Parking",
+      "Spa",
+      "WiFi"
+    ],
+    "roomTypes": [
+      "Club Level",
+      "Deluxe",
+      "Standard"
+    ],
+    "breakfast": true,
+    "refundable": true,
+    "description": "Experience the best of Paris at this beautiful 4-star property. Centrally located with premium amenities.",
+    "checkIn": "15:00",
+    "checkOut": "11:00"
+  },
+  {
+    "id": "hotel-1083",
+    "name": "The Riverside Inn New York",
+    "address": "354 Market Ave, New York",
+    "city": "New York",
+    "rating": 4.5,
+    "reviewCount": 4633,
+    "stars": 4,
+    "pricePerNight": 333,
     "currency": "USD",
     "image": "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=600",
     "amenities": [
       "WiFi",
       "Gym",
+      "Pool",
+      "Bar",
       "Parking"
     ],
     "roomTypes": [
-      "Standard Queen",
-      "Deluxe Double"
+      "Suite",
+      "Club Level",
+      "Deluxe"
+    ],
+    "breakfast": true,
+    "refundable": true,
+    "description": "Experience the best of New York at this beautiful 4-star property. Centrally located with premium amenities.",
+    "checkIn": "15:00",
+    "checkOut": "11:00"
+  },
+  {
+    "id": "hotel-1084",
+    "name": "The Boutique Palace Seoul",
+    "address": "350 Park Ave, Seoul",
+    "city": "Seoul",
+    "rating": 4.8,
+    "reviewCount": 841,
+    "stars": 3,
+    "pricePerNight": 247,
+    "currency": "USD",
+    "image": "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=600",
+    "amenities": [
+      "Restaurant",
+      "Bar",
+      "Pool",
+      "Gym"
+    ],
+    "roomTypes": [
+      "Suite",
+      "Deluxe",
+      "Standard"
+    ],
+    "breakfast": true,
+    "refundable": true,
+    "description": "Experience the best of Seoul at this beautiful 3-star property. Centrally located with premium amenities.",
+    "checkIn": "15:00",
+    "checkOut": "11:00"
+  },
+  {
+    "id": "hotel-1085",
+    "name": "The Plaza Palace New York",
+    "address": "964 Park Ave, New York",
+    "city": "New York",
+    "rating": 4.5,
+    "reviewCount": 4009,
+    "stars": 3,
+    "pricePerNight": 102,
+    "currency": "USD",
+    "image": "https://images.unsplash.com/photo-1551882547-ff40c0d5b9af?w=600",
+    "amenities": [
+      "Bar",
+      "Pool",
+      "Gym",
+      "Restaurant",
+      "Spa",
+      "Parking",
+      "Room Service"
+    ],
+    "roomTypes": [
+      "Suite",
+      "Ocean View",
+      "Club Level",
+      "Standard"
     ],
     "breakfast": false,
     "refundable": true,
-    "description": "Modern 4-star hotel with excellent value.",
-    "checkIn": "14:00",
-    "checkOut": "12:00"
+    "description": "Experience the best of New York at this beautiful 3-star property. Centrally located with premium amenities.",
+    "checkIn": "15:00",
+    "checkOut": "11:00"
+  },
+  {
+    "id": "hotel-1086",
+    "name": "The Oasis Lodge Paris",
+    "address": "176 Market Ave, Paris",
+    "city": "Paris",
+    "rating": 3.8,
+    "reviewCount": 323,
+    "stars": 3,
+    "pricePerNight": 190,
+    "currency": "USD",
+    "image": "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=600",
+    "amenities": [
+      "Parking",
+      "Restaurant",
+      "Pool",
+      "Room Service",
+      "Gym"
+    ],
+    "roomTypes": [
+      "Club Level",
+      "Ocean View"
+    ],
+    "breakfast": false,
+    "refundable": true,
+    "description": "Experience the best of Paris at this beautiful 3-star property. Centrally located with premium amenities.",
+    "checkIn": "15:00",
+    "checkOut": "11:00"
+  },
+  {
+    "id": "hotel-1087",
+    "name": "The Royal Palace Dubai",
+    "address": "881 Ocean Ave, Dubai",
+    "city": "Dubai",
+    "rating": 4.4,
+    "reviewCount": 1715,
+    "stars": 5,
+    "pricePerNight": 1022,
+    "currency": "USD",
+    "image": "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=600",
+    "amenities": [
+      "Room Service",
+      "Spa",
+      "Parking",
+      "Pool",
+      "Bar"
+    ],
+    "roomTypes": [
+      "Standard",
+      "Suite",
+      "Deluxe"
+    ],
+    "breakfast": true,
+    "refundable": true,
+    "description": "Experience the best of Dubai at this beautiful 5-star property. Centrally located with premium amenities.",
+    "checkIn": "15:00",
+    "checkOut": "11:00"
+  },
+  {
+    "id": "hotel-1088",
+    "name": "The Luxury Suites Los Angeles",
+    "address": "149 Park Ave, Los Angeles",
+    "city": "Los Angeles",
+    "rating": 5.0,
+    "reviewCount": 4091,
+    "stars": 4,
+    "pricePerNight": 333,
+    "currency": "USD",
+    "image": "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=600",
+    "amenities": [
+      "Bar",
+      "Gym",
+      "Pool",
+      "Spa",
+      "Room Service",
+      "WiFi",
+      "Parking"
+    ],
+    "roomTypes": [
+      "Suite",
+      "Ocean View",
+      "Club Level",
+      "Deluxe"
+    ],
+    "breakfast": true,
+    "refundable": true,
+    "description": "Experience the best of Los Angeles at this beautiful 4-star property. Centrally located with premium amenities.",
+    "checkIn": "15:00",
+    "checkOut": "11:00"
+  },
+  {
+    "id": "hotel-1089",
+    "name": "The Central Lodge Sydney",
+    "address": "303 Ocean Ave, Sydney",
+    "city": "Sydney",
+    "rating": 3.7,
+    "reviewCount": 4474,
+    "stars": 4,
+    "pricePerNight": 175,
+    "currency": "USD",
+    "image": "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=600",
+    "amenities": [
+      "Restaurant",
+      "WiFi",
+      "Parking",
+      "Pool",
+      "Bar"
+    ],
+    "roomTypes": [
+      "Suite",
+      "Deluxe"
+    ],
+    "breakfast": true,
+    "refundable": true,
+    "description": "Experience the best of Sydney at this beautiful 4-star property. Centrally located with premium amenities.",
+    "checkIn": "15:00",
+    "checkOut": "11:00"
+  },
+  {
+    "id": "hotel-1090",
+    "name": "The Imperial Suites Singapore",
+    "address": "525 Main Ave, Singapore",
+    "city": "Singapore",
+    "rating": 4.9,
+    "reviewCount": 4828,
+    "stars": 4,
+    "pricePerNight": 389,
+    "currency": "USD",
+    "image": "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=600",
+    "amenities": [
+      "Bar",
+      "WiFi",
+      "Gym",
+      "Parking",
+      "Room Service"
+    ],
+    "roomTypes": [
+      "Suite",
+      "Ocean View",
+      "Deluxe",
+      "Club Level"
+    ],
+    "breakfast": false,
+    "refundable": true,
+    "description": "Experience the best of Singapore at this beautiful 4-star property. Centrally located with premium amenities.",
+    "checkIn": "15:00",
+    "checkOut": "11:00"
+  },
+  {
+    "id": "hotel-1091",
+    "name": "The Boutique Hotel Bangkok",
+    "address": "732 Market Ave, Bangkok",
+    "city": "Bangkok",
+    "rating": 4.4,
+    "reviewCount": 2402,
+    "stars": 4,
+    "pricePerNight": 399,
+    "currency": "USD",
+    "image": "https://images.unsplash.com/photo-1551882547-ff40c0d5b9af?w=600",
+    "amenities": [
+      "Gym",
+      "Restaurant",
+      "WiFi",
+      "Room Service"
+    ],
+    "roomTypes": [
+      "Club Level",
+      "Ocean View"
+    ],
+    "breakfast": false,
+    "refundable": true,
+    "description": "Experience the best of Bangkok at this beautiful 4-star property. Centrally located with premium amenities.",
+    "checkIn": "15:00",
+    "checkOut": "11:00"
+  },
+  {
+    "id": "hotel-1092",
+    "name": "The Riverside Hotel Tokyo",
+    "address": "880 Market Ave, Tokyo",
+    "city": "Tokyo",
+    "rating": 4.5,
+    "reviewCount": 4229,
+    "stars": 4,
+    "pricePerNight": 206,
+    "currency": "USD",
+    "image": "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=600",
+    "amenities": [
+      "Gym",
+      "WiFi",
+      "Restaurant",
+      "Pool",
+      "Parking"
+    ],
+    "roomTypes": [
+      "Standard",
+      "Deluxe",
+      "Suite",
+      "Ocean View"
+    ],
+    "breakfast": true,
+    "refundable": true,
+    "description": "Experience the best of Tokyo at this beautiful 4-star property. Centrally located with premium amenities.",
+    "checkIn": "15:00",
+    "checkOut": "11:00"
+  },
+  {
+    "id": "hotel-1093",
+    "name": "The Boutique Inn Dubai",
+    "address": "640 Main Ave, Dubai",
+    "city": "Dubai",
+    "rating": 4.4,
+    "reviewCount": 3307,
+    "stars": 4,
+    "pricePerNight": 255,
+    "currency": "USD",
+    "image": "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=600",
+    "amenities": [
+      "Pool",
+      "Bar",
+      "Spa",
+      "Room Service",
+      "Gym",
+      "Parking"
+    ],
+    "roomTypes": [
+      "Ocean View",
+      "Club Level",
+      "Suite",
+      "Deluxe"
+    ],
+    "breakfast": false,
+    "refundable": true,
+    "description": "Experience the best of Dubai at this beautiful 4-star property. Centrally located with premium amenities.",
+    "checkIn": "15:00",
+    "checkOut": "11:00"
+  },
+  {
+    "id": "hotel-1094",
+    "name": "The Grand Lodge Amsterdam",
+    "address": "138 Main Ave, Amsterdam",
+    "city": "Amsterdam",
+    "rating": 3.6,
+    "reviewCount": 4481,
+    "stars": 5,
+    "pricePerNight": 1186,
+    "currency": "USD",
+    "image": "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=600",
+    "amenities": [
+      "Gym",
+      "Parking",
+      "Spa"
+    ],
+    "roomTypes": [
+      "Standard",
+      "Suite"
+    ],
+    "breakfast": true,
+    "refundable": true,
+    "description": "Experience the best of Amsterdam at this beautiful 5-star property. Centrally located with premium amenities.",
+    "checkIn": "15:00",
+    "checkOut": "11:00"
+  },
+  {
+    "id": "hotel-1095",
+    "name": "The Riverside Lodge Los Angeles",
+    "address": "115 Market Ave, Los Angeles",
+    "city": "Los Angeles",
+    "rating": 4.0,
+    "reviewCount": 4934,
+    "stars": 4,
+    "pricePerNight": 393,
+    "currency": "USD",
+    "image": "https://images.unsplash.com/photo-1551882547-ff40c0d5b9af?w=600",
+    "amenities": [
+      "Spa",
+      "Gym",
+      "Parking"
+    ],
+    "roomTypes": [
+      "Club Level",
+      "Suite",
+      "Ocean View"
+    ],
+    "breakfast": true,
+    "refundable": false,
+    "description": "Experience the best of Los Angeles at this beautiful 4-star property. Centrally located with premium amenities.",
+    "checkIn": "15:00",
+    "checkOut": "11:00"
+  },
+  {
+    "id": "hotel-1096",
+    "name": "The Luxury Inn Bangkok",
+    "address": "683 Market Ave, Bangkok",
+    "city": "Bangkok",
+    "rating": 4.7,
+    "reviewCount": 2096,
+    "stars": 3,
+    "pricePerNight": 127,
+    "currency": "USD",
+    "image": "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=600",
+    "amenities": [
+      "Spa",
+      "Parking",
+      "Restaurant",
+      "Pool",
+      "Room Service",
+      "WiFi"
+    ],
+    "roomTypes": [
+      "Ocean View",
+      "Standard",
+      "Suite",
+      "Club Level"
+    ],
+    "breakfast": false,
+    "refundable": false,
+    "description": "Experience the best of Bangkok at this beautiful 3-star property. Centrally located with premium amenities.",
+    "checkIn": "15:00",
+    "checkOut": "11:00"
+  },
+  {
+    "id": "hotel-1097",
+    "name": "The Oasis Lodge Los Angeles",
+    "address": "233 Ocean Ave, Los Angeles",
+    "city": "Los Angeles",
+    "rating": 4.1,
+    "reviewCount": 2723,
+    "stars": 4,
+    "pricePerNight": 268,
+    "currency": "USD",
+    "image": "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=600",
+    "amenities": [
+      "WiFi",
+      "Parking",
+      "Spa",
+      "Bar"
+    ],
+    "roomTypes": [
+      "Standard",
+      "Club Level",
+      "Ocean View"
+    ],
+    "breakfast": true,
+    "refundable": true,
+    "description": "Experience the best of Los Angeles at this beautiful 4-star property. Centrally located with premium amenities.",
+    "checkIn": "15:00",
+    "checkOut": "11:00"
+  },
+  {
+    "id": "hotel-1098",
+    "name": "The Oasis Inn London",
+    "address": "914 Main Ave, London",
+    "city": "London",
+    "rating": 3.8,
+    "reviewCount": 997,
+    "stars": 3,
+    "pricePerNight": 192,
+    "currency": "USD",
+    "image": "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=600",
+    "amenities": [
+      "Restaurant",
+      "Pool",
+      "WiFi",
+      "Room Service"
+    ],
+    "roomTypes": [
+      "Deluxe",
+      "Club Level"
+    ],
+    "breakfast": false,
+    "refundable": true,
+    "description": "Experience the best of London at this beautiful 3-star property. Centrally located with premium amenities.",
+    "checkIn": "15:00",
+    "checkOut": "11:00"
+  },
+  {
+    "id": "hotel-1099",
+    "name": "The Sunset Resort London",
+    "address": "22 Main Ave, London",
+    "city": "London",
+    "rating": 3.9,
+    "reviewCount": 2028,
+    "stars": 3,
+    "pricePerNight": 225,
+    "currency": "USD",
+    "image": "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=600",
+    "amenities": [
+      "Spa",
+      "Restaurant",
+      "Bar",
+      "Gym",
+      "Parking",
+      "Room Service"
+    ],
+    "roomTypes": [
+      "Ocean View",
+      "Deluxe"
+    ],
+    "breakfast": false,
+    "refundable": true,
+    "description": "Experience the best of London at this beautiful 3-star property. Centrally located with premium amenities.",
+    "checkIn": "15:00",
+    "checkOut": "11:00"
   }
 ]

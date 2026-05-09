@@ -7,8 +7,8 @@ export default function FlightCard({ flight, onBookNow }) {
   return (
     <div className="adv-flight-card">
       <div className="flight-tags">
-        <div className="tag-left">{flight.tags[0] || 'Transit Visa may be required'}</div>
-        <div className="tag-right">{flight.tags[1] || 'MMTINTLCA coupon applied'} <Info size={12} /></div>
+        <div className="tag-left">{flight.tags?.[0] || 'Transit Visa may be required'}</div>
+        <div className="tag-right">{flight.tags?.[1] || 'MMTINTLCA coupon applied'} <Info size={12} /></div>
       </div>
 
       <div className="adv-flight-main">

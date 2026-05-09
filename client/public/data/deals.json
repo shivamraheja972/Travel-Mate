@@ -14,5 +14,37 @@
     "destination": "Dubai",
     "validUntil": "2025-12-31",
     "image": "/images/dubai.png"
+  },
+  {
+    "id": "deal-003",
+    "title": "Tokyo Adventure",
+    "discount": "25%",
+    "destination": "Tokyo",
+    "validUntil": "2026-03-15",
+    "image": "/images/tokyo.png"
+  },
+  {
+    "id": "deal-004",
+    "title": "New York Weekend",
+    "discount": "10%",
+    "destination": "New York",
+    "validUntil": "2026-01-31",
+    "image": "/images/newyork.png"
+  },
+  {
+    "id": "deal-005",
+    "title": "London Calling",
+    "discount": "30%",
+    "destination": "London",
+    "validUntil": "2026-04-30",
+    "image": "/images/london.png"
+  },
+  {
+    "id": "deal-006",
+    "title": "Sydney Explorer",
+    "discount": "15%",
+    "destination": "Sydney",
+    "validUntil": "2026-05-31",
+    "image": "/images/sydney.png"
   }
 ]
